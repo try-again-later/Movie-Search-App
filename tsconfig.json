@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "ES6",
+    "strictNullChecks": true,
+    "downlevelIteration": true,
+    "allowJs": true,
+    "strict": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["src"]
+}
