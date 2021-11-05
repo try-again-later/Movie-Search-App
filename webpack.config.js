@@ -3,6 +3,8 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 let mode = 'development';
 const plugins = [
@@ -14,16 +16,25 @@ const plugins = [
 
 if (process.env.NODE_ENV === 'production') {
   mode = 'production';
+  plugins.push(
+    new ESLintPlugin({
+      context: './src',
+      extensions: ['.js', '.jsx', '.ts', 'tsx'],
+    }),
+    new StyleLintPlugin({
+      context: './src',
+    }),
+  );
 }
 if (process.env.SERVE) {
   plugins.push(new ReactRefreshWebpackPlugin());
 }
 
 module.exports = {
-  mode: mode,
+  mode,
   entry: './src/index.tsx',
   devtool: 'source-map',
-  plugins: plugins,
+  plugins,
 
   output: {
     path: path.resolve(__dirname, 'dist'),
