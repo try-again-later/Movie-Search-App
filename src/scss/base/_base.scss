@@ -1,0 +1,23 @@
+@use "../abstracts" as *;
+
+:root {
+  @include screen-width-media-queries($font-sizes, "font-size");
+
+  @each $color-type, $color-weights in $colors {
+    @each $color-weight, $color-value in $color-weights {
+      #{--color-#{$color-type}-#{$color-weight}}: #{$color-value};
+    }
+  }
+
+  @each $margin-weight, $margin-value in $margins {
+    #{--margin-#{$margin-weight}}: #{$margin-value};
+  }
+}
+
+body {
+  background-color: var(--color-neutral-200);
+}
+
+p {
+  font-size: 1rem;
+}

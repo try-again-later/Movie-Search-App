@@ -1,0 +1,26 @@
+$font-sizes: (
+  "400": (
+    "small": 0.875rem,
+    "medium": 1rem,
+  ),
+  "500": (
+    "small": 1rem,
+    "medium": 1.25rem,
+  ),
+  "700": (
+    "small": 1.25rem,
+    "medium": 1.5rem,
+  ),
+  "800": (
+    "small": 1.5rem,
+    "medium": 1.75rem,
+  ),
+  "900": (
+    "small": 1.75rem,
+    "medium": 2.25rem,
+  ),
+);
+
+@function font-size($weight, $screen-size) {
+  @return map-get(map-get($font-sizes, $weight), $screen-size);
+}

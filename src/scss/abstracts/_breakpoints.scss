@@ -1,0 +1,12 @@
+$breakpoints: (
+  // actually that's not a breakpoint, but rather the minimum screen width at
+  // which the page is expected to behave adequately
+  "small": 20rem,
+  "medium": 52.5rem,
+  "large": 68.75rem
+);
+$container-max-width: 90rem;
+
+@function breakpoint($size) {
+  @return map-get($breakpoints, $size);
+}

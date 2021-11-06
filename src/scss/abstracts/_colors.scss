@@ -1,0 +1,10 @@
+$colors: (
+  "neutral": (
+    "200": rgb(244 244 244),
+    "900": #333,
+  ),
+);
+
+@function color($type, $weight) {
+  @return map-get(map-get($colors, $type), $weight);
+}
