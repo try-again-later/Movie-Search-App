@@ -1,5 +1,10 @@
 @use "../abstracts" as *;
 
+.search-movies {
+  display: grid;
+  gap: var(--margin-700);
+}
+
 .movie-search-form {
   display: grid;
   gap: var(--margin-200);
@@ -40,4 +45,10 @@
       cursor: pointer;
     }
   }
+}
+
+.queried-movies-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  gap: var(--margin-400);
 }

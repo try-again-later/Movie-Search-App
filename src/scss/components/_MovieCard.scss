@@ -1,0 +1,42 @@
+@use "../abstracts" as *;
+
+.movie-card {
+  display: grid;
+  grid-template-areas:
+    "poster title ."
+    "poster director ."
+    "poster meta meta"
+    "rating rating rating"
+    "overview overview overview";
+  padding: 2em;
+  height: 100%;
+  border-radius: 1em;
+  box-shadow: 0 5px 10px rgba(0 0 0 / 15%);
+  background-color: var(--color-neutral-100);
+
+  .poster {
+    grid-area: poster;
+  }
+
+  .title {
+    grid-area: title;
+  }
+
+  .director {
+    grid-area: director;
+  }
+
+  .meta {
+    grid-area: meta;
+    display: flex;
+    gap: var(--margin-200);
+  }
+
+  .rating {
+    grid-area: rating;
+  }
+
+  .overview {
+    grid-area: overview;
+  }
+}

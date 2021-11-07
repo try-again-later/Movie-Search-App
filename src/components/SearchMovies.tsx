@@ -53,7 +53,7 @@ const SearchMovies = () => {
   );
 
   return (
-    <>
+    <div className="search-movies">
       <form method="get" className="movie-search-form" onSubmit={searchMoviesRequest}>
         <label htmlFor="title-query" className="title-input-label">
           Название фильма
@@ -77,7 +77,7 @@ const SearchMovies = () => {
         ))}
       </ul>
       {/* <div>{queriedMovies.toString()}</div> */}
-    </>
+    </div>
   );
 };
 
