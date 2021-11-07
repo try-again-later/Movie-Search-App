@@ -17,6 +17,17 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': 'off',
     'import/extensions': 'off',
+    'no-console': 'off',
+    'jsx-a11y/label-has-associated-control': 'off',
+    'object-curly-newline': [
+      'error',
+      {
+        ObjectExpression: { consistent: true, multiline: true },
+        ObjectPattern: { consistent: true, multiline: true },
+        ImportDeclaration: 'never',
+        ExportDeclaration: { multiline: true, minProperties: 3 },
+      },
+    ],
   },
   settings: {
     'import/resolver': {

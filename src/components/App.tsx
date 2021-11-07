@@ -1,6 +1,11 @@
+import SearchMovies from './SearchMovies';
+
 const App = () => (
   <>
-    <h1>Поиск фильмов</h1>
+    <div className="container">
+      <h1>Поиск фильмов</h1>
+      <SearchMovies />
+    </div>
   </>
 );
 

@@ -5,7 +5,7 @@ $breakpoints: (
   "medium": 52.5rem,
   "large": 68.75rem
 );
-$container-max-width: 90rem;
+$container-max-width: 62.5rem;
 
 @function breakpoint($size) {
   @return map-get($breakpoints, $size);

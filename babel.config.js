@@ -1,4 +1,14 @@
-const plugins = [];
+const plugins = [
+  [
+    '@babel/plugin-transform-runtime',
+    {
+      absoluteRuntime: false,
+      corejs: false,
+      helpers: true,
+      regenerator: true,
+    },
+  ],
+];
 if (process.env.SERVE) {
   plugins.push('react-refresh/babel');
 }

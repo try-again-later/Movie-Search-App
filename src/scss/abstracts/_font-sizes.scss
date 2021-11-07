@@ -1,4 +1,8 @@
 $font-sizes: (
+  "200": (
+    "small": 0.75rem,
+    "medium": 0.875rem,
+  ),
   "400": (
     "small": 0.875rem,
     "medium": 1rem,
@@ -17,7 +21,7 @@ $font-sizes: (
   ),
   "900": (
     "small": 1.75rem,
-    "medium": 2.25rem,
+    "medium": 2.5rem,
   ),
 );
 
