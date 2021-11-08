@@ -6,6 +6,10 @@ $colors: (
     "700": #555,
     "900": #333,
   ),
+  "primary": (
+    "200": hsl(342deg 70% 70%),
+    "400": hsl(342deg 100% 50%),
+  ),
 );
 
 @function color($type, $weight) {

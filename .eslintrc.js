@@ -3,7 +3,13 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['plugin:react/recommended', 'plugin:import/typescript', 'airbnb'],
+  extends: [
+    'airbnb',
+    'plugin:react/recommended',
+    'plugin:import/typescript',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -19,6 +25,9 @@ module.exports = {
     'import/extensions': 'off',
     'no-console': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+
+    // use @typescript-eslint/no-shadow instead
+    'no-shadow': 'off',
     'object-curly-newline': [
       'error',
       {

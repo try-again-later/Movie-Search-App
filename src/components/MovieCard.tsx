@@ -1,27 +1,33 @@
 import Movie from '../ts/Movie';
 
-type MovieCardProps = {
+type CardProps = {
   movie: Movie;
 };
 
-const MovieCard = ({ movie }: MovieCardProps) => (
-  <div className="movie-card">
-    <img className="poster" src={movie.posterUrl.toString()} alt={movie.title} />
-    <h2 className="title">{movie.title}</h2>
-    <p className="director">2018, David Ayer</p>
-    <p className="meta">
-      <span className="length">117 min</span>
-      <span className="genre">Action, Crime, Fantasy</span>
-    </p>
-    {/* <p className="releaseDate">
-      Дата выхода:&nbsp;
-      {movie.releaseDate.toDateString()}
-    </p> */}
-    <p className="rating">
-      Рейтинг:&nbsp;
-      {movie.rating}
-    </p>
-    <p className="overview">{movie.overview}</p>
+const MovieCard = ({ movie }: CardProps) => (
+  <div
+    className="movie-card"
+    style={{ backgroundImage: movie.backdropUrl && `url("${movie.backdropUrl.toString()}")` }}
+  >
+    <div className="content">
+      {movie.posterUrl && (
+        <img className="poster" src={movie.posterUrl.toString()} alt={movie.title} />
+      )}
+      <div className="meta">
+        <h2 className="title">{movie.title}</h2>
+        <div className="director">Год, Режиссёр-постановщик</div>
+        <div className="other-information">
+          <div className="length">666 мин.</div>
+          <div className="genre">Список жанров</div>
+        </div>
+      </div>
+      <div className="rating">
+        Рейтинг:&nbsp;
+        {movie.rating}
+      </div>
+      <div className="overview">{movie.overview}</div>
+    </div>
   </div>
 );
+
 export default MovieCard;

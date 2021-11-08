@@ -1,0 +1,47 @@
+@use "../abstracts" as *;
+
+.movie-search-form {
+  display: grid;
+  gap: var(--margin-200);
+  grid-template-areas:
+    "label"
+    "search-bar"
+    "submit-button";
+
+  @media (min-width: breakpoint("medium")) {
+    grid-template-areas:
+      "label ."
+      "search-bar submit-button";
+    grid-template-columns: 1fr minmax(8em, auto);
+  }
+
+  .title-input-label {
+    grid-area: label;
+    text-transform: uppercase;
+    font-size: var(--font-size-200);
+  }
+
+  .title-input {
+    grid-area: search-bar;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    border: 2px solid var(--color-neutral-300);
+    font-size: var(--font-size-700);
+  }
+
+  button[type="submit"] {
+    grid-area: submit-button;
+    padding: 0.5em 1em;
+    background-color: var(--color-neutral-900);
+    border-radius: 0.5em;
+    border: none;
+    transition: background-color 0.2s;
+    color: var(--color-neutral-200);
+    font-size: var(--font-size-500);
+
+    &:hover {
+      background-color: var(--color-neutral-700);
+      cursor: pointer;
+    }
+  }
+}
