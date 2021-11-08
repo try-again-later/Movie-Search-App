@@ -3,7 +3,8 @@ import { useCallback, useState } from 'react';
 import Movie from '../ts/Movie';
 import MovieCard from './MovieCard';
 import MoviesSearchForm from './MoviesSearchForm';
-import { queryMovies } from '../ts/MoviesSearchApi';
+import { queryMovies } from '../ts/MoviesSearch';
+import { Language } from '../ts/Language';
 
 const MoviesSearchApp = () => {
   const [queriedMovies, setQueriedMovies] = useState<Movie[]>([]);
@@ -11,9 +12,13 @@ const MoviesSearchApp = () => {
   const apiKey = '2ab87dbd3a5185ee9af24363729e47a9';
 
   const onSearchFormSubmit = useCallback(
-    async (_, searchQuery: string) => {
+    async (searchQuery: string) => {
       try {
-        const newMovies = await queryMovies({ queryString: searchQuery, apiKey });
+        const newMovies = await queryMovies({
+          queryString: searchQuery,
+          apiKey,
+          language: Language.RUSSIAN,
+        });
         setQueriedMovies(newMovies);
       } catch (error) {
         console.error(error);

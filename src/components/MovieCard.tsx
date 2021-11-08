@@ -1,4 +1,5 @@
 import Movie from '../ts/Movie';
+import Rating from './Rating';
 
 type CardProps = {
   movie: Movie;
@@ -7,24 +8,34 @@ type CardProps = {
 const MovieCard = ({ movie }: CardProps) => (
   <div
     className="movie-card"
-    style={{ backgroundImage: movie.backdropUrl && `url("${movie.backdropUrl.toString()}")` }}
+    style={{ backgroundImage: !!movie.backdropUrl && `url("${movie.backdropUrl.toString()}")` }}
   >
     <div className="content">
-      {movie.posterUrl && (
+      {!!movie.posterUrl && (
         <img className="poster" src={movie.posterUrl.toString()} alt={movie.title} />
       )}
       <div className="meta">
         <h2 className="title">{movie.title}</h2>
-        <div className="director">Год, Режиссёр-постановщик</div>
+        <div className="director">
+          {!!movie.releaseDate && `${movie.releaseDate.getFullYear()}`}
+          {!!movie.releaseDate && !!movie.director && ', '}
+          {!!movie.director}
+        </div>
         <div className="other-information">
-          <div className="length">666 мин.</div>
-          <div className="genre">Список жанров</div>
+          {!!movie.runtime && (
+            <div className="length">
+              {movie.runtime}
+              &nbsp;мин.
+            </div>
+          )}
+          {movie.genres.map((genre) => (
+            <div className="genre" key={genre}>
+              {genre}
+            </div>
+          ))}
         </div>
       </div>
-      <div className="rating">
-        Рейтинг:&nbsp;
-        {movie.rating}
-      </div>
+      {!!movie.rating && <Rating rating={movie.rating} />}
       <div className="overview">{movie.overview}</div>
     </div>
   </div>

@@ -6,7 +6,8 @@
     "downlevelIteration": true,
     "allowJs": true,
     "strict": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "esModuleInterop": true
   },
   "include": ["src"]
 }

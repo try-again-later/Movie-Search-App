@@ -25,6 +25,13 @@ module.exports = {
     'import/extensions': 'off',
     'no-console': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+    'react/require-default-props': 'off',
+    'no-restricted-syntax': 'off',
+    'no-useless-constructor': 'off',
+    'no-continue': 'off',
+    'operator-linebreak': 'off',
+    'no-await-in-loop': 'off',
+    eqeqeq: 'off',
 
     // use @typescript-eslint/no-shadow instead
     'no-shadow': 'off',
@@ -46,4 +53,9 @@ module.exports = {
       },
     },
   },
+  ignorePatterns: [
+    'webpack.config.js',
+    'postcss.config.js',
+    'babel.config.js',
+  ],
 };

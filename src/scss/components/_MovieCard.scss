@@ -14,7 +14,7 @@
     display: grid;
     grid-template-areas:
       "poster   meta    "
-      "rating   .       "
+      "rating   meta    "
       "overview overview";
     gap: var(--margin-400);
     grid-template-columns: 8rem 1fr;
@@ -56,6 +56,7 @@
 
       .other-information {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         gap: var(--margin-200);
 
@@ -64,16 +65,18 @@
           border: 1px solid var(--color-neutral-700);
           border-radius: var(--margin-200);
         }
+
+        .genre {
+          padding: var(--margin-100) calc(2 * var(--margin-100));
+          border-radius: var(--margin-200);
+          color: var(--color-neutral-200);
+          background-color: var(--color-neutral-700);
+        }
       }
 
       .director {
         font-weight: 700;
       }
-    }
-
-    .rating {
-      grid-area: rating;
-      justify-self: center;
     }
 
     .overview {

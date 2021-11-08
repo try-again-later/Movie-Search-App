@@ -1,6 +1,6 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 
-export type MoviesSearchHandler = (event: FormEvent<HTMLFormElement>, searchQuery: string) => void;
+export type MoviesSearchHandler = (searchQuery: string) => void;
 
 type FormProps = {
   onSubmit: MoviesSearchHandler;
@@ -15,7 +15,7 @@ const MoviesSearchForm = ({ onSubmit }: FormProps) => {
       className="movie-search-form"
       onSubmit={(event) => {
         event.preventDefault();
-        onSubmit(event, searchQuery);
+        onSubmit(searchQuery);
       }}
     >
       <label htmlFor="title-query" className="title-input-label">

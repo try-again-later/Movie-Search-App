@@ -1,11 +1,14 @@
 type Movie = {
   id: number;
   title: string;
-  overview: string;
-  posterUrl: URL | null;
-  backdropUrl: URL | null;
-  releaseDate: Date | null;
-  rating: number | null;
+  genres: string[];
+  overview?: string;
+  posterUrl?: URL;
+  backdropUrl?: URL;
+  releaseDate?: Date;
+  rating?: number;
+  runtime?: number;
+  director?: string;
 };
 
 export default Movie;
