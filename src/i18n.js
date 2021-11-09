@@ -25,7 +25,7 @@ i18n
       caches: ['localStorage', 'cookie'],
     },
     backend: {
-      loadPath: `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`,
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
   });
 
