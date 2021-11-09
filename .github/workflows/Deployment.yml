@@ -16,6 +16,8 @@ jobs:
         run: |
           npm install
           npm run build
+        env:
+          PUBLIC_URL: https://pa-artem.github.io/Movie-Search-App
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
