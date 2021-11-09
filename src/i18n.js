@@ -24,6 +24,9 @@ i18n
       order: ['querystring', 'cookie', 'localStorage'],
       caches: ['localStorage', 'cookie'],
     },
+    backend: {
+      loadPath: `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`,
+    },
   });
 
 export default i18n;

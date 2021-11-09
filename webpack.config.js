@@ -6,7 +6,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const ESLintPlugin = require('eslint-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const WriteFilePlugin = require('write-file-webpack-plugin');
+const webpack = require('webpack');
 
 let mode = 'development';
 const plugins = [
@@ -19,10 +19,10 @@ const plugins = [
       {
         from: path.resolve(__dirname, 'src/locales'),
         to: path.resolve(__dirname, 'dist/locales'),
-      }
-    ]
+      },
+    ],
   }),
-  // new WriteFilePlugin(),
+  new webpack.EnvironmentPlugin({ PUBLIC_URL: process.env.PUBLIC_URL ?? '' }),
 ];
 
 if (process.env.NODE_ENV === 'production') {
