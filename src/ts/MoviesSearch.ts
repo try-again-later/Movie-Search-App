@@ -1,11 +1,11 @@
 import Movie from './Movie';
-import { Language } from './Language';
+import LanguageType from './Language';
 import * as TheMovieDB from './TheMovieDB';
 
 export type MoviesSearchQuery = {
   queryString: string;
   apiKey: string;
-  language?: Language;
+  language?: LanguageType;
 };
 
 function capitalize(string: string): string {
@@ -15,7 +15,7 @@ function capitalize(string: string): string {
 export async function queryMovies({
   queryString,
   apiKey,
-  language = Language.ENGLISH_US,
+  language = LanguageType.ENGLISH_US,
 }: MoviesSearchQuery): Promise<Movie[]> {
   if (queryString.trim().length == 0) {
     return [];
@@ -25,31 +25,33 @@ export async function queryMovies({
   const moviesData = await moviesApi.moviesSearch(queryString);
 
   const movies: Movie[] = [];
-  for (const movie of moviesData) {
-    if (movie.title == undefined || movie.id == undefined) {
+  for (const movieData of moviesData) {
+    if (movieData.title == undefined || movieData.id == undefined) {
       continue;
     }
 
     const posterUrl =
-      movie.poster_path == undefined ? undefined : TheMovieDB.posterUrl(movie.poster_path);
+      movieData.poster_path == undefined ? undefined : TheMovieDB.posterUrl(movieData.poster_path);
     const backdropUrl =
-      movie.backdrop_path == undefined ? undefined : TheMovieDB.backdropUrl(movie.backdrop_path);
+      movieData.backdrop_path == undefined
+        ? undefined
+        : TheMovieDB.backdropUrl(movieData.backdrop_path);
 
-    const movieDetails = await moviesApi.movieDetails(movie.id);
-    const movieCredits = await moviesApi.movieCredits(movie.id);
+    const movieDetails = await moviesApi.movieDetails(movieData.id);
+    const movieCredits = await moviesApi.movieCredits(movieData.id);
 
     const director = movieCredits.crew?.find(
       (person) => person.job == 'Director' && person.known_for_department == 'Directing',
     )?.name;
 
     movies.push({
-      id: movie.id,
-      title: movie.title,
-      overview: movie.overview,
+      id: movieData.id,
+      title: movieData.title,
+      overview: movieData.overview,
       posterUrl,
       backdropUrl,
-      releaseDate: movie.release_date ? new Date(movie.release_date) : undefined,
-      rating: movie.vote_average ? Number.parseFloat(movie.vote_average) : undefined,
+      releaseDate: movieData.release_date ? new Date(movieData.release_date) : undefined,
+      rating: movieData.vote_average ? Number.parseFloat(movieData.vote_average) : undefined,
       genres: movieDetails.genres?.map(({ name }) => capitalize(name)) ?? [],
       runtime: movieDetails.runtime,
       director,

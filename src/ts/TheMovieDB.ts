@@ -1,4 +1,4 @@
-import { Language, languageToString } from './Language';
+import LanguageType, * as Language from './Language';
 
 /* eslint-disable camelcase */
 type MoviesSearchData = {
@@ -29,14 +29,14 @@ type MovieCreditsData = {
 };
 /* eslint-enable camelcase */
 
-type ContextOptions = { apiKey: string; language: Language };
+type ContextOptions = { apiKey: string; language: LanguageType };
 
 export class Context {
   private apiKey: string;
 
-  private language: Language;
+  private language: LanguageType;
 
-  constructor({ apiKey, language = Language.ENGLISH_US }: ContextOptions) {
+  constructor({ apiKey, language = LanguageType.ENGLISH_US }: ContextOptions) {
     this.apiKey = apiKey;
     this.language = language;
   }
@@ -75,7 +75,7 @@ export class Context {
   private moviesSearchUrl(queryString: string): URL {
     const url = new URL('https://api.themoviedb.org/3/search/movie');
     url.searchParams.append('api_key', this.apiKey);
-    url.searchParams.append('language', languageToString(this.language));
+    url.searchParams.append('language', Language.toString(this.language));
     url.searchParams.append('query', queryString);
     url.searchParams.append('page', '1');
     url.searchParams.append('include_adult', 'false');
@@ -86,7 +86,7 @@ export class Context {
   private movieDetailsUrl(movieId: number): URL {
     const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
     url.searchParams.append('api_key', this.apiKey);
-    url.searchParams.append('language', languageToString(this.language));
+    url.searchParams.append('language', Language.toString(this.language));
 
     return url;
   }
@@ -94,7 +94,7 @@ export class Context {
   private movieCreditsUrl(movieId: number): URL {
     const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}/credits`);
     url.searchParams.append('api_key', this.apiKey);
-    url.searchParams.append('language', languageToString(this.language));
+    url.searchParams.append('language', Language.toString(this.language));
 
     return url;
   }

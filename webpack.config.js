@@ -5,6 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const WriteFilePlugin = require('write-file-webpack-plugin');
 
 let mode = 'development';
 const plugins = [
@@ -12,6 +14,15 @@ const plugins = [
   new HtmlWebpackPlugin({
     template: './src/index.html',
   }),
+  new CopyPlugin({
+    patterns: [
+      {
+        from: path.resolve(__dirname, 'src/locales'),
+        to: path.resolve(__dirname, 'dist/locales'),
+      }
+    ]
+  }),
+  // new WriteFilePlugin(),
 ];
 
 if (process.env.NODE_ENV === 'production') {

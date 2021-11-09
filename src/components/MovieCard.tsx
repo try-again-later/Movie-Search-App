@@ -8,7 +8,7 @@ type CardProps = {
 const MovieCard = ({ movie }: CardProps) => (
   <div
     className="movie-card"
-    style={{ backgroundImage: !!movie.backdropUrl && `url("${movie.backdropUrl.toString()}")` }}
+    style={{ backgroundImage: movie.backdropUrl && `url("${movie.backdropUrl.toString()}")` }}
   >
     <div className="content">
       {!!movie.posterUrl && (
@@ -17,9 +17,9 @@ const MovieCard = ({ movie }: CardProps) => (
       <div className="meta">
         <h2 className="title">{movie.title}</h2>
         <div className="director">
-          {!!movie.releaseDate && `${movie.releaseDate.getFullYear()}`}
+          {movie?.releaseDate?.getFullYear()}
           {!!movie.releaseDate && !!movie.director && ', '}
-          {!!movie.director}
+          {movie?.director}
         </div>
         <div className="other-information">
           {!!movie.runtime && (

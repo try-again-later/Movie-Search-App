@@ -1,11 +1,13 @@
-export enum Language {
+enum Language {
   RUSSIAN,
   ENGLISH_US,
 }
 
-export const DEFAULT_LANGUAGE = Language.ENGLISH_US;
+export default Language;
 
-export function languageToString(language: Language) {
+export const DEFAULT = Language.ENGLISH_US;
+
+export function toString(language: Language): string {
   switch (language) {
     case Language.RUSSIAN:
       return 'ru';
@@ -13,5 +15,17 @@ export function languageToString(language: Language) {
       return 'en-US';
     default:
       return 'en';
+  }
+}
+
+export function fromString(language: string): Language {
+  switch (language.trim().toLowerCase()) {
+    case 'ru':
+      return Language.RUSSIAN;
+    case 'en-US':
+    case 'en':
+      return Language.ENGLISH_US;
+    default:
+      return Language.ENGLISH_US;
   }
 }

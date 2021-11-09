@@ -1,12 +1,13 @@
+import { Suspense } from 'react';
+
 import MoviesSearchApp from './MoviesSearchApp';
 
 const App = () => (
-  <>
+  <Suspense fallback="Loading...">
     <div className="container">
-      <h1>Поиск фильмов</h1>
       <MoviesSearchApp />
     </div>
-  </>
+  </Suspense>
 );
 
 export default App;
