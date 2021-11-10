@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Movie from '../ts/Movie';
 import MovieCard from './MovieCard';
 import MoviesSearchForm from './MoviesSearchForm';
+import LoadingAnimation from './LoadingAnimation';
 import { queryMovies } from '../ts/MoviesSearch';
 import LanguageType, * as Language from '../ts/Language';
 
@@ -17,23 +18,38 @@ const MoviesSearchApp = () => {
   }, [language]);
 
   const [queriedMovies, setQueriedMovies] = useState<Movie[]>([]);
+  const [loadingMovies, setLoadingMovies] = useState(false);
 
   const apiKey = '2ab87dbd3a5185ee9af24363729e47a9';
 
   const onSearchFormSubmit = useCallback(
     async (searchQuery: string) => {
-      try {
-        const newMovies = await queryMovies({
-          queryString: searchQuery,
-          apiKey,
-          language: LanguageType.RUSSIAN,
+      setLoadingMovies(true);
+      await queryMovies({
+        queryString: searchQuery,
+        apiKey,
+        language: LanguageType.RUSSIAN,
+      })
+        .then((newMovies) => {
+          setLoadingMovies(false);
+          setQueriedMovies(newMovies);
+        })
+        .catch((reason) => {
+          console.error(reason.toString());
+          setLoadingMovies(false);
         });
-        setQueriedMovies(newMovies);
-      } catch (error) {
-        console.error(error);
-      }
     },
     [setQueriedMovies],
+  );
+
+  const moviesList = (
+    <ul className="queried-movies-list">
+      {queriedMovies.map((movie) => (
+        <li key={movie.id}>
+          <MovieCard movie={movie} />
+        </li>
+      ))}
+    </ul>
   );
 
   return (
@@ -47,14 +63,7 @@ const MoviesSearchApp = () => {
         <button type="button" onClick={() => setLanguage(LanguageType.RUSSIAN)}>
           Russian
         </button>
-        <ul className="queried-movies-list">
-          {queriedMovies.map((movie) => (
-            <li key={movie.id}>
-              <MovieCard movie={movie} />
-            </li>
-          ))}
-        </ul>
-        {/* <div>{queriedMovies.toString()}</div> */}
+        {loadingMovies ? <LoadingAnimation loadingText="Загрузка" /> : moviesList}
       </div>
     </Suspense>
   );

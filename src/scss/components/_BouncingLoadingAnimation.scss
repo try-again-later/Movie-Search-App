@@ -1,0 +1,48 @@
+@use "../abstracts" as *;
+
+.bouncing-loading {
+  $default-ball-size: var(--margin-200);
+  $default-ball-color: var(--color-neutral-900);
+  $default-bounce-height: calc(3 * $default-ball-size);
+
+  .text {
+    text-align: center;
+    color: $default-ball-color;
+  }
+
+  .balls {
+    margin-bottom: var(--margin-200);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--margin-100);
+    height: var(--bounce-height, $default-bounce-height);
+  }
+
+  .ball {
+    width: var(--ball-size, $default-ball-size);
+    height: var(--ball-size, $default-ball-size);
+    background-color: var(--ball-color, $default-ball-color);
+    border-radius: 50%;
+
+    @include each-of-type(3) using ($i) {
+      animation-delay: #{0.2 * ($i - 1)}s;
+    }
+
+    animation: bounce 1s ease infinite;
+
+    @keyframes bounce {
+      0% {
+        transform: scale(1) translateY(0);
+      }
+
+      50% {
+        transform: scale(0.6) translateY(calc(-1 * var(--loading-bounce-height, $default-bounce-height)));
+      }
+
+      100% {
+        transform: scale(1) translateY(0);
+      }
+    }
+  }
+}
