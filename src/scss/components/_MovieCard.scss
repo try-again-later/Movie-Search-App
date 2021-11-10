@@ -1,7 +1,6 @@
 @use "../abstracts" as *;
 
 .movie-card {
-  display: grid;
   height: 100%;
   border-radius: var(--margin-400);
   box-shadow: 0 5px 10px rgba(0 0 0 / 15%);
@@ -12,6 +11,7 @@
 
   .content {
     display: grid;
+    height: 100%;
     grid-template-areas:
       "poster   meta    "
       "rating   meta    "
@@ -41,6 +41,14 @@
       width: 100%;
       height: auto;
       border-radius: var(--margin-200);
+
+      @media (max-width: breakpoint("medium")) {
+        // @include visually-hidden;
+        width: 6rem;
+        height: 6rem;
+        border-radius: 50%;
+        object-fit: cover;
+      }
     }
 
     .meta {
@@ -82,5 +90,26 @@
     .overview {
       grid-area: overview;
     }
+
+    .rating {
+      grid-area: rating;
+
+      @media (max-width: breakpoint("medium")) {
+        max-width: 8rem;
+      }
+    }
+
+    @media (max-width: breakpoint("medium")) {
+      display: flex;
+      align-content: flex-start;
+      flex-wrap: wrap;
+      width: 100%;
+      padding: var(--margin-700);
+    }
+  }
+
+  @media (max-width: breakpoint("medium")) {
+    // override react inline styles
+    background: none !important;
   }
 }
