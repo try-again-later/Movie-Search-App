@@ -41,6 +41,9 @@ if (process.env.SERVE) {
   plugins.push(new ReactRefreshWebpackPlugin());
 }
 
+/**
+ * @type {import('webpack').Configuration}
+ */
 module.exports = {
   mode,
   entry: './src/index.tsx',
@@ -74,7 +77,13 @@ module.exports = {
       {
         test: /\.(css|scss|sass)$/i,
         exclude: /node_modules/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'resolve-url-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /.(png|jpe?g|svg|gif)$/i,

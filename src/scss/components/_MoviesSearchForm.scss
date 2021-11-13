@@ -4,14 +4,13 @@
   display: grid;
   gap: var(--margin-200);
   grid-template-areas:
-    "label"
-    "search-bar"
-    "submit-button";
+    "search-bar search-bar   "
+    "label      submit-button";
 
   @media (min-width: breakpoint("medium")) {
     grid-template-areas:
-      "label ."
-      "search-bar submit-button";
+      "search-bar submit-button"
+      "label      .            ";
     grid-template-columns: 1fr minmax(8em, auto);
   }
 
@@ -38,10 +37,26 @@
     transition: background-color 0.2s;
     color: var(--color-neutral-200);
     font-size: var(--font-size-500);
+    line-height: 1;
 
     &:hover {
       background-color: var(--color-neutral-700);
       cursor: pointer;
+    }
+
+    &::after {
+      content: "";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      margin-left: 0.5rem;
+      background: url("../../img/icons/search.svg") center no-repeat;
+      background-size: contain;
+      vertical-align: top;
+    }
+
+    @media (max-width: breakpoint("medium")) {
+      justify-self: end;
     }
   }
 }

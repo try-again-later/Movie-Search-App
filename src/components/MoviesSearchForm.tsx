@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
 export type MoviesSearchHandler = (searchQuery: string) => void;
@@ -7,6 +8,8 @@ type FormProps = {
 };
 
 const MoviesSearchForm = ({ onSubmit }: FormProps) => {
+  const { t } = useTranslation('translation', { keyPrefix: 'MoviesSearchForm' });
+
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
@@ -19,7 +22,7 @@ const MoviesSearchForm = ({ onSubmit }: FormProps) => {
       }}
     >
       <label htmlFor="title-query" className="title-input-label">
-        Название фильма
+        {t('movieTitle')}
       </label>
       <input
         type="text"
@@ -28,9 +31,9 @@ const MoviesSearchForm = ({ onSubmit }: FormProps) => {
         name="movie-title-query"
         id="movie-title-query"
         className="title-input"
-        placeholder='Например, "Гарри Поттер"'
+        placeholder={t('searchQueryExample')}
       />
-      <button type="submit">Поиск</button>
+      <button type="submit">{t('search')}</button>
     </form>
   );
 };

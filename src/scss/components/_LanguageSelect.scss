@@ -1,0 +1,12 @@
+@use "../abstracts" as *;
+
+.language-select {
+  display: flex;
+  gap: var(--margin-200);
+
+  select {
+    @include regular-font;
+
+    font-size: var(--font-size-400);
+  }
+}

@@ -7,6 +7,7 @@ import MoviesSearchForm from './MoviesSearchForm';
 import LoadingAnimation from './LoadingAnimation';
 import { queryMovies } from '../ts/MoviesSearch';
 import LanguageType, * as Language from '../ts/Language';
+import LanguageSelect from './LanguageSelect';
 
 const MoviesSearchApp = () => {
   const { t, i18n } = useTranslation();
@@ -16,8 +17,16 @@ const MoviesSearchApp = () => {
   useEffect(() => {
     i18n.changeLanguage(Language.toString(language));
   }, [language]);
+  const handleLanguageChange = useCallback(
+    (newLanguage) => {
+      console.log(Language.toString(newLanguage));
+      setLanguage(newLanguage);
+    },
+    [setLanguage],
+  );
 
   const [queriedMovies, setQueriedMovies] = useState<Movie[]>([]);
+  const [lastQuery, setLastQuery] = useState('');
   const [loadingMovies, setLoadingMovies] = useState(false);
 
   const apiKey = '2ab87dbd3a5185ee9af24363729e47a9';
@@ -25,10 +34,12 @@ const MoviesSearchApp = () => {
   const onSearchFormSubmit = useCallback(
     async (searchQuery: string) => {
       setLoadingMovies(true);
+      setLastQuery(searchQuery);
+
       await queryMovies({
         queryString: searchQuery,
         apiKey,
-        language: LanguageType.RUSSIAN,
+        language,
       })
         .then((newMovies) => {
           setLoadingMovies(false);
@@ -39,8 +50,17 @@ const MoviesSearchApp = () => {
           setLoadingMovies(false);
         });
     },
-    [setQueriedMovies],
+    [language, setQueriedMovies, setLastQuery, setLoadingMovies],
   );
+
+  useEffect(() => {
+    if (queriedMovies.length == 0 || lastQuery.length == 0) {
+      return;
+    }
+
+    setQueriedMovies([]);
+    onSearchFormSubmit(lastQuery);
+  }, [language]);
 
   const moviesList = (
     <ul className="queried-movies-list">
@@ -54,15 +74,14 @@ const MoviesSearchApp = () => {
 
   return (
     <Suspense fallback="Loading...">
-      <h1>{t('Title')}</h1>
+      <h1>{t('title')}</h1>
       <div className="search-movies">
+        <LanguageSelect
+          value={language}
+          onChange={handleLanguageChange}
+          languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
+        />
         <MoviesSearchForm onSubmit={onSearchFormSubmit} />
-        <button type="button" onClick={() => setLanguage(LanguageType.ENGLISH_US)}>
-          English
-        </button>
-        <button type="button" onClick={() => setLanguage(LanguageType.RUSSIAN)}>
-          Russian
-        </button>
         {loadingMovies ? <LoadingAnimation loadingText="Загрузка" /> : moviesList}
       </div>
     </Suspense>

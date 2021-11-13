@@ -12,12 +12,12 @@
   .content {
     display: grid;
     height: 100%;
-    grid-template-areas:
-      "poster   meta    "
-      "rating   meta    "
-      "overview overview";
     gap: var(--margin-400);
-    grid-template-columns: 8rem 1fr;
+    grid-template:
+      "poster   meta    " 12rem
+      "rating   meta    " min-content
+      "overview overview" min-content / 8rem 1fr;
+    justify-items: start;
     padding: var(--margin-700);
     padding-right: 10rem;
     border-radius: var(--margin-400);
@@ -39,14 +39,15 @@
     .poster {
       grid-area: poster;
       width: 100%;
-      height: auto;
+      height: 12rem;
+      object-fit: cover;
       border-radius: var(--margin-200);
 
       @media (max-width: breakpoint("medium")) {
-        // @include visually-hidden;
+        order: -3;
         width: 6rem;
         height: 6rem;
-        border-radius: 50%;
+        border-radius: var(--margin-200);
         object-fit: cover;
       }
     }
@@ -93,18 +94,28 @@
 
     .rating {
       grid-area: rating;
+      max-width: 12rem;
+      justify-self: center;
+
+      .text {
+        text-align: center;
+      }
 
       @media (max-width: breakpoint("medium")) {
         max-width: 8rem;
+        order: -2;
+        align-self: center;
       }
     }
 
     @media (max-width: breakpoint("medium")) {
       display: flex;
       align-content: flex-start;
+      justify-content: space-between;
       flex-wrap: wrap;
       width: 100%;
       padding: var(--margin-700);
+      background: none;
     }
   }
 

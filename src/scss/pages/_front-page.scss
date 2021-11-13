@@ -7,8 +7,8 @@
 
 .queried-movies-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  gap: var(--margin-400);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--margin-900);
 
   @media (min-width: breakpoint("medium")) {
     grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46 (44423) - http://www.bohemiancoding.com/sketch -->
+    <title>search</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-116.000000, -151.000000)" fill-rule="nonzero" fill="#FFFFFF">
+            <path d="M122.99936,166.707747 L117.353553,172.353553 L116.646447,171.646447 L122.292253,166.00064 C120.866793,164.408294 120,162.305372 120,160 C120,155.029437 124.029437,151 129,151 C133.970563,151 138,155.029437 138,160 C138,164.970563 133.970563,169 129,169 C126.694628,169 124.591706,168.133207 122.99936,166.707747 Z M129,168 C133.418278,168 137,164.418278 137,160 C137,155.581722 133.418278,152 129,152 C124.581722,152 121,155.581722 121,160 C121,164.418278 124.581722,168 129,168 Z" id="search"></path>
+        </g>
+    </g>
+</svg>

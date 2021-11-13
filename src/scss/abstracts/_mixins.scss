@@ -29,3 +29,7 @@
   margin: -1px;
   clip: rect(0 0 0 0);
 }
+
+@mixin regular-font() {
+  font-family: Arsenal, sans-serif;
+}

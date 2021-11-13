@@ -18,6 +18,17 @@ export function toString(language: Language): string {
   }
 }
 
+export function toHumanString(language: Language): string {
+  switch (language) {
+    case Language.RUSSIAN:
+      return 'Русский';
+    case Language.ENGLISH_US:
+      return 'English';
+    default:
+      return 'Unknown';
+  }
+}
+
 export function fromString(language: string): Language {
   switch (language.trim().toLowerCase()) {
     case 'ru':
