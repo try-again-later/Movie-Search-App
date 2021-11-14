@@ -26,7 +26,7 @@ const plugins = [
   new webpack.EnvironmentPlugin({ PUBLIC_URL: process.env.PUBLIC_URL ?? '' }),
 ];
 
-const optimization = {};
+let optimization = {};
 
 if (process.env.NODE_ENV === 'production') {
   mode = 'production';
@@ -42,8 +42,8 @@ if (process.env.NODE_ENV === 'production') {
 
   optimization = {
     ...optimization,
-    minimizer: [new CssMinimizerPlugin()],
-    minimize: true,
+    // minimizer: [new CssMinimizerPlugin()],
+    // minimize: true,
   };
 }
 if (process.env.SERVE) {
