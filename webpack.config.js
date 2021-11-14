@@ -6,6 +6,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const ESLintPlugin = require('eslint-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const webpack = require('webpack');
 
 let mode = 'development';
@@ -25,6 +26,8 @@ const plugins = [
   new webpack.EnvironmentPlugin({ PUBLIC_URL: process.env.PUBLIC_URL ?? '' }),
 ];
 
+const optimization = {};
+
 if (process.env.NODE_ENV === 'production') {
   mode = 'production';
   plugins.push(
@@ -36,6 +39,12 @@ if (process.env.NODE_ENV === 'production') {
       context: './src',
     }),
   );
+
+  optimization = {
+    ...optimization,
+    minimizer: [new CssMinimizerPlugin()],
+    minimize: true,
+  };
 }
 if (process.env.SERVE) {
   plugins.push(new ReactRefreshWebpackPlugin());
@@ -49,6 +58,7 @@ module.exports = {
   entry: './src/index.tsx',
   devtool: 'source-map',
   plugins,
+  optimization,
 
   output: {
     path: path.resolve(__dirname, 'dist'),

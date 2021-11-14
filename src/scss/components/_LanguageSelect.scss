@@ -2,11 +2,21 @@
 
 .language-select {
   display: flex;
+  align-items: center;
   gap: var(--margin-200);
 
   select {
     @include regular-font;
 
     font-size: var(--font-size-400);
+  }
+
+  .flag-icon-background {
+    margin-right: var(--margin-200);
+    display: inline-block;
+    width: 1.33em;
+    height: 1em;
+    background-size: contain;
+    border: 1px solid var(--color-neutral-200);
   }
 }

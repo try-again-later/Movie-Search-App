@@ -1,0 +1,125 @@
+@use "../abstracts" as *;
+
+.custom-select-wrapper {
+  display: flex;
+  position: relative;
+  gap: var(--margin-200);
+  font-size: var(--font-size-500);
+
+  .native-select {
+    @include regular-font;
+
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: var(--font-size-500);
+    opacity: 100%;
+    pointer-events: all;
+
+    &:focus {
+      opacity: 100%;
+      pointer-events: all;
+    }
+  }
+
+  .custom-select {
+    min-width: 0;
+    display: none;
+
+    button.selected-option {
+      @include regular-font;
+
+      display: flex;
+      grid-template-columns: max-content auto;
+      padding: 0.25em 0.5em;
+      background-color: var(--color-neutral-100);
+      border: 2px solid var(--color-neutral-300);
+      border-radius: 0.5em;
+      font-size: var(--font-size-500);
+      cursor: pointer;
+
+      &::after {
+        content: "";
+        display: inline-block;
+        align-self: end;
+        width: 1em;
+        height: 0.75em;
+        margin-left: var(--margin-100);
+        background: var(--color-neutral-900);
+        mask-image: url("../../img/icons/arrow-down.svg");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        vertical-align: middle;
+      }
+    }
+
+    .options {
+      display: none;
+      position: absolute;
+      width: max-content;
+      margin-top: var(--margin-100);
+      background-color: var(--color-neutral-100);
+      border-radius: 0.5em;
+      overflow: hidden;
+      animation: grow 200ms ease-in-out forwards;
+      transform-origin: top center;
+      box-shadow: 0 3px 8px rgba(0 0 0 / 24%);
+
+      .option {
+        @include regular-font;
+
+        font-size: var(--font-size-500);
+        display: flex;
+        align-items: center;
+        padding: 0.25em 0.5em;
+        background-color: transparent;
+        border: none;
+        width: 100%;
+
+        &:hover {
+          background-color: var(--color-neutral-200);
+          cursor: pointer;
+        }
+      }
+
+      .option + .option {
+        border-top: 1px solid var(--color-neutral-300);
+      }
+
+      @keyframes grow {
+        0% {
+          transform: scale(0);
+        }
+
+        80% {
+          transform: scale(1.1);
+        }
+
+        100% {
+          transform: scale(1);
+        }
+      }
+    }
+
+    .options.visible {
+      display: block;
+    }
+  }
+
+  @media (hover: hover) {
+    .custom-select {
+      display: block;
+    }
+
+    .native-select {
+      opacity: 0%;
+      pointer-events: none;
+    }
+
+    .native-select:focus + .custom-select {
+      visibility: hidden;
+    }
+  }
+}

@@ -23,7 +23,18 @@ export function toHumanString(language: Language): string {
     case Language.RUSSIAN:
       return 'Русский';
     case Language.ENGLISH_US:
-      return 'English';
+      return 'English (US)';
+    default:
+      return 'Unknown';
+  }
+}
+
+export function toIsoCountryCode(language: Language): string {
+  switch (language) {
+    case Language.RUSSIAN:
+      return 'ru';
+    case Language.ENGLISH_US:
+      return 'us';
     default:
       return 'Unknown';
   }

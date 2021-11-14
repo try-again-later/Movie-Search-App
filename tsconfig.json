@@ -4,12 +4,12 @@
     "target": "ES6",
     "strictNullChecks": true,
     "downlevelIteration": true,
-    "allowJs": true,
+    "allowJs": false,
     "strict": true,
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "moduleResolution": "Node",
     "module": "ESNext"
   },
-  "include": ["src"]
+  "include": ["src"],
 }
