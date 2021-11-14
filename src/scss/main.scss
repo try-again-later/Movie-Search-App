@@ -3,4 +3,7 @@
 @use "./layout";
 @use "./pages";
 @use "./components";
-@import "~flag-icon-css/css/flag-icons.css";
+
+$include: ("us", "ru");
+
+@import "~flag-icon-css/sass/flag-icons";

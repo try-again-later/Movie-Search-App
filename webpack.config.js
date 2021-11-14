@@ -6,7 +6,6 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const ESLintPlugin = require('eslint-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const webpack = require('webpack');
 
 let mode = 'development';
@@ -42,8 +41,6 @@ if (process.env.NODE_ENV === 'production') {
 
   optimization = {
     ...optimization,
-    // minimizer: [new CssMinimizerPlugin()],
-    // minimize: true,
   };
 }
 if (process.env.SERVE) {
@@ -56,7 +53,7 @@ if (process.env.SERVE) {
 module.exports = {
   mode,
   entry: './src/index.tsx',
-  devtool: 'source-map',
+  devtool: mode === 'production' ? undefined : 'source-map',
   plugins,
   optimization,
 
@@ -83,6 +80,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
+        sideEffects: true,
       },
       {
         test: /\.(css|scss|sass)$/i,
@@ -92,8 +90,14 @@ module.exports = {
           'css-loader',
           'postcss-loader',
           'resolve-url-loader',
-          'sass-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            }
+          }
         ],
+        sideEffects: true,
       },
       {
         test: /.(png|jpe?g|svg|gif)$/i,
