@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
-import styles from './styles.module.scss';
 import RatingStar from './RatingStar';
+
+import styles from './styles.module.scss';
 
 type RatingProps = {
   rating: number;

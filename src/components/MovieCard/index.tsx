@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 
+import Movie from '@ts/Movie';
+import Rating from '@components/Rating';
+
 import styles from './styles.module.scss';
-import Movie from '../../ts/Movie';
-import Rating from '../Rating';
 
 type CardProps = {
   movie: Movie;

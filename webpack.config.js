@@ -89,7 +89,12 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
+              modules: {
+                mode: 'local',
+                auto: true,
+                localIdentName:
+                  mode === 'production' ? '[hash:base64]' : '[folder]__[local]--[hash:base64:3]',
+              },
             },
           },
           'postcss-loader',

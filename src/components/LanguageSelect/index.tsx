@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 
+import CustomSelect from '@components/CustomSelect';
+import LanguageType, * as Language from '@ts/Language';
+
 import styles from './styles.module.scss';
-import LanguageType, * as Language from '../../ts/Language';
-import CustomSelect from '../CustomSelect';
 
 type LanguageSelectProps = {
   value: LanguageType;

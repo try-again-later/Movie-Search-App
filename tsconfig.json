@@ -9,7 +9,13 @@
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "moduleResolution": "Node",
-    "module": "ESNext"
+    "module": "ESNext",
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@ts/*": ["src/ts/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["src"]
 }

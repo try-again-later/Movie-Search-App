@@ -8,6 +8,16 @@ const plugins = [
       regenerator: true,
     },
   ],
+  [
+    'module-resolver',
+    {
+      alias: {
+        '@app': './src',
+        '@components': './src/components',
+        '@ts': './src/ts',
+      },
+    },
+  ],
 ];
 if (process.env.SERVE) {
   plugins.push('react-refresh/babel');

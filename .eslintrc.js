@@ -51,11 +51,13 @@ module.exports = {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         moduleDirectory: ['node_modules', 'src/'],
       },
+      typescript: {
+        alwaysTryTypes: true,
+        '@app': './src',
+        '@components': './src/components',
+        '@ts': './src/ts',
+      },
     },
   },
-  ignorePatterns: [
-    'webpack.config.js',
-    'postcss.config.js',
-    'babel.config.js',
-  ],
+  ignorePatterns: ['webpack.config.js', 'postcss.config.js', 'babel.config.js'],
 };

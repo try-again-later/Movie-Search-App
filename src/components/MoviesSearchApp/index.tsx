@@ -1,14 +1,15 @@
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import Movie from '@ts/Movie';
+import MovieCard from '@components/MovieCard';
+import MoviesSearchForm from '@components/MoviesSearchForm';
+import LoadingAnimation from '@components/Loading';
+import LanguageSelect from '@components/LanguageSelect';
+import { queryMovies } from '@ts/MoviesSearch';
+import LanguageType, * as Language from '@ts/Language';
+
 import styles from './styles.module.scss';
-import Movie from '../../ts/Movie';
-import MovieCard from '../MovieCard';
-import MoviesSearchForm from '../MoviesSearchForm';
-import LoadingAnimation from '../Loading';
-import { queryMovies } from '../../ts/MoviesSearch';
-import LanguageType, * as Language from '../../ts/Language';
-import LanguageSelect from '../LanguageSelect';
 
 const MoviesSearchApp = () => {
   const { t, i18n } = useTranslation();
