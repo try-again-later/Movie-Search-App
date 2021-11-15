@@ -1,0 +1,17 @@
+@use "abstracts" as *;
+
+.rating {
+  grid-area: rating;
+  max-width: 12rem;
+  justify-self: center;
+
+  .text {
+    text-align: center;
+  }
+
+  @media (max-width: breakpoint("medium")) {
+    max-width: 8rem;
+    order: -2;
+    align-self: center;
+  }
+}

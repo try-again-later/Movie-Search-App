@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
+import styles from './styles.module.scss';
+
 export type MoviesSearchHandler = (searchQuery: string) => void;
 
 type FormProps = {
@@ -15,13 +17,13 @@ const MoviesSearchForm = ({ onSubmit }: FormProps) => {
   return (
     <form
       method="get"
-      className="movie-search-form"
+      className={styles['movie-search-form']}
       onSubmit={(event) => {
         event.preventDefault();
         onSubmit(searchQuery);
       }}
     >
-      <label htmlFor="title-query" className="title-input-label">
+      <label htmlFor="title-query" className={styles['title-input-label']}>
         {t('movieTitle')}
       </label>
       <input
@@ -30,7 +32,7 @@ const MoviesSearchForm = ({ onSubmit }: FormProps) => {
         onChange={(e) => setSearchQuery(e.target.value)}
         name="movie-title-query"
         id="movie-title-query"
-        className="title-input"
+        className={styles['title-input']}
         placeholder={t('searchQueryExample')}
       />
       <button type="submit">{t('search')}</button>

@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
-import LanguageType, * as Language from '../ts/Language';
-import CustomSelect from './CustomSelect';
+import styles from './styles.module.scss';
+import LanguageType, * as Language from '../../ts/Language';
+import CustomSelect from '../CustomSelect';
 
 type LanguageSelectProps = {
   value: LanguageType;
@@ -13,23 +14,25 @@ const LanguageSelect = ({ value, onChange, languages = [] }: LanguageSelectProps
   const { t } = useTranslation('translation', { keyPrefix: 'LanguageSelect' });
 
   return (
-    <div className="language-select">
+    <div className={styles['language-select']}>
       <CustomSelect
         label={t('chooseYourLanguage')}
         value={Language.toString(value)}
         onChange={(newValue) => onChange(Language.fromString(newValue))}
         options={
           new Map(
-            languages.map((langauge) => [
-              Language.toString(langauge),
-              Language.toHumanString(langauge),
+            languages.map((language) => [
+              Language.toString(language),
+              Language.toHumanString(language),
             ]),
           )
         }
         OptionContent={({ text, value }) => (
           <>
             <span
-              className={`flag-icon-background flag-icon-${Language.toIsoCountryCode(
+              className={`${
+                styles['flag-icon-background']
+              } flag-icon-background flag-icon-${Language.toIsoCountryCode(
                 Language.fromString(value),
               )}`}
             />
@@ -39,7 +42,9 @@ const LanguageSelect = ({ value, onChange, languages = [] }: LanguageSelectProps
         SelectedContent={({ value }) => (
           <>
             <span
-              className={`flag-icon-background flag-icon-${Language.toIsoCountryCode(
+              className={`${
+                styles['flag-icon-background']
+              } flag-icon-background flag-icon-${Language.toIsoCountryCode(
                 Language.fromString(value),
               )}`}
             />

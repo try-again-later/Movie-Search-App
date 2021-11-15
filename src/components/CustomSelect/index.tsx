@@ -1,6 +1,8 @@
 import uniqueId from 'lodash/uniqueId';
 import { useCallback, useRef, ChangeEvent, useState, useEffect, MutableRefObject } from 'react';
 
+import styles from './styles.module.scss';
+
 /* eslint-disable react/no-unused-prop-types */
 type OptionProps = {
   value: string;
@@ -77,14 +79,10 @@ const CustomSelect = ({
 
   return (
     <>
-      {label.length > 0 && (
-        <span className="label" id={labelId.current}>
-          {label}
-        </span>
-      )}
-      <div className="custom-select-wrapper" ref={wrapperRef}>
+      {label.length > 0 && <span id={labelId.current}>{label}</span>}
+      <div className={styles['custom-select-wrapper']} ref={wrapperRef}>
         <select
-          className="native-select"
+          className={styles['native-select']}
           aria-labelledby={labelId.current}
           value={value}
           onChange={onNativeSelectChange}
@@ -95,21 +93,21 @@ const CustomSelect = ({
             </option>
           ))}
         </select>
-        <div className={`custom-select ${className}`} aria-hidden="true">
+        <div className={`${styles['custom-select']} ${className}`} aria-hidden="true">
           <button
             type="button"
-            className="selected-option"
+            className={styles['selected-option']}
             tabIndex={-1}
             onClick={onCustomSelectClick}
           >
             <SelectedContent value={value} text={options.get(value) ?? ''} />
           </button>
-          <div className={`options ${expanded && 'visible'}`}>
+          <div className={`${styles.options} ${expanded ? styles.visible : ''}`}>
             {/* eslint-disable jsx-a11y/click-events-have-key-events */}
             {[...options.entries()].map(([value, text]) => (
               <button
                 type="button"
-                className="option"
+                className={styles.option}
                 data-value={value}
                 key={value}
                 onClick={() => onCustomOptionClick(value)}

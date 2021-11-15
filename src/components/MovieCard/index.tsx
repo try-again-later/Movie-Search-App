@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
-import Movie from '../ts/Movie';
-import Rating from './Rating';
+import styles from './styles.module.scss';
+import Movie from '../../ts/Movie';
+import Rating from '../Rating';
 
 type CardProps = {
   movie: Movie;
@@ -12,37 +13,37 @@ const MovieCard = ({ movie }: CardProps) => {
 
   return (
     <div
-      className="movie-card"
+      className={styles['movie-card']}
       style={{ backgroundImage: movie.backdropUrl && `url("${movie.backdropUrl.toString()}")` }}
     >
-      <div className="content">
+      <div className={styles.content}>
         {!!movie.posterUrl && (
-          <img className="poster" src={movie.posterUrl.toString()} alt={movie.title} />
+          <img className={styles.poster} src={movie.posterUrl.toString()} alt={movie.title} />
         )}
-        <div className="meta">
-          <h2 className="title">{movie.title}</h2>
-          <div className="director">
+        <div className={styles.meta}>
+          <h2 className={styles.title}>{movie.title}</h2>
+          <div className={styles.director}>
             {movie?.releaseDate?.getFullYear()}
             {!!movie.releaseDate && !!movie.director && ', '}
             {movie?.director}
           </div>
-          <div className="other-information">
+          <div className={styles['other-information']}>
             {!!movie.runtime && (
-              <div className="length">
+              <div className={styles.length}>
                 {movie.runtime}
                 &nbsp;
                 {t('minutes')}
               </div>
             )}
             {movie.genres.map((genre) => (
-              <div className="genre" key={genre}>
+              <div className={styles.genre} key={genre}>
                 {genre}
               </div>
             ))}
           </div>
         </div>
         {!!movie.rating && <Rating rating={movie.rating} />}
-        <div className="overview">{movie.overview}</div>
+        <div className={styles.overview}>{movie.overview}</div>
       </div>
     </div>
   );

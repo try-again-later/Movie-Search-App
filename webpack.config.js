@@ -84,18 +84,25 @@ module.exports = {
       },
       {
         test: /\.(css|scss|sass)$/i,
-        exclude: /node_modules/i,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
           'postcss-loader',
           'resolve-url-loader',
           {
             loader: 'sass-loader',
             options: {
               sourceMap: true,
-            }
-          }
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, 'src/scss')],
+              },
+            },
+          },
         ],
         sideEffects: true,
       },

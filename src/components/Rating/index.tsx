@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+import styles from './styles.module.scss';
 import RatingStar from './RatingStar';
 
 type RatingProps = {
@@ -10,14 +11,14 @@ const Rating = ({ rating }: RatingProps) => {
   const { t } = useTranslation('translation', { keyPrefix: 'Rating' });
 
   return (
-    <div className="rating">
-      <div className="stars">
+    <div className={styles.rating}>
+      <div>
         {[...Array(5).keys()].map((i) => {
           const fraction = Math.min(Math.max(rating / 2 - i, 0), 1);
           return <RatingStar key={i} fraction={fraction} />;
         })}
       </div>
-      <div className="text">
+      <div className={styles.text}>
         {t('rating')}
         &nbsp;
         {rating}

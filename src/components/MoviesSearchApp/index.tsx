@@ -1,13 +1,14 @@
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Movie from '../ts/Movie';
-import MovieCard from './MovieCard';
-import MoviesSearchForm from './MoviesSearchForm';
-import LoadingAnimation from './LoadingAnimation';
-import { queryMovies } from '../ts/MoviesSearch';
-import LanguageType, * as Language from '../ts/Language';
-import LanguageSelect from './LanguageSelect';
+import styles from './styles.module.scss';
+import Movie from '../../ts/Movie';
+import MovieCard from '../MovieCard';
+import MoviesSearchForm from '../MoviesSearchForm';
+import LoadingAnimation from '../Loading';
+import { queryMovies } from '../../ts/MoviesSearch';
+import LanguageType, * as Language from '../../ts/Language';
+import LanguageSelect from '../LanguageSelect';
 
 const MoviesSearchApp = () => {
   const { t, i18n } = useTranslation();
@@ -63,7 +64,7 @@ const MoviesSearchApp = () => {
   }, [language]);
 
   const moviesList = (
-    <ul className="queried-movies-list">
+    <ul className={styles['queried-movies-list']}>
       {queriedMovies.map((movie) => (
         <li key={movie.id}>
           <MovieCard movie={movie} />
@@ -75,7 +76,7 @@ const MoviesSearchApp = () => {
   return (
     <Suspense fallback="Loading...">
       <h1>{t('title')}</h1>
-      <div className="search-movies">
+      <div className={styles['search-movies']}>
         <LanguageSelect
           value={language}
           onChange={handleLanguageChange}

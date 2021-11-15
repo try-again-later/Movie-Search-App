@@ -1,9 +1,7 @@
 @use "./base";
 @use "./utils";
 @use "./layout";
-@use "./pages";
-@use "./components";
 
 $include: ("us", "ru");
 
-@import "~flag-icon-css/sass/flag-icons";
+@use "flag-icon-css/sass/flag-icons";

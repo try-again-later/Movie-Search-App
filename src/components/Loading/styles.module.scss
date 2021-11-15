@@ -1,4 +1,4 @@
-@use "../abstracts" as *;
+@use "abstracts" as *;
 
 .bouncing-loading {
   $default-ball-size: var(--margin-200);

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
 import MoviesSearchApp from './MoviesSearchApp';
-import LoadingAnimation from './LoadingAnimation';
+import LoadingAnimation from './Loading';
 
 const App = () => (
   <Suspense fallback={<LoadingAnimation loadingText="Loading translations" />}>
