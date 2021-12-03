@@ -2,21 +2,74 @@
 
 .search-movies {
   display: grid;
+  justify-items: center;
+}
+
+.interface-container {
+  display: grid;
   gap: var(--margin-200);
+  max-width: 60rem;
+  margin-bottom: var(--margin-900);
+  width: 100%;
+  grid-template-areas:
+    "choose-language change-color-theme .          .            "
+    "search-bar      search-bar         search-bar submit-button"
+    "label           .                  .          .            ";
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+
+  @media (max-width: breakpoint("medium")) {
+    max-width: unset;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "choose-language    choose-language   "
+      "change-color-theme change-color-theme"
+      "search-bar         search-bar        "
+      "label              submit-button     ";
+  }
+}
+
+.choose-language-select {
+  grid-area: choose-language;
+}
+
+.change-color-theme {
+  grid-area: change-color-theme;
 }
 
 .queried-movies-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  align-items: flex-start;
-  gap: var(--margin-900);
+  @media (min-width: 40rem) and (max-width: 52.5rem) {
+    display: unset;
+    columns: 2;
 
-  @media (min-width: breakpoint("medium")) {
-    grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
-    gap: calc(1.5 * var(--margin-900));
+    li + li {
+      margin-top: var(--margin-400);
+    }
   }
 
-  @media (max-width: 25rem) {
+  @media (min-width: 87.5rem) {
+    display: unset;
+    columns: 2;
+
+    li + li {
+      margin-top: var(--margin-900);
+    }
+  }
+
+  @media (min-width: 52.5rem) and (max-width: 87.5rem) {
+    display: unset;
+    columns: 1;
+
+    li + li {
+      margin-top: var(--margin-900);
+    }
+  }
+
+  @media (max-width: 40rem) {
+    columns: unset;
+    display: grid;
+    align-items: flex-start;
+    gap: var(--margin-900);
     grid-template-columns: 1fr;
   }
 }

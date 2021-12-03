@@ -1,17 +1,19 @@
 @use "abstracts" as *;
 
 .movie-search-form {
-  display: grid;
-  gap: var(--margin-200);
-  grid-template-areas:
-    "search-bar search-bar   "
-    "label      submit-button";
+  display: contents;
+
+  // display: grid;
+  // gap: var(--margin-200);
+  // grid-template-areas:
+  //   "search-bar search-bar   "
+  //   "label      submit-button";
 
   @media (min-width: breakpoint("medium")) {
-    grid-template-areas:
-      "search-bar submit-button"
-      "label      .            ";
-    grid-template-columns: 1fr minmax(8em, auto);
+    // grid-template-areas:
+    //   "search-bar submit-button"
+    //   "label      .            ";
+    // grid-template-columns: 1fr minmax(8em, auto);
   }
 
   .title-input-label {
@@ -32,6 +34,7 @@
 
   button[type="submit"] {
     grid-area: submit-button;
+    align-self: stretch;
     padding: 0.5em 1em;
     background-color: var(--color-neutral-900);
     border-radius: 0.5em;

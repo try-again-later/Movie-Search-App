@@ -9,13 +9,14 @@ type LanguageSelectProps = {
   value: LanguageType;
   onChange: (newLanguage: LanguageType) => void;
   languages: LanguageType[];
+  className?: string;
 };
 
-const LanguageSelect = ({ value, onChange, languages = [] }: LanguageSelectProps) => {
+const LanguageSelect = ({ value, onChange, languages = [], className }: LanguageSelectProps) => {
   const { t } = useTranslation('translation', { keyPrefix: 'LanguageSelect' });
 
   return (
-    <div className={styles['language-select']}>
+    <div className={`${styles['language-select']} ${className ?? ''}`}>
       <CustomSelect
         label={t('chooseYourLanguage')}
         value={Language.toString(value)}

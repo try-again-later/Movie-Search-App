@@ -33,9 +33,12 @@ const MoviesSearchApp = () => {
 
   const [darkModeEnabled, setDarkMode] = useLocalStorage('darkMode', false);
 
-  const handleColorThemeChange = useCallback((darkModeEnabled) => {
-    setDarkMode(darkModeEnabled);
-  }, [setDarkMode]);
+  const handleColorThemeChange = useCallback(
+    (darkModeEnabled) => {
+      setDarkMode(darkModeEnabled);
+    },
+    [setDarkMode],
+  );
 
   useEffect(() => {
     if (darkModeEnabled) {
@@ -96,16 +99,20 @@ const MoviesSearchApp = () => {
     <Suspense fallback="Loading...">
       <h1>{t('title')}</h1>
       <div className={styles['search-movies']}>
-        <LanguageSelect
-          value={language}
-          onChange={handleLanguageChange}
-          languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
-        />
-        <ColorThemeSwitch
-          darkModeEnabled={darkModeEnabled ?? false}
-          onThemeChange={handleColorThemeChange}
-        />
-        <MoviesSearchForm onSubmit={onSearchFormSubmit} />
+        <div className={styles['interface-container']}>
+          <LanguageSelect
+            value={language}
+            onChange={handleLanguageChange}
+            languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
+            className={styles['choose-language-select']}
+          />
+          <ColorThemeSwitch
+            darkModeEnabled={darkModeEnabled ?? false}
+            onThemeChange={handleColorThemeChange}
+            className={styles['change-color-theme']}
+          />
+          <MoviesSearchForm onSubmit={onSearchFormSubmit} />
+        </div>
         {loadingMovies ? <LoadingAnimation loadingText="Загрузка" /> : moviesList}
       </div>
     </Suspense>

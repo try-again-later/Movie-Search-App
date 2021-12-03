@@ -9,6 +9,7 @@
   background-repeat: no-repeat;
   background-position: center;
   font-size: var(--font-size-500);
+  break-inside: avoid;
 
   .content {
     display: grid;

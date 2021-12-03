@@ -7,9 +7,10 @@ import styles from './styles.module.scss';
 interface ThemeSwitchMode {
   darkModeEnabled: boolean;
   onThemeChange: (enableDarkMode: boolean) => void;
+  className?: string;
 }
 
-const ColorThemeSwitch = ({ darkModeEnabled, onThemeChange }: ThemeSwitchMode) => {
+const ColorThemeSwitch = ({ darkModeEnabled, onThemeChange, className }: ThemeSwitchMode) => {
   const { t } = useTranslation('translation', { keyPrefix: 'ColorThemeSwitch' });
 
   const labelId = useRef(uniqueId('color-theme-switch-'));
@@ -22,7 +23,7 @@ const ColorThemeSwitch = ({ darkModeEnabled, onThemeChange }: ThemeSwitchMode) =
   );
 
   return (
-    <>
+    <div className={`${className}`}>
       <input
         className={styles['dark-mode-checkbox']}
         type="checkbox"
@@ -33,7 +34,7 @@ const ColorThemeSwitch = ({ darkModeEnabled, onThemeChange }: ThemeSwitchMode) =
       <label className={styles.label} htmlFor={labelId.current}>
         {darkModeEnabled ? t('switchToLightMode') : t('switchToDarkMode')}
       </label>
-    </>
+    </div>
   );
 };
 
