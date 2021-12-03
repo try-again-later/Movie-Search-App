@@ -21,6 +21,14 @@ body {
   color: var(--color-neutral-900);
 }
 
+body[data-theme="dark"] {
+  @each $color-type, $color-weights in $dark-theme-colors {
+    @each $color-weight, $color-value in $color-weights {
+      #{--color-#{$color-type}-#{$color-weight}}: #{$color-value};
+    }
+  }
+}
+
 p {
   font-size: 1rem;
 }

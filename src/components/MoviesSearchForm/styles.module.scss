@@ -25,6 +25,8 @@
     padding: 0.5em 1em;
     border-radius: 0.5em;
     border: 2px solid var(--color-neutral-300);
+    background-color: var(--color-neutral-100);
+    color: var(--color-neutral-900);
     font-size: var(--font-size-700);
   }
 
@@ -50,8 +52,10 @@
       width: 1em;
       height: 1em;
       margin-left: 0.5rem;
-      background: url("./icons/search.svg") center no-repeat;
-      background-size: contain;
+      background: var(--color-neutral-200);
+      mask-image: url("./icons/search.svg");
+      mask-position: center;
+      mask-size: contain;
       vertical-align: top;
     }
 

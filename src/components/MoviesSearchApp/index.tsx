@@ -14,27 +14,37 @@ import styles from './styles.module.scss';
 
 const MoviesSearchApp = () => {
   const { t, i18n } = useTranslation();
+
   const [language, setLanguage] = useState(
     i18n.language ? Language.fromString(i18n.language) : Language.DEFAULT,
   );
+
+  const [darkModeEnabled, setDarkMode] = useState(false);
+  const [queriedMovies, setQueriedMovies] = useState<Movie[]>([]);
+  const [lastQuery, setLastQuery] = useState('');
+  const [loadingMovies, setLoadingMovies] = useState(false);
+
+  const API_KEY = '2ab87dbd3a5185ee9af24363729e47a9';
+
   useEffect(() => {
     i18n.changeLanguage(Language.toString(language));
   }, [i18n, language]);
+
   const handleLanguageChange = useCallback(
     (newLanguage) => {
-      console.log(Language.toString(newLanguage));
       setLanguage(newLanguage);
     },
     [setLanguage],
   );
 
-  const [darkModeEnabled, setDarkMode] = useState(false);
-
-  const [queriedMovies, setQueriedMovies] = useState<Movie[]>([]);
-  const [lastQuery, setLastQuery] = useState('');
-  const [loadingMovies, setLoadingMovies] = useState(false);
-
-  const apiKey = '2ab87dbd3a5185ee9af24363729e47a9';
+  const handleColorThemeChange = useCallback((darkModeEnabled) => {
+    setDarkMode(darkModeEnabled);
+    if (darkModeEnabled) {
+      document.body.dataset.theme = 'dark';
+    } else {
+      delete document.body.dataset.theme;
+    }
+  }, []);
 
   const onSearchFormSubmit = useCallback(
     async (searchQuery: string) => {
@@ -43,7 +53,7 @@ const MoviesSearchApp = () => {
 
       await queryMovies({
         queryString: searchQuery,
-        apiKey,
+        apiKey: API_KEY,
         language,
       })
         .then((newMovies) => {
@@ -55,7 +65,7 @@ const MoviesSearchApp = () => {
           setLoadingMovies(false);
         });
     },
-    [language, setQueriedMovies, setLastQuery, setLoadingMovies],
+    [language, setLastQuery],
   );
 
   useEffect(() => {
@@ -65,7 +75,7 @@ const MoviesSearchApp = () => {
 
     setQueriedMovies([]);
     onSearchFormSubmit(lastQuery);
-  }, [language, lastQuery, onSearchFormSubmit, queriedMovies.length]);
+  }, [language]);
 
   const moviesList = (
     <ul className={styles['queried-movies-list']}>
@@ -86,7 +96,10 @@ const MoviesSearchApp = () => {
           onChange={handleLanguageChange}
           languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
         />
-        <ColorThemeSwitch darkModeEnabled={darkModeEnabled} onThemeChange={setDarkMode} />
+        <ColorThemeSwitch
+          darkModeEnabled={darkModeEnabled}
+          onThemeChange={handleColorThemeChange}
+        />
         <MoviesSearchForm onSubmit={onSearchFormSubmit} />
         {loadingMovies ? <LoadingAnimation loadingText="Загрузка" /> : moviesList}
       </div>

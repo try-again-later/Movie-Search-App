@@ -11,6 +11,19 @@ $colors: (
     "400": hsl(342deg 100% 50%),
   ),
 );
+$dark-theme-colors: (
+  "neutral": (
+    "100": black,
+    "200": #222,
+    "300": #444,
+    "700": #ccc,
+    "900": #eee,
+  ),
+  "primary": (
+    "200": hsl(342deg 40% 40%),
+    "400": hsl(342deg 0% 50%),
+  ),
+);
 
 @function color($type, $weight) {
   @return map-get(map-get($colors, $type), $weight);
