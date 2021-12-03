@@ -13,6 +13,19 @@ import useLocalStorage from '@app/hooks/useLocalStorage';
 
 import styles from './styles.module.scss';
 
+const filterMoviesByIndex = (movies: Movie[], filter: (index: number) => boolean) => (
+  movies.map((movie, index) => {
+    if (filter(index)) {
+      return (
+        <div key={movie.id}>
+          <MovieCard movie={movie} />
+        </div>
+      );
+    }
+    return null;
+  })
+);
+
 const MoviesSearchApp = () => {
   const { t, i18n } = useTranslation();
 
@@ -85,39 +98,12 @@ const MoviesSearchApp = () => {
     onSearchFormSubmit(lastQuery);
   }, [language]);
 
-  const leftMoviesColumn = (
-    <>
-      {queriedMovies.map((movie, index) => {
-        if (index % 2 == 0) {
-          return (
-            <div key={movie.id}>
-              <MovieCard movie={movie} />
-            </div>
-          );
-        }
-        return null;
-      })}
-    </>
-  );
-
-  const rightMoviesColumn = (
-    <>
-      {queriedMovies.map((movie, index) => {
-        if (index % 2 != 0) {
-          return (
-            <div key={movie.id}>
-              <MovieCard movie={movie} />
-            </div>
-          );
-        }
-        return null;
-      })}
-    </>
-  );
+  const leftMoviesColumn = filterMoviesByIndex(queriedMovies, (i) => i % 2 == 0);
+  const rightMoviesColumn = filterMoviesByIndex(queriedMovies, (i) => i % 2 != 0);
 
   let moviesPage;
   if (loadingMovies) {
-    moviesPage = <LoadingAnimation loadingText="Загрузка" />;
+    moviesPage = <LoadingAnimation loadingText={t('loading')} />;
   } else {
     moviesPage = (
       <div className={styles['movies-page']}>

@@ -15,6 +15,7 @@
     border-radius: 0.5em;
     font-size: var(--font-size-500);
     cursor: pointer;
+    transition: background-color 0.2s;
 
     &::after {
       content: "";
@@ -29,6 +30,10 @@
       mask-repeat: no-repeat;
       mask-size: contain;
       vertical-align: middle;
+    }
+
+    &:hover {
+      background-color: var(--color-neutral-200);
     }
   }
 
@@ -59,6 +64,7 @@
       background-color: transparent;
       border: none;
       width: 100%;
+      transition: background-color 0.2s;
 
       &:hover {
         background-color: var(--color-neutral-200);
@@ -129,6 +135,11 @@
     font-size: var(--font-size-500);
     opacity: 100%;
     pointer-events: all;
+    border: 2px solid var(--color-neutral-300);
+    border-radius: 0.5em;
+    background-color: var(--color-neutral-100);
+    color: var(--color-neutral-900);
+    padding: 0.25em 0.5em;
 
     &:focus {
       opacity: 100%;
