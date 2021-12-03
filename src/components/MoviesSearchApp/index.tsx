@@ -9,6 +9,7 @@ import LanguageSelect from '@components/LanguageSelect';
 import ColorThemeSwitch from '@components/ColorThemeSwitch';
 import { queryMovies } from '@ts/MoviesSearch';
 import LanguageType, * as Language from '@ts/Language';
+import useLocalStorage from '@app/hooks/useLocalStorage';
 
 import styles from './styles.module.scss';
 
@@ -18,13 +19,6 @@ const MoviesSearchApp = () => {
   const [language, setLanguage] = useState(
     i18n.language ? Language.fromString(i18n.language) : Language.DEFAULT,
   );
-
-  const [darkModeEnabled, setDarkMode] = useState(false);
-  const [queriedMovies, setQueriedMovies] = useState<Movie[]>([]);
-  const [lastQuery, setLastQuery] = useState('');
-  const [loadingMovies, setLoadingMovies] = useState(false);
-
-  const API_KEY = '2ab87dbd3a5185ee9af24363729e47a9';
 
   useEffect(() => {
     i18n.changeLanguage(Language.toString(language));
@@ -37,14 +31,25 @@ const MoviesSearchApp = () => {
     [setLanguage],
   );
 
+  const [darkModeEnabled, setDarkMode] = useLocalStorage('darkMode', false);
+
   const handleColorThemeChange = useCallback((darkModeEnabled) => {
     setDarkMode(darkModeEnabled);
+  }, [setDarkMode]);
+
+  useEffect(() => {
     if (darkModeEnabled) {
       document.body.dataset.theme = 'dark';
     } else {
       delete document.body.dataset.theme;
     }
-  }, []);
+  }, [darkModeEnabled]);
+
+  const [queriedMovies, setQueriedMovies] = useState<Movie[]>([]);
+  const [lastQuery, setLastQuery] = useState('');
+  const [loadingMovies, setLoadingMovies] = useState(false);
+
+  const API_KEY = '2ab87dbd3a5185ee9af24363729e47a9';
 
   const onSearchFormSubmit = useCallback(
     async (searchQuery: string) => {
@@ -97,7 +102,7 @@ const MoviesSearchApp = () => {
           languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
         />
         <ColorThemeSwitch
-          darkModeEnabled={darkModeEnabled}
+          darkModeEnabled={darkModeEnabled ?? false}
           onThemeChange={handleColorThemeChange}
         />
         <MoviesSearchForm onSubmit={onSearchFormSubmit} />

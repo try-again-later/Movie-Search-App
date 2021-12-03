@@ -7,10 +7,16 @@
 
 .queried-movies-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  align-items: flex-start;
   gap: var(--margin-900);
 
   @media (min-width: breakpoint("medium")) {
     grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+    gap: calc(1.5 * var(--margin-900));
+  }
+
+  @media (max-width: 25rem) {
+    grid-template-columns: 1fr;
   }
 }

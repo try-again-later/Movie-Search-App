@@ -15,6 +15,7 @@ const plugins = [
         '@app': './src',
         '@components': './src/components',
         '@ts': './src/ts',
+        '@hooks': "./src/hooks",
       },
     },
   ],

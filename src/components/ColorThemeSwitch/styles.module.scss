@@ -1,19 +1,20 @@
 @use "abstracts" as *;
 
-$default-track-width: 2.375rem;
+$default-track-width: 2.75rem;
 $default-track-height: 1.25rem;
 $default-thumb-size: 1.5rem;
 
 .label {
+  display: inline-block;
+  width: auto;
   position: relative;
-  height: max(var(--thumb-size, $default-thumb-size), var(--track-height, $default-track-height));
+  min-height: max(var(--thumb-size, $default-thumb-size), var(--track-height, $default-track-height));
   padding-left: calc(var(--track-width, $default-track-width) + var(--margin-200));
 
   // the horizontal track
   &::after {
     content: "";
     cursor: pointer;
-    display: inline-block;
     position: absolute;
     left: 0;
     top: 50%;
@@ -30,7 +31,6 @@ $default-thumb-size: 1.5rem;
   &::before {
     content: "";
     cursor: pointer;
-    display: inline-block;
     position: absolute;
     top: 50%;
     left: 0;
@@ -38,7 +38,7 @@ $default-thumb-size: 1.5rem;
     width: var(--thumb-size, $default-thumb-size);
     height: var(--thumb-size, $default-thumb-size);
     border-radius: 50%;
-    background-color: var(--color-neutral-700);
+    background-color: var(--color-neutral-900);
     z-index: 1;
     box-shadow: 0 1px 4px 0 rgba(0 0 0 / 20%);
     transition: transform 0.25s;
@@ -46,7 +46,11 @@ $default-thumb-size: 1.5rem;
 }
 
 .dark-mode-checkbox {
-  display: none;
+  appearance: none;
+
+  &:focus + .label::after {
+    outline: 2px solid var(--color-neutral-900);
+  }
 
   &:checked + .label::before {
     transform:
@@ -57,6 +61,6 @@ $default-thumb-size: 1.5rem;
   }
 
   &:checked + .label::after {
-    background-color: var(--color-neutral-300);
+    background-color: var(--color-neutral-100);
   }
 }

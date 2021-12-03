@@ -14,7 +14,8 @@
     "paths": {
       "@app/*": ["src/*"],
       "@components/*": ["src/components/*"],
-      "@ts/*": ["src/ts/*"]
+      "@ts/*": ["src/ts/*"],
+      "@hooks/*": ["src/hooks/*"],
     }
   },
   "include": ["src"]
