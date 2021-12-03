@@ -85,15 +85,47 @@ const MoviesSearchApp = () => {
     onSearchFormSubmit(lastQuery);
   }, [language]);
 
-  const moviesList = (
-    <ul className={styles['queried-movies-list']}>
-      {queriedMovies.map((movie) => (
-        <li key={movie.id}>
-          <MovieCard movie={movie} />
-        </li>
-      ))}
-    </ul>
+  const leftMoviesColumn = (
+    <>
+      {queriedMovies.map((movie, index) => {
+        if (index % 2 == 0) {
+          return (
+            <div key={movie.id}>
+              <MovieCard movie={movie} />
+            </div>
+          );
+        }
+        return null;
+      })}
+    </>
   );
+
+  const rightMoviesColumn = (
+    <>
+      {queriedMovies.map((movie, index) => {
+        if (index % 2 != 0) {
+          return (
+            <div key={movie.id}>
+              <MovieCard movie={movie} />
+            </div>
+          );
+        }
+        return null;
+      })}
+    </>
+  );
+
+  let moviesPage;
+  if (loadingMovies) {
+    moviesPage = <LoadingAnimation loadingText="Загрузка" />;
+  } else {
+    moviesPage = (
+      <div className={styles['movies-page']}>
+        <div className={styles['movies-column']}>{leftMoviesColumn}</div>
+        <div className={styles['movies-column']}>{rightMoviesColumn}</div>
+      </div>
+    );
+  }
 
   return (
     <Suspense fallback="Loading...">
@@ -113,7 +145,7 @@ const MoviesSearchApp = () => {
           />
           <MoviesSearchForm onSubmit={onSearchFormSubmit} />
         </div>
-        {loadingMovies ? <LoadingAnimation loadingText="Загрузка" /> : moviesList}
+        {moviesPage}
       </div>
     </Suspense>
   );
