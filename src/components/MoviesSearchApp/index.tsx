@@ -6,6 +6,7 @@ import MovieCard from '@components/MovieCard';
 import MoviesSearchForm from '@components/MoviesSearchForm';
 import LoadingAnimation from '@components/Loading';
 import LanguageSelect from '@components/LanguageSelect';
+import ColorThemeSwitch from '@components/ColorThemeSwitch';
 import { queryMovies } from '@ts/MoviesSearch';
 import LanguageType, * as Language from '@ts/Language';
 
@@ -18,7 +19,7 @@ const MoviesSearchApp = () => {
   );
   useEffect(() => {
     i18n.changeLanguage(Language.toString(language));
-  }, [language]);
+  }, [i18n, language]);
   const handleLanguageChange = useCallback(
     (newLanguage) => {
       console.log(Language.toString(newLanguage));
@@ -26,6 +27,8 @@ const MoviesSearchApp = () => {
     },
     [setLanguage],
   );
+
+  const [darkModeEnabled, setDarkMode] = useState(false);
 
   const [queriedMovies, setQueriedMovies] = useState<Movie[]>([]);
   const [lastQuery, setLastQuery] = useState('');
@@ -62,7 +65,7 @@ const MoviesSearchApp = () => {
 
     setQueriedMovies([]);
     onSearchFormSubmit(lastQuery);
-  }, [language]);
+  }, [language, lastQuery, onSearchFormSubmit, queriedMovies.length]);
 
   const moviesList = (
     <ul className={styles['queried-movies-list']}>
@@ -83,6 +86,7 @@ const MoviesSearchApp = () => {
           onChange={handleLanguageChange}
           languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
         />
+        <ColorThemeSwitch darkModeEnabled={darkModeEnabled} onThemeChange={setDarkMode} />
         <MoviesSearchForm onSubmit={onSearchFormSubmit} />
         {loadingMovies ? <LoadingAnimation loadingText="Загрузка" /> : moviesList}
       </div>

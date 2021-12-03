@@ -79,7 +79,6 @@ const CustomSelect = ({
 
   return (
     <>
-      {label.length > 0 && <span id={labelId.current}>{label}</span>}
       <div className={styles['custom-select-wrapper']} ref={wrapperRef}>
         <select
           className={styles['native-select']}
@@ -119,6 +118,7 @@ const CustomSelect = ({
           </div>
         </div>
       </div>
+      {label.length > 0 && <span id={labelId.current}>{label}</span>}
     </>
   );
 };

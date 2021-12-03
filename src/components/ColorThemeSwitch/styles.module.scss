@@ -1,0 +1,62 @@
+@use "abstracts" as *;
+
+$default-track-width: 2.375rem;
+$default-track-height: 1.25rem;
+$default-thumb-size: 1.5rem;
+
+.label {
+  position: relative;
+  height: max(var(--thumb-size, $default-thumb-size), var(--track-height, $default-track-height));
+  padding-left: calc(var(--track-width, $default-track-width) + var(--margin-200));
+
+  // the horizontal track
+  &::after {
+    content: "";
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0.15rem solid var(--color-neutral-300);
+    width: var(--track-width, $default-track-width);
+    height: var(--track-height, $default-track-height);
+    border-radius: 1rem;
+    background-color: var(--color-neutral-100);
+    transition: background-color 0.25s;
+  }
+
+  // the circle on the track
+  &::before {
+    content: "";
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: var(--thumb-size, $default-thumb-size);
+    height: var(--thumb-size, $default-thumb-size);
+    border-radius: 50%;
+    background-color: var(--color-neutral-700);
+    z-index: 1;
+    box-shadow: 0 1px 4px 0 rgba(0 0 0 / 20%);
+    transition: transform 0.25s;
+  }
+}
+
+.dark-mode-checkbox {
+  display: none;
+
+  &:checked + .label::before {
+    transform:
+      translateY(-50%)
+      translateX(
+        calc(var(--track-width, $default-track-width) - var(--thumb-size, $default-thumb-size))
+      );
+  }
+
+  &:checked + .label::after {
+    background-color: var(--color-neutral-300);
+  }
+}
