@@ -1,7 +1,6 @@
-import { Suspense, useCallback, useEffect, useState } from 'react';
+import { createRef, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Movie from '@ts/Movie';
 import MovieCard from '@components/MovieCard';
 import MoviesSearchForm from '@components/MoviesSearchForm';
 import LoadingAnimation from '@components/Loading';
@@ -13,19 +12,6 @@ import useQueryMovies from '@hooks/useQueryMovies';
 import MoviesSearchContext from './MoviesSearchContext';
 
 import styles from './styles.module.scss';
-
-const filterMoviesByIndex = (movies: Movie[], filter: (index: number) => boolean) => (
-  movies.map((movie, index) => {
-    if (filter(index)) {
-      return (
-        <div key={movie.id}>
-          <MovieCard movie={movie} />
-        </div>
-      );
-    }
-    return null;
-  })
-);
 
 const MoviesSearchApp = () => {
   const { t, i18n } = useTranslation();
@@ -69,10 +55,52 @@ const MoviesSearchApp = () => {
     setQueryString(newQueryString);
   }, []);
 
-  const [queriedMovies, loadingMovies] = useQueryMovies({ queryString, language, apiKey: API_KEY });
+  const observerCallback = useCallback<IntersectionObserverCallback>((entries, observer) => {
+    console.log(entries);
+  }, []);
 
-  const leftMoviesColumn = filterMoviesByIndex(queriedMovies, (i) => i % 2 == 0);
-  const rightMoviesColumn = filterMoviesByIndex(queriedMovies, (i) => i % 2 != 0);
+  const [observer, setObserver] = useState(() => new IntersectionObserver(observerCallback));
+
+  const [lastCard, setLastCard] = useState<HTMLDivElement | null>(null);
+
+  const lastCardMounted = useCallback((lastCardElement) => {
+    setLastCard((prevCard) => {
+      if (prevCard == lastCardElement) {
+        return prevCard;
+      }
+      if (prevCard != null) {
+        observer.unobserve(prevCard);
+      }
+      return lastCardElement;
+    });
+  }, []);
+
+  useEffect(() => {
+    const prevObserver = observer;
+    setObserver(new IntersectionObserver(observerCallback));
+
+    return () => prevObserver.disconnect();
+  }, [observerCallback]);
+
+  useEffect(() => {
+    if (lastCard == null) {
+      return;
+    }
+
+    observer.observe(lastCard);
+  }, [lastCard, observer]);
+
+  const [queriedMovies, loadingMovies] = useQueryMovies({ queryString, language, apiKey: API_KEY });
+  const movieCards = queriedMovies.map((movie, index, array) =>
+    index == array.length - 1 ? (
+      <MovieCard key={movie.id} movie={movie} ref={lastCardMounted} />
+    ) : (
+      <MovieCard key={movie.id} movie={movie} />
+    ),
+  );
+
+  const leftMoviesColumn = movieCards.filter((_, i) => i % 2 == 0);
+  const rightMoviesColumn = movieCards.filter((_, i) => i % 2 != 0);
 
   let moviesPage;
   if (loadingMovies) {
@@ -87,29 +115,30 @@ const MoviesSearchApp = () => {
   }
 
   return (
-    <Suspense fallback="Loading...">
-      <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
-        <h1>{t('title')}</h1>
-        <div className={styles['search-movies']}>
-          <div className={styles['interface-container']}>
-            <LanguageSelect
-              value={language}
-              onChange={handleLanguageChange}
-              languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
-              className={styles['choose-language-select']}
-            />
-            <ColorThemeSwitch
-              darkModeEnabled={darkModeEnabled ?? false}
-              onThemeChange={handleColorThemeChange}
-              className={styles['change-color-theme']}
-            />
-            <MoviesSearchForm onSubmit={onSearchFormSubmit} />
-          </div>
-          {moviesPage}
+    <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
+      <h1>{t('title')}</h1>
+      <div className={styles['search-movies']}>
+        <div className={styles['interface-container']}>
+          <LanguageSelect
+            value={language}
+            onChange={handleLanguageChange}
+            languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
+            className={styles['choose-language-select']}
+          />
+          <ColorThemeSwitch
+            darkModeEnabled={darkModeEnabled ?? false}
+            onThemeChange={handleColorThemeChange}
+            className={styles['change-color-theme']}
+          />
+          <MoviesSearchForm onSubmit={onSearchFormSubmit} />
         </div>
-      </MoviesSearchContext.Provider>
-    </Suspense>
+        {moviesPage}
+      </div>
+    </MoviesSearchContext.Provider>
   );
 };
 
 export default MoviesSearchApp;
+function RefObject<T>() {
+  throw new Error('Function not implemented.');
+}

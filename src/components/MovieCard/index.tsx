@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useContext, useRef, useEffect } from 'react';
+import { useContext, useRef, useEffect, forwardRef, ForwardRefRenderFunction } from 'react';
 
 import Movie from '@ts/Movie';
 import Rating from '@components/Rating';
@@ -12,7 +12,7 @@ type CardProps = {
   movie: Movie;
 };
 
-const MovieCard = ({ movie }: CardProps) => {
+const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie }, ref) => {
   const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
 
   const context = useContext(MoviesSearchContext);
@@ -77,6 +77,7 @@ const MovieCard = ({ movie }: CardProps) => {
     <div
       className={styles['movie-card']}
       style={{ backgroundImage: movie.backdropUrl && `url("${movie.backdropUrl.toString()}")` }}
+      ref={ref}
     >
       <div className={styles.content}>
         {!!movie.posterUrl && (
@@ -99,4 +100,4 @@ const MovieCard = ({ movie }: CardProps) => {
   );
 };
 
-export default MovieCard;
+export default forwardRef<HTMLDivElement, CardProps>(MovieCard);

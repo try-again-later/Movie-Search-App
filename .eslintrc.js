@@ -32,7 +32,13 @@ module.exports = {
     'no-continue': 'off',
     'operator-linebreak': 'off',
     'no-await-in-loop': 'off',
+    'react/prop-types': 'off',
     eqeqeq: 'off',
+
+    // these conflict with prettier formatting
+    'no-confusing-arrow': 'off',
+    'function-paren-newline': 'off',
+    'implicit-arrow-linebreak': 'off',
 
     // use @typescript-eslint/no-shadow instead
     'no-shadow': 'off',
