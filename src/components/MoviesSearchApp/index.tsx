@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Movie from '@ts/Movie';
@@ -109,11 +109,8 @@ const MoviesSearchApp = () => {
     apiKey: API_KEY,
   });
 
-  const [scrollY, setScrollY] = useState(window.scrollY);
-
   useEffect(() => {
     setLoadedMovies((prevLoadedMovies) => {
-      setScrollY(window.scrollY);
       const newLoadedMovies = [...prevLoadedMovies];
       for (const movie of queriedMoviesPage) {
         if (!loadedMovieIds.has(movie.id)) {
@@ -124,12 +121,6 @@ const MoviesSearchApp = () => {
       return newLoadedMovies;
     });
   }, [queriedMoviesPage]);
-
-  useLayoutEffect(() => {
-    if (loadedMovies.length != 0) {
-      window.scrollY = scrollY;
-    }
-  }, [loadedMovies]);
 
   const movieCards = loadedMovies.map((movie, index, array) =>
     index == array.length - 1 ? (
@@ -155,6 +146,7 @@ const MoviesSearchApp = () => {
   const onSearchFormSubmit = useCallback((newQueryString) => {
     setQueryString(newQueryString);
     setLoadedMovies([]);
+    setCurrentPage(1);
     setLoadedMoviesIds(new Set());
   }, []);
 
