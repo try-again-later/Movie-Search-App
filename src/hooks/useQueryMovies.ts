@@ -6,6 +6,7 @@ import * as TheMovieDB from '@ts/TheMovieDB';
 
 interface QueryMoviesProps {
   queryString: string;
+  page: number;
   apiKey: string;
   language: LanguageType;
 }
@@ -13,6 +14,7 @@ interface QueryMoviesProps {
 const useQueryMovies = ({
   queryString,
   apiKey,
+  page,
   language,
 }: QueryMoviesProps): [Movie[], boolean] => {
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -36,7 +38,10 @@ const useQueryMovies = ({
       setLoading(true);
 
       const moviesApi = new TheMovieDB.Context({ apiKey, language });
-      const moviesData = await moviesApi.moviesSearch(queryString, abortController.signal);
+      const moviesData = await moviesApi.moviesSearch(
+        { queryString, page },
+        abortController.signal,
+      );
 
       const fetchedMovies: Movie[] = [];
       for (const movieData of moviesData) {
@@ -69,7 +74,7 @@ const useQueryMovies = ({
     }
 
     fetchData();
-  }, [queryString, apiKey, language]);
+  }, [queryString, apiKey, language, page]);
 
   return [movies, isLoading];
 };

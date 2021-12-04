@@ -1,6 +1,7 @@
-import { createRef, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import Movie from '@ts/Movie';
 import MovieCard from '@components/MovieCard';
 import MoviesSearchForm from '@components/MoviesSearchForm';
 import LoadingAnimation from '@components/Loading';
@@ -51,17 +52,23 @@ const MoviesSearchApp = () => {
   const API_KEY = '2ab87dbd3a5185ee9af24363729e47a9';
   const [queryString, setQueryString] = useState<string>('');
 
-  const onSearchFormSubmit = useCallback((newQueryString) => {
-    setQueryString(newQueryString);
-  }, []);
-
-  const observerCallback = useCallback<IntersectionObserverCallback>((entries, observer) => {
-    console.log(entries);
-  }, []);
-
-  const [observer, setObserver] = useState(() => new IntersectionObserver(observerCallback));
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loadNextPage, setLoadNextPage] = useState(false);
 
   const [lastCard, setLastCard] = useState<HTMLDivElement | null>(null);
+
+  const observerCallback = useCallback<IntersectionObserverCallback>(
+    (entries, observer) => {
+      for (const entry of entries) {
+        if (entry.target == lastCard && entry.isIntersecting) {
+          setLoadNextPage(true);
+        }
+      }
+    },
+    [lastCard],
+  );
+
+  const [observer, setObserver] = useState(() => new IntersectionObserver(observerCallback));
 
   const lastCardMounted = useCallback((lastCardElement) => {
     setLastCard((prevCard) => {
@@ -90,8 +97,41 @@ const MoviesSearchApp = () => {
     observer.observe(lastCard);
   }, [lastCard, observer]);
 
-  const [queriedMovies, loadingMovies] = useQueryMovies({ queryString, language, apiKey: API_KEY });
-  const movieCards = queriedMovies.map((movie, index, array) =>
+  const [loadedMovies, setLoadedMovies] = useState<Movie[]>([]);
+
+  // For some reason TMDB sometimes returns duplicate movies
+  const [loadedMovieIds, setLoadedMoviesIds] = useState<Set<number>>(new Set());
+
+  const [queriedMoviesPage, loadingMovies] = useQueryMovies({
+    queryString,
+    page: currentPage,
+    language,
+    apiKey: API_KEY,
+  });
+
+  const [scrollY, setScrollY] = useState(window.scrollY);
+
+  useEffect(() => {
+    setLoadedMovies((prevLoadedMovies) => {
+      setScrollY(window.scrollY);
+      const newLoadedMovies = [...prevLoadedMovies];
+      for (const movie of queriedMoviesPage) {
+        if (!loadedMovieIds.has(movie.id)) {
+          loadedMovieIds.add(movie.id);
+          newLoadedMovies.push(movie);
+        }
+      }
+      return newLoadedMovies;
+    });
+  }, [queriedMoviesPage]);
+
+  useLayoutEffect(() => {
+    if (loadedMovies.length != 0) {
+      window.scrollY = scrollY;
+    }
+  }, [loadedMovies]);
+
+  const movieCards = loadedMovies.map((movie, index, array) =>
     index == array.length - 1 ? (
       <MovieCard key={movie.id} movie={movie} ref={lastCardMounted} />
     ) : (
@@ -102,17 +142,30 @@ const MoviesSearchApp = () => {
   const leftMoviesColumn = movieCards.filter((_, i) => i % 2 == 0);
   const rightMoviesColumn = movieCards.filter((_, i) => i % 2 != 0);
 
-  let moviesPage;
-  if (loadingMovies) {
-    moviesPage = <LoadingAnimation loadingText={t('loading')} />;
-  } else {
-    moviesPage = (
+  const moviesPage = (
+    <>
       <div className={styles['movies-page']}>
         <div className={styles['movies-column']}>{leftMoviesColumn}</div>
         <div className={styles['movies-column']}>{rightMoviesColumn}</div>
       </div>
-    );
-  }
+      {loadingMovies && <LoadingAnimation loadingText={t('loading')} />}
+    </>
+  );
+
+  const onSearchFormSubmit = useCallback((newQueryString) => {
+    setQueryString(newQueryString);
+    setLoadedMovies([]);
+    setLoadedMoviesIds(new Set());
+  }, []);
+
+  useEffect(() => {
+    if (!loadNextPage) {
+      return;
+    }
+
+    setLoadNextPage(false);
+    setCurrentPage((prevPage) => prevPage + 1);
+  }, [loadNextPage]);
 
   return (
     <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
@@ -139,6 +192,3 @@ const MoviesSearchApp = () => {
 };
 
 export default MoviesSearchApp;
-function RefObject<T>() {
-  throw new Error('Function not implemented.');
-}

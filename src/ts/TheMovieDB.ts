@@ -31,6 +31,11 @@ type MovieCreditsData = {
 
 type ContextOptions = { apiKey: string; language: LanguageType };
 
+interface MoviesSearchParameters {
+  queryString: string;
+  page?: number;
+}
+
 export class Context {
   private apiKey: string;
 
@@ -42,12 +47,12 @@ export class Context {
   }
 
   async moviesSearch(
-    queryString: string,
+    { queryString, page = 1 }: MoviesSearchParameters,
     abortSignal?: AbortSignal,
   ): Promise<Partial<MoviesSearchData>[]> {
     try {
       const data = await Context.retrieveJson<{ results?: Partial<MoviesSearchData>[] }>(
-        this.moviesSearchUrl(queryString),
+        this.moviesSearchUrl(queryString, page),
         abortSignal,
       );
       if (!data.results) {
@@ -100,12 +105,16 @@ export class Context {
     return data;
   }
 
-  private moviesSearchUrl(queryString: string): URL {
+  private moviesSearchUrl(queryString: string, page = 1): URL {
+    if (page < 1 || !Number.isInteger(page)) {
+      throw Error(`Wrong page number. Expected: integer > 0. Got: ${page}.`);
+    }
+
     const url = new URL('https://api.themoviedb.org/3/search/movie');
     url.searchParams.append('api_key', this.apiKey);
     url.searchParams.append('language', Language.toString(this.language));
     url.searchParams.append('query', queryString);
-    url.searchParams.append('page', '1');
+    url.searchParams.append('page', page.toString());
     url.searchParams.append('include_adult', 'false');
 
     return url;
