@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useContext } from 'react';
+import { useContext, useRef, useEffect } from 'react';
 
 import Movie from '@ts/Movie';
 import Rating from '@components/Rating';
@@ -16,14 +16,22 @@ const MovieCard = ({ movie }: CardProps) => {
   const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
 
   const context = useContext(MoviesSearchContext);
-  const [movieDetails, isLoading] = useQueryMovieDetails({
+  const [movieDetails, isLoading, abort] = useQueryMovieDetails({
     apiKey: context.apiKey,
     language: context.language,
     movie,
   });
 
+  // abort any pending requests on component unmount
+  useEffect(
+    () => () => {
+      abort();
+    },
+    [],
+  );
+
   const director = isLoading ? (
-    <div>Loading...</div>
+    <div className={styles['text-loading-placeholder']} />
   ) : (
     <div className={styles.director}>
       {movie?.releaseDate?.getFullYear()}
@@ -32,8 +40,22 @@ const MovieCard = ({ movie }: CardProps) => {
     </div>
   );
 
+  const loadingAnimationsCount = useRef<number>(Math.floor(Math.random() * 4) + 2);
+  const loadingAnimationsSizes = useRef<number[]>(
+    Array.from({ length: loadingAnimationsCount.current }, () => Math.floor(Math.random() * 2) + 4),
+  );
   const otherInformation = isLoading ? (
-    <div>Loading...</div>
+    <div className={styles['other-information']}>
+      {[...Array(loadingAnimationsCount.current).keys()].map((i) => (
+        <div
+          key={i}
+          className={styles['background-gradient-loading']}
+          style={{
+            width: `${loadingAnimationsSizes.current[i]}rem`,
+          }}
+        />
+      ))}
+    </div>
   ) : (
     <div className={styles['other-information']}>
       {!!movieDetails.runtime && (

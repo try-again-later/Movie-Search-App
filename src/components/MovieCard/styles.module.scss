@@ -1,5 +1,56 @@
 @use "abstracts" as *;
 
+.text-loading-placeholder {
+  color: var(--color-primary-700);
+}
+
+.text-loading-placeholder::after {
+  content: "Loading";
+  animation: loading-dots-animation 1s infinite;
+
+  @keyframes loading-dots-animation {
+    0% {
+      content: "Loading";
+    }
+
+    25% {
+      content: "Loading.";
+    }
+
+    50% {
+      content: "Loading..";
+    }
+
+    75% {
+      content: "Loading...";
+    }
+
+    100% {
+      content: "Loading";
+    }
+  }
+}
+
+.background-gradient-loading {
+  padding: var(--margin-100) calc(2 * var(--margin-100));
+  border-radius: var(--margin-200);
+  color: var(--color-neutral-200);
+  min-width: 4rem;
+  min-height: 2rem;
+  background: linear-gradient(to left, #f6f7f8 0%, #ccc 50%, #f6f7f8 70%, #f6f7f8 100%) 0% / 500%;
+  animation: loading-animation linear 5s infinite;
+
+  @keyframes loading-animation {
+    from {
+      background-position: 0%;
+    }
+
+    to {
+      background-position: 500%;
+    }
+  }
+}
+
 .movie-card {
   height: 100%;
   border-radius: var(--margin-400);
@@ -45,19 +96,6 @@
       object-fit: cover;
       border-radius: var(--margin-200);
       background-color: var(--color-neutral-200);
-
-      // background: linear-gradient(to left, #f6f7f8 0%, #edeef1 50%, #f6f7f8 70%, #f6f7f8 100%) 0% / 300%;
-      // animation: loading-animation linear 2s infinite;
-
-      // @keyframes loading-animation {
-      //   from {
-      //     background-position: 0%;
-      //   }
-
-      //   to {
-      //     background-position: 300%;
-      //   }
-      // }
 
       @media (max-width: breakpoint("medium")) {
         order: -3;

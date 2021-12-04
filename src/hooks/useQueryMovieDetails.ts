@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import Movie from '@ts/Movie';
 import LanguageType from '@ts/Language';
@@ -24,10 +24,15 @@ const useQueryMovieDetails = ({
   apiKey,
   language,
   movie,
-}: QueryDetailsProps): [MovieDetails, boolean] => {
+}: QueryDetailsProps): [MovieDetails, boolean, () => void] => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [details, setDetails] = useState<MovieDetails>({ genres: [] });
   const [abortController, setAbortController] = useState(() => new AbortController());
+
+  const abort = useCallback(() => {
+    abortController.abort();
+    setLoading(false);
+  }, [abortController]);
 
   useEffect(() => {
     async function fetchData() {
@@ -57,7 +62,7 @@ const useQueryMovieDetails = ({
     fetchData();
   }, [movie.id, apiKey, language]);
 
-  return [details, isLoading];
+  return [details, isLoading, abort];
 };
 
 export default useQueryMovieDetails;
