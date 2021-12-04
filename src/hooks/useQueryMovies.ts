@@ -61,7 +61,6 @@ const useQueryMovies = ({
           backdropUrl,
           releaseDate: movieData.release_date ? new Date(movieData.release_date) : undefined,
           rating: movieData.vote_average ? Number.parseFloat(movieData.vote_average) : undefined,
-          genres: [],
         });
       }
 

@@ -1,7 +1,10 @@
 import { useTranslation } from 'react-i18next';
+import { useContext } from 'react';
 
 import Movie from '@ts/Movie';
 import Rating from '@components/Rating';
+import useQueryMovieDetails from '@hooks/useQueryMovieDetails';
+import MoviesSearchContext from '@components/MoviesSearchApp/MoviesSearchContext';
 
 import styles from './styles.module.scss';
 
@@ -11,6 +14,42 @@ type CardProps = {
 
 const MovieCard = ({ movie }: CardProps) => {
   const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
+
+  const context = useContext(MoviesSearchContext);
+  const [movieDetails, isLoading] = useQueryMovieDetails({
+    apiKey: context.apiKey,
+    language: context.language,
+    movie,
+  });
+
+  const director = isLoading ? (
+    <div>Loading...</div>
+  ) : (
+    <div className={styles.director}>
+      {movie?.releaseDate?.getFullYear()}
+      {!!movie.releaseDate && !!movieDetails?.director && ', '}
+      {movieDetails?.director}
+    </div>
+  );
+
+  const otherInformation = isLoading ? (
+    <div>Loading...</div>
+  ) : (
+    <div className={styles['other-information']}>
+      {!!movieDetails.runtime && (
+        <div className={styles.length}>
+          {movieDetails.runtime}
+          &nbsp;
+          {t('minutes')}
+        </div>
+      )}
+      {movieDetails.genres.map((genre) => (
+        <div className={styles.genre} key={genre}>
+          {genre}
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <div
@@ -28,25 +67,8 @@ const MovieCard = ({ movie }: CardProps) => {
         )}
         <div className={styles.meta}>
           <h2 className={styles.title}>{movie.title}</h2>
-          <div className={styles.director}>
-            {movie?.releaseDate?.getFullYear()}
-            {!!movie.releaseDate && !!movie.director && ', '}
-            {movie?.director}
-          </div>
-          <div className={styles['other-information']}>
-            {!!movie.runtime && (
-              <div className={styles.length}>
-                {movie.runtime}
-                &nbsp;
-                {t('minutes')}
-              </div>
-            )}
-            {movie.genres.map((genre) => (
-              <div className={styles.genre} key={genre}>
-                {genre}
-              </div>
-            ))}
-          </div>
+          {director}
+          {otherInformation}
         </div>
         {!!movie.rating && <Rating rating={movie.rating} />}
         <div className={styles.overview}>{movie.overview}</div>

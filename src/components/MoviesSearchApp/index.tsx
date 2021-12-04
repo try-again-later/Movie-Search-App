@@ -10,6 +10,7 @@ import ColorThemeSwitch from '@components/ColorThemeSwitch';
 import LanguageType, * as Language from '@ts/Language';
 import useLocalStorage from '@app/hooks/useLocalStorage';
 import useQueryMovies from '@hooks/useQueryMovies';
+import MoviesSearchContext from './MoviesSearchContext';
 
 import styles from './styles.module.scss';
 
@@ -87,24 +88,26 @@ const MoviesSearchApp = () => {
 
   return (
     <Suspense fallback="Loading...">
-      <h1>{t('title')}</h1>
-      <div className={styles['search-movies']}>
-        <div className={styles['interface-container']}>
-          <LanguageSelect
-            value={language}
-            onChange={handleLanguageChange}
-            languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
-            className={styles['choose-language-select']}
-          />
-          <ColorThemeSwitch
-            darkModeEnabled={darkModeEnabled ?? false}
-            onThemeChange={handleColorThemeChange}
-            className={styles['change-color-theme']}
-          />
-          <MoviesSearchForm onSubmit={onSearchFormSubmit} />
+      <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
+        <h1>{t('title')}</h1>
+        <div className={styles['search-movies']}>
+          <div className={styles['interface-container']}>
+            <LanguageSelect
+              value={language}
+              onChange={handleLanguageChange}
+              languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
+              className={styles['choose-language-select']}
+            />
+            <ColorThemeSwitch
+              darkModeEnabled={darkModeEnabled ?? false}
+              onThemeChange={handleColorThemeChange}
+              className={styles['change-color-theme']}
+            />
+            <MoviesSearchForm onSubmit={onSearchFormSubmit} />
+          </div>
+          {moviesPage}
         </div>
-        {moviesPage}
-      </div>
+      </MoviesSearchContext.Provider>
     </Suspense>
   );
 };

@@ -22,15 +22,15 @@ function useLocalStorage<T>(
   key: string,
   initialValue: T,
   errorCallback?: ErrorCallback,
-): [T | null, (value: SetItemType<T>) => void] {
-  const [item, setItem] = useState<T | null>(
-    getFromLocalStorage<T>(key, errorCallback) ?? initialValue,
-  );
+): [T, (value: SetItemType<T>) => void] {
+  const [item, setItem] = useState<T>(getFromLocalStorage<T>(key, errorCallback) ?? initialValue);
 
   const setStoredItem = useCallback(
     (value: SetItemType<T>) => {
       try {
-        setItem((prevValue) => (value instanceof Function ? value(prevValue) : value ?? null));
+        setItem((prevValue) => (
+          value instanceof Function ? value(prevValue) : value ?? initialValue
+        ));
       } catch (error) {
         if (errorCallback != undefined) {
           errorCallback(error as Error);
