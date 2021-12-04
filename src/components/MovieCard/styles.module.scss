@@ -10,6 +10,7 @@
   background-position: center;
   font-size: var(--font-size-500);
   break-inside: avoid;
+  transition: background-color 0.2s;
 
   .content {
     display: grid;
@@ -43,6 +44,20 @@
       height: 12rem;
       object-fit: cover;
       border-radius: var(--margin-200);
+      background-color: var(--color-neutral-200);
+
+      // background: linear-gradient(to left, #f6f7f8 0%, #edeef1 50%, #f6f7f8 70%, #f6f7f8 100%) 0% / 300%;
+      // animation: loading-animation linear 2s infinite;
+
+      // @keyframes loading-animation {
+      //   from {
+      //     background-position: 0%;
+      //   }
+
+      //   to {
+      //     background-position: 300%;
+      //   }
+      // }
 
       @media (max-width: breakpoint("medium")) {
         order: -3;

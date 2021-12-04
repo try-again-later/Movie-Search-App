@@ -41,29 +41,57 @@ export class Context {
     this.language = language;
   }
 
-  async moviesSearch(queryString: string): Promise<Partial<MoviesSearchData>[]> {
-    const data = await Context.retrieveJson<{ results?: Partial<MoviesSearchData>[] }>(
-      this.moviesSearchUrl(queryString),
-    );
-    if (!data.results) {
-      throw Error('Failed to query movies.');
+  async moviesSearch(
+    queryString: string,
+    abortSignal?: AbortSignal,
+  ): Promise<Partial<MoviesSearchData>[]> {
+    try {
+      const data = await Context.retrieveJson<{ results?: Partial<MoviesSearchData>[] }>(
+        this.moviesSearchUrl(queryString),
+        abortSignal,
+      );
+      if (!data.results) {
+        throw Error('Failed to query movies.');
+      }
+      return data.results;
+    } catch (error: any) {
+      if (error.name != 'AbortError') {
+        throw new Error(error.toString());
+      }
     }
 
-    return data.results;
+    return [];
   }
 
-  async movieDetails(movieId: number): Promise<Partial<MovieDetailsData>> {
-    const data = await Context.retrieveJson<MovieDetailsData>(this.movieDetailsUrl(movieId));
+  async movieDetails(
+    movieId: number,
+    abortSignal?: AbortSignal,
+  ): Promise<Partial<MovieDetailsData>> {
+    const data = await Context.retrieveJson<MovieDetailsData>(
+      this.movieDetailsUrl(movieId),
+      abortSignal,
+    );
     return data;
   }
 
-  async movieCredits(movieId: number): Promise<Partial<MovieCreditsData>> {
-    const data = await Context.retrieveJson<MovieCreditsData>(this.movieCreditsUrl(movieId));
+  async movieCredits(
+    movieId: number,
+    abortSignal?: AbortSignal,
+  ): Promise<Partial<MovieCreditsData>> {
+    const data = await Context.retrieveJson<MovieCreditsData>(
+      this.movieCreditsUrl(movieId),
+      abortSignal,
+    );
     return data;
   }
 
-  private static async retrieveJson<T>(url: URL): Promise<T> {
-    const response = await fetch(url.toString());
+  private static async retrieveJson<T>(url: URL, abortSignal?: AbortSignal): Promise<T> {
+    let response;
+    if (abortSignal != undefined) {
+      response = await fetch(url.toString(), { signal: abortSignal });
+    } else {
+      response = await fetch(url.toString());
+    }
     if (!response.ok) {
       throw Error(`Failed to query movies: ${response.statusText}`);
     }

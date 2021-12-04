@@ -19,7 +19,12 @@ const MovieCard = ({ movie }: CardProps) => {
     >
       <div className={styles.content}>
         {!!movie.posterUrl && (
-          <img className={styles.poster} src={movie.posterUrl.toString()} alt={movie.title} />
+          <img
+            className={styles.poster}
+            src={movie.posterUrl.toString()}
+            alt={movie.title}
+            loading="lazy"
+          />
         )}
         <div className={styles.meta}>
           <h2 className={styles.title}>{movie.title}</h2>
