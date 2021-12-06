@@ -144,11 +144,15 @@ const MoviesSearchApp = () => {
   );
 
   const onSearchFormSubmit = useCallback((newQueryString) => {
+    if (newQueryString == queryString) {
+      return;
+    }
+
     setQueryString(newQueryString);
     setLoadedMovies([]);
     setCurrentPage(1);
     setLoadedMoviesIds(new Set());
-  }, []);
+  }, [queryString]);
 
   useEffect(() => {
     if (!loadNextPage) {

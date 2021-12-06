@@ -39,18 +39,10 @@ module.exports = {
     'no-confusing-arrow': 'off',
     'function-paren-newline': 'off',
     'implicit-arrow-linebreak': 'off',
+    'object-curly-newline': 'off',
 
     // use @typescript-eslint/no-shadow instead
     'no-shadow': 'off',
-    'object-curly-newline': [
-      'error',
-      {
-        ObjectExpression: { consistent: true, multiline: true },
-        ObjectPattern: { consistent: true, multiline: true },
-        ImportDeclaration: 'never',
-        ExportDeclaration: { multiline: true, minProperties: 3 },
-      },
-    ],
   },
   settings: {
     'import/resolver': {

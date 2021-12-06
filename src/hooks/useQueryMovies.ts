@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import Movie from '@ts/Movie';
 import LanguageType from '@ts/Language';
@@ -19,16 +19,13 @@ const useQueryMovies = ({
 }: QueryMoviesProps): [Movie[], boolean] => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [abortController, setAbortController] = useState<AbortController>(
-    () => new AbortController(),
-  );
+
+  const abortController = useRef<AbortController | null>(null);
 
   useEffect(() => {
     async function fetchData() {
-      if (isLoading && abortController != null) {
-        abortController.abort();
-        setLoading(false);
-        setAbortController(new AbortController());
+      if (isLoading && abortController.current != null) {
+        abortController.current.abort();
       }
 
       if (queryString.trim().length == 0) {
@@ -37,11 +34,15 @@ const useQueryMovies = ({
 
       setLoading(true);
 
+      abortController.current = new AbortController();
       const moviesApi = new TheMovieDB.Context({ apiKey, language });
       const moviesData = await moviesApi.moviesSearch(
         { queryString, page },
-        abortController.signal,
+        abortController.current?.signal,
       );
+      if (moviesData == 'AbortError') {
+        return;
+      }
 
       const fetchedMovies: Movie[] = [];
       for (const movieData of moviesData) {

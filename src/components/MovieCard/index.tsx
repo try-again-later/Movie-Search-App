@@ -1,9 +1,17 @@
 import { useTranslation } from 'react-i18next';
-import { useContext, useRef, useEffect, forwardRef, ForwardRefRenderFunction } from 'react';
+import {
+  useContext,
+  useRef,
+  forwardRef,
+  ForwardRefRenderFunction,
+  useState,
+  useEffect,
+} from 'react';
 
 import Movie from '@ts/Movie';
 import Rating from '@components/Rating';
 import useQueryMovieDetails from '@hooks/useQueryMovieDetails';
+import useJustMounted from '@hooks/useJustMounted';
 import MoviesSearchContext from '@components/MoviesSearchApp/MoviesSearchContext';
 
 import styles from './styles.module.scss';
@@ -16,22 +24,14 @@ const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie 
   const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
 
   const context = useContext(MoviesSearchContext);
-  const [movieDetails, isLoading, abort] = useQueryMovieDetails({
+  const [movieDetails, isLoading] = useQueryMovieDetails({
     apiKey: context.apiKey,
     language: context.language,
     movie,
   });
 
-  // abort any pending requests on component unmount
-  useEffect(
-    () => () => {
-      abort();
-    },
-    [],
-  );
-
   const director = isLoading ? (
-    <div className={styles['text-loading-placeholder']} />
+    <div className={`${styles['text-loading-placeholder']} ${styles.director}`} />
   ) : (
     <div className={styles.director}>
       {movie?.releaseDate?.getFullYear()}
@@ -39,6 +39,47 @@ const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie 
       {movieDetails?.director}
     </div>
   );
+
+  // the first time the card is rendered the title and overview comes from movie prop
+  // in case the language changes, then those values will be fetched with other movie details
+  const [title, setTitle] = useState(movie.title);
+  const [titleElement, setTitleElement] = useState(<h2 className={styles.title}>{movie.title}</h2>);
+  const [overviewElement, setOverviewElement] = useState(
+    <div className={styles.overview}>{movie.overview}</div>,
+  );
+
+  const justMounted = useJustMounted();
+  const needsUpdatingTitle = useRef(false);
+  useEffect(() => {
+    if (justMounted) {
+      return;
+    }
+    needsUpdatingTitle.current = true;
+  }, [context.language]);
+
+  useEffect(() => {
+    if (!needsUpdatingTitle.current) {
+      return;
+    }
+
+    setTitle(movieDetails.title ?? 'Loading');
+    setTitleElement(
+      isLoading ? (
+        // eslint-disable-next-line jsx-a11y/heading-has-content
+        <h2 className={`${styles['text-loading-placeholder']} ${styles.title}`} />
+      ) : (
+        <h2 className={styles.title}>{movieDetails?.title}</h2>
+      ),
+    );
+
+    setOverviewElement(
+      isLoading ? (
+        <div className={`${styles['text-loading-placeholder']} ${styles.overview}`} />
+      ) : (
+        <div className={styles.overview}>{movieDetails.overview}</div>
+      ),
+    );
+  }, [context.language, isLoading]);
 
   const loadingAnimationsCount = useRef<number>(Math.floor(Math.random() * 4) + 2);
   const loadingAnimationsSizes = useRef<number[]>(
@@ -84,17 +125,17 @@ const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie 
           <img
             className={styles.poster}
             src={movie.posterUrl.toString()}
-            alt={movie.title}
+            alt={title}
             loading="lazy"
           />
         )}
         <div className={styles.meta}>
-          <h2 className={styles.title}>{movie.title}</h2>
+          {titleElement}
           {director}
           {otherInformation}
         </div>
         {!!movie.rating && <Rating rating={movie.rating} />}
-        <div className={styles.overview}>{movie.overview}</div>
+        {overviewElement}
       </div>
     </div>
   );
