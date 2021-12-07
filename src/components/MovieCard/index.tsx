@@ -24,11 +24,14 @@ const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie 
   const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
 
   const context = useContext(MoviesSearchContext);
-  const [movieDetails, isLoading] = useQueryMovieDetails({
+  const [movieDetails, isLoading, queryDetails] = useQueryMovieDetails({
     apiKey: context.apiKey,
     language: context.language,
     movie,
   });
+  useEffect(() => {
+    queryDetails();
+  }, [context.apiKey, context.language, movie.id, queryDetails]);
 
   const director = isLoading ? (
     <div className={`${styles['text-loading-placeholder']} ${styles.director}`} />

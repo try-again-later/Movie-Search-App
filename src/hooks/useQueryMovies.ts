@@ -1,40 +1,42 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 
 import Movie from '@ts/Movie';
 import LanguageType from '@ts/Language';
 import * as TheMovieDB from '@ts/TheMovieDB';
 
 interface QueryMoviesProps {
-  queryString: string;
   page: number;
   apiKey: string;
   language: LanguageType;
+  onError?: (error: Error) => void;
 }
 
 const useQueryMovies = ({
-  queryString,
   apiKey,
   page,
   language,
-}: QueryMoviesProps): [Movie[], boolean] => {
+  onError,
+}: QueryMoviesProps): [Movie[], boolean, (queryString: string) => void] => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [movies, setMovies] = useState<Movie[]>([]);
 
   const abortController = useRef<AbortController | null>(null);
 
-  useEffect(() => {
-    async function fetchData() {
+  const fetchDataAsync = useCallback(
+    async (queryString: string) => {
       if (isLoading && abortController.current != null) {
         abortController.current.abort();
       }
 
       if (queryString.trim().length == 0) {
+        setMovies([]);
+        setLoading(false);
         return;
       }
 
       setLoading(true);
-
       abortController.current = new AbortController();
+
       const moviesApi = new TheMovieDB.Context({ apiKey, language });
       const moviesData = await moviesApi.moviesSearch(
         { queryString, page },
@@ -54,6 +56,7 @@ const useQueryMovies = ({
           movieData.poster_path == undefined
             ? undefined
             : TheMovieDB.posterUrl(movieData.poster_path);
+
         const backdropUrl =
           movieData.backdrop_path == undefined
             ? undefined
@@ -72,12 +75,25 @@ const useQueryMovies = ({
 
       setLoading(false);
       setMovies(fetchedMovies);
-    }
+    },
+    [apiKey, language, page],
+  );
 
-    fetchData();
-  }, [queryString, apiKey, language, page]);
+  const fetchData = useCallback(
+    (queryString: string) => {
+      fetchDataAsync(queryString).catch((error: unknown) => {
+        if (!(error instanceof Error)) {
+          return;
+        }
+        if (onError) {
+          onError(error);
+        }
+      });
+    },
+    [onError, fetchDataAsync],
+  );
 
-  return [movies, isLoading];
+  return [movies, isLoading, fetchData];
 };
 
 export default useQueryMovies;

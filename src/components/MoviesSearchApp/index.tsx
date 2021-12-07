@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Movie from '@ts/Movie';
@@ -10,9 +10,20 @@ import ColorThemeSwitch from '@components/ColorThemeSwitch';
 import LanguageType, * as Language from '@ts/Language';
 import useLocalStorage from '@app/hooks/useLocalStorage';
 import useQueryMovies from '@hooks/useQueryMovies';
+import useScroll from '@hooks/useScroll';
+import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import MoviesSearchContext from './MoviesSearchContext';
 
 import styles from './styles.module.scss';
+
+const QueryFallback: FC<FallbackProps> = ({ error, resetErrorBoundary }) => (
+  <>
+    <div className={styles['error-message']}>Failed to query movies</div>
+    <button type="button" onClick={resetErrorBoundary} className={styles['retry-button']}>
+      Try again
+    </button>
+  </>
+);
 
 const MoviesSearchApp = () => {
   const { t, i18n } = useTranslation();
@@ -31,6 +42,9 @@ const MoviesSearchApp = () => {
     },
     [setLanguage],
   );
+
+  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   const [darkModeEnabled, setDarkMode] = useLocalStorage('darkMode', false);
 
@@ -58,7 +72,7 @@ const MoviesSearchApp = () => {
   const [lastCard, setLastCard] = useState<HTMLDivElement | null>(null);
 
   const observerCallback = useCallback<IntersectionObserverCallback>(
-    (entries, observer) => {
+    (entries) => {
       for (const entry of entries) {
         if (entry.target == lastCard && entry.isIntersecting) {
           setLoadNextPage(true);
@@ -102,12 +116,20 @@ const MoviesSearchApp = () => {
   // For some reason TMDB sometimes returns duplicate movies
   const [loadedMovieIds, setLoadedMoviesIds] = useState<Set<number>>(new Set());
 
-  const [queriedMoviesPage, loadingMovies] = useQueryMovies({
-    queryString,
+  const onQueryError = useCallback((error) => {
+    setHasError(true);
+    setError(error);
+  }, []);
+
+  const [queriedMoviesPage, loadingMovies, fetchMovies] = useQueryMovies({
     page: currentPage,
     language,
     apiKey: API_KEY,
+    onError: onQueryError,
   });
+  useEffect(() => {
+    fetchMovies(queryString);
+  }, [currentPage, language, API_KEY, fetchMovies]);
 
   useEffect(() => {
     setLoadedMovies((prevLoadedMovies) => {
@@ -143,16 +165,21 @@ const MoviesSearchApp = () => {
     </>
   );
 
-  const onSearchFormSubmit = useCallback((newQueryString) => {
-    if (newQueryString == queryString) {
-      return;
-    }
+  const onSearchFormSubmit = useCallback(
+    (newQueryString) => {
+      setQueryString(newQueryString);
+      fetchMovies(newQueryString);
+      setLoadedMovies([]);
+      setCurrentPage(1);
+      setLoadedMoviesIds(new Set());
+    },
+    [fetchMovies],
+  );
 
-    setQueryString(newQueryString);
-    setLoadedMovies([]);
-    setCurrentPage(1);
-    setLoadedMoviesIds(new Set());
-  }, [queryString]);
+  const onTryAgain = useCallback(() => {
+    setHasError(false);
+    onSearchFormSubmit(queryString);
+  }, [queryString, onSearchFormSubmit]);
 
   useEffect(() => {
     if (!loadNextPage) {
@@ -163,8 +190,21 @@ const MoviesSearchApp = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   }, [loadNextPage]);
 
+  const { y: scrollPosition } = useScroll();
+  const onScrollToTopClick = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
+      <button
+        type="button"
+        className={`${styles['move-to-top-button']} ${
+          scrollPosition > 1000 ? styles['move-to-top-button-visible'] : ''
+        }`}
+        aria-label="Scroll to top"
+        onClick={onScrollToTopClick}
+      />
       <h1>{t('title')}</h1>
       <div className={styles['search-movies']}>
         <div className={styles['interface-container']}>
@@ -181,7 +221,16 @@ const MoviesSearchApp = () => {
           />
           <MoviesSearchForm onSubmit={onSearchFormSubmit} />
         </div>
-        {moviesPage}
+        <ErrorBoundary FallbackComponent={QueryFallback}>
+          {hasError ? (
+            <QueryFallback
+              error={error ?? new Error('Something went wrong')}
+              resetErrorBoundary={onTryAgain}
+            />
+          ) : (
+            moviesPage
+          )}
+        </ErrorBoundary>
       </div>
     </MoviesSearchContext.Provider>
   );
