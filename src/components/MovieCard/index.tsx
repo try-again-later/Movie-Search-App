@@ -115,11 +115,13 @@ const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie 
   );
 
   return (
-    <div
-      className={styles['movie-card']}
-      style={{ backgroundImage: movie.backdropUrl && `url("${movie.backdropUrl.toString()}")` }}
-      ref={ref}
-    >
+    <div className={styles['movie-card']} ref={ref}>
+      {!!movie.backdropUrl && (
+        <picture>
+          <source srcSet={movie.backdropUrl?.toString()} media="(min-width: 52.5rem)" />
+          <img className={styles['backdrop-image']} alt="" aria-hidden="true" loading="lazy" />
+        </picture>
+      )}
       <div className={styles.content}>
         {!!movie.posterUrl && (
           <img
