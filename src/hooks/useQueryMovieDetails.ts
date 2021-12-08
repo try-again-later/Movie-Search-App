@@ -64,15 +64,14 @@ const useQueryMovieDetails = ({
 
   const fetchData = useCallback(
     () => {
-      fetchDataAsync();
-      // fetchDataAsync().catch((error: unknown) => {
-      //   if (!(error instanceof Error)) {
-      //     return;
-      //   }
-      //   if (onError) {
-      //     onError(error);
-      //   }
-      // });
+      fetchDataAsync().catch((error: unknown) => {
+        if (!(error instanceof Error)) {
+          return;
+        }
+        if (onError) {
+          onError(error);
+        }
+      });
     },
     [onError, fetchDataAsync],
   );

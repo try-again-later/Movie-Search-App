@@ -22,7 +22,13 @@ const plugins = [
       },
     ],
   }),
-  new webpack.EnvironmentPlugin({ PUBLIC_URL: process.env.PUBLIC_URL ?? '' }),
+  new webpack.ProvidePlugin({
+    process: 'process/browser',
+  }),
+  new webpack.EnvironmentPlugin({
+    PUBLIC_URL: process.env.PUBLIC_URL ?? '',
+    ROUTER_BASE: process.env.ROUTER_BASE ?? '',
+  }),
 ];
 
 let optimization = {};
@@ -59,6 +65,7 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
     assetModuleFilename: 'images/[hash][ext][query]',
     clean: true,
   },
@@ -70,6 +77,7 @@ module.exports = {
   devServer: {
     static: './dist',
     hot: true,
+    historyApiFallback: true,
   },
 
   module: {

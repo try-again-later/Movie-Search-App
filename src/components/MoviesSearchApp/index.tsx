@@ -11,6 +11,7 @@ import LanguageType, * as Language from '@ts/Language';
 import useLocalStorage from '@app/hooks/useLocalStorage';
 import useQueryMovies from '@hooks/useQueryMovies';
 import useScroll from '@hooks/useScroll';
+import { Route, Routes, BrowserRouter as Router, Link } from 'react-router-dom';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import MoviesSearchContext from './MoviesSearchContext';
 
@@ -196,43 +197,57 @@ const MoviesSearchApp = () => {
   }, []);
 
   return (
-    <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
-      <button
-        type="button"
-        className={`${styles['move-to-top-button']} ${
-          scrollPosition > 1000 ? styles['move-to-top-button-visible'] : ''
-        }`}
-        aria-label="Scroll to top"
-        onClick={onScrollToTopClick}
-      />
-      <h1>{t('title')}</h1>
-      <div className={styles['search-movies']}>
-        <div className={styles['interface-container']}>
-          <LanguageSelect
-            value={language}
-            onChange={handleLanguageChange}
-            languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
-            className={styles['choose-language-select']}
-          />
-          <ColorThemeSwitch
-            darkModeEnabled={darkModeEnabled ?? false}
-            onThemeChange={handleColorThemeChange}
-            className={styles['change-color-theme']}
-          />
-          <MoviesSearchForm onSubmit={onSearchFormSubmit} />
-        </div>
-        <ErrorBoundary FallbackComponent={QueryFallback}>
-          {hasError ? (
-            <QueryFallback
-              error={error ?? new Error('Something went wrong')}
-              resetErrorBoundary={onTryAgain}
-            />
-          ) : (
-            moviesPage
+    <Router>
+      <nav>
+        <Link to={`${process.env.ROUTER_BASE}/`}>Search</Link>
+        <Link to={`${process.env.ROUTER_BASE}/favorites`}>Favorites</Link>
+      </nav>
+      <Routes>
+        <Route path={`${process.env.ROUTER_BASE}/favorites`} element={<div>Favorites</div>} />
+        <Route
+          path={`${process.env.ROUTER_BASE}/`}
+          element={(
+            <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
+              <button
+                type="button"
+                className={`${styles['move-to-top-button']} ${
+                  scrollPosition > 1000 ? styles['move-to-top-button-visible'] : ''
+                }`}
+                aria-label="Scroll to top"
+                onClick={onScrollToTopClick}
+              />
+              <h1>{t('title')}</h1>
+              <div className={styles['search-movies']}>
+                <div className={styles['interface-container']}>
+                  <LanguageSelect
+                    value={language}
+                    onChange={handleLanguageChange}
+                    languages={[LanguageType.ENGLISH_US, LanguageType.RUSSIAN]}
+                    className={styles['choose-language-select']}
+                  />
+                  <ColorThemeSwitch
+                    darkModeEnabled={darkModeEnabled ?? false}
+                    onThemeChange={handleColorThemeChange}
+                    className={styles['change-color-theme']}
+                  />
+                  <MoviesSearchForm onSubmit={onSearchFormSubmit} />
+                </div>
+                <ErrorBoundary FallbackComponent={QueryFallback}>
+                  {hasError ? (
+                    <QueryFallback
+                      error={error ?? new Error('Something went wrong')}
+                      resetErrorBoundary={onTryAgain}
+                    />
+                  ) : (
+                    moviesPage
+                  )}
+                </ErrorBoundary>
+              </div>
+            </MoviesSearchContext.Provider>
           )}
-        </ErrorBoundary>
-      </div>
-    </MoviesSearchContext.Provider>
+        />
+      </Routes>
+    </Router>
   );
 };
 
