@@ -28,9 +28,8 @@ function useLocalStorage<T>(
   const setStoredItem = useCallback(
     (value: SetItemType<T>) => {
       try {
-        setItem((prevValue) => (
-          value instanceof Function ? value(prevValue) : value ?? initialValue
-        ));
+        const prevValue = getFromLocalStorage<T>(key, errorCallback) ?? initialValue;
+        setItem(value instanceof Function ? value(prevValue) : value ?? initialValue);
       } catch (error) {
         if (errorCallback != undefined) {
           errorCallback(error as Error);
@@ -39,7 +38,7 @@ function useLocalStorage<T>(
         }
       }
     },
-    [errorCallback],
+    [errorCallback, initialValue, key],
   );
 
   useEffect(() => {
