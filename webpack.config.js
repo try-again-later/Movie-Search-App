@@ -53,6 +53,11 @@ if (process.env.SERVE) {
   plugins.push(new ReactRefreshWebpackPlugin());
 }
 
+let publicPath = '/';
+if (process.env.ROUTER_BASE && process.env.ROUTER_BASE.trim().length !== 0) {
+  publicPath = `/${process.env.ROUTER_BASE ?? ''}/`;
+}
+
 /**
  * @type {import('webpack').Configuration}
  */
@@ -65,7 +70,7 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
+    publicPath,
     assetModuleFilename: 'images/[hash][ext][query]',
     clean: true,
   },
