@@ -1,0 +1,22 @@
+.favorites-container {
+  width: calc(100% - 2 * var(--margin-700));
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: var(--margin-700);
+  box-sizing: content-box;
+}
+
+.favorites-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  justify-items: center;
+  gap: var(--margin-900);
+}
+
+.favorite-card {
+  box-shadow: 0 5px 10px rgba(0 0 0 / 15%);
+  border-radius: 0.5em;
+  padding: 1em;
+  width: 100%;
+  background-color: var(--color-neutral-100);
+}

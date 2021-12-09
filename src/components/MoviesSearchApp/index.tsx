@@ -11,11 +11,12 @@ import LanguageType, * as Language from '@ts/Language';
 import useLocalStorage from '@app/hooks/useLocalStorage';
 import useQueryMovies from '@hooks/useQueryMovies';
 import useScroll from '@hooks/useScroll';
-import { Route, Routes, BrowserRouter as Router, Link, NavLink } from 'react-router-dom';
+import { Route, Routes, BrowserRouter as Router, NavLink } from 'react-router-dom';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import MoviesSearchContext from './MoviesSearchContext';
 
 import styles from './styles.module.scss';
+import FavoriteMovies from '../FavoriteMovies';
 
 const QueryFallback: FC<FallbackProps> = ({ error, resetErrorBoundary }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'QueryFallback' });
@@ -212,7 +213,7 @@ const MoviesSearchApp = () => {
                 !navData.isActive ? styles['nav-link'] : styles['nav-link-highlighted']
               }
             >
-              {t('searchRoute')}
+              <div className={styles['nav-link-content-wrapper']}>{t('searchRoute')}</div>
             </NavLink>
             <NavLink
               to={`${process.env.ROUTER_BASE}/favorites`}
@@ -220,13 +221,13 @@ const MoviesSearchApp = () => {
                 !navData.isActive ? styles['nav-link'] : styles['nav-link-highlighted']
               }
             >
-              {t('favoritesRoute')}
+              <div className={styles['nav-link-content-wrapper']}>{t('favoritesRoute')}</div>
             </NavLink>
           </nav>
         </div>
       </header>
       <Routes>
-        <Route path={`${process.env.ROUTER_BASE}/favorites`} element={<div>Favorites</div>} />
+        <Route path={`${process.env.ROUTER_BASE}/favorites`} element={<FavoriteMovies />} />
         <Route
           path={`${process.env.ROUTER_BASE}/`}
           element={
