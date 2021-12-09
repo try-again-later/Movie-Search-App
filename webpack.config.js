@@ -13,6 +13,7 @@ const plugins = [
   new MiniCssExtractPlugin(),
   new HtmlWebpackPlugin({
     template: './src/index.html',
+    baseUrl: process.env.ROUTER_BASE ? `/${ROUTER_BASE}/` : '/',
   }),
   new CopyPlugin({
     patterns: [

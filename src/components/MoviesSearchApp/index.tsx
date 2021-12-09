@@ -203,7 +203,7 @@ const MoviesSearchApp = () => {
           <h1 className={styles['page-heading']}>{t('title')}</h1>
           <nav className={styles['page-nav']}>
             <NavLink
-              to={`${process.env.ROUTER_BASE}/`}
+              to="/"
               className={(navData) =>
                 !navData.isActive ? styles['nav-link'] : styles['nav-link-highlighted']
               }
@@ -211,7 +211,7 @@ const MoviesSearchApp = () => {
               <div className={styles['nav-link-content-wrapper']}>{t('searchRoute')}</div>
             </NavLink>
             <NavLink
-              to={`${process.env.ROUTER_BASE}/favorites`}
+              to="/favorites"
               className={(navData) =>
                 !navData.isActive ? styles['nav-link'] : styles['nav-link-highlighted']
               }
@@ -223,9 +223,9 @@ const MoviesSearchApp = () => {
       </header>
       <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
         <Routes>
-          <Route path={`${process.env.ROUTER_BASE}/favorites`} element={<FavoriteMovies />} />
+          <Route path="/favorites" element={<FavoriteMovies />} />
           <Route
-            path={`${process.env.ROUTER_BASE}/`}
+            path="/"
             element={
               <main className="container">
                 <ScrollToTopButton />
