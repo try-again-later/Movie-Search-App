@@ -1,5 +1,4 @@
 import useLocalStorage from '@hooks/useLocalStorage';
-import useQueryMovieDetails from '@hooks/useQueryMovieDetails';
 
 import styles from './styles.module.scss';
 
@@ -7,16 +6,14 @@ interface FavoriteCard {
   movieId: number;
 }
 
-const FavoriteCard = ({ movieId }: FavoriteCard) => {
-  return (
-    <article className={styles['favorite-card']}>
-      <h2>Movie name</h2>
-      <img alt="Poster" />
-      <div>{movieId}</div>
-      <button>Add</button>
-    </article>
-  );
-};
+const FavoriteCard = ({ movieId }: FavoriteCard) => (
+  <article className={styles['favorite-card']}>
+    <h2>Movie name</h2>
+    <img alt="Poster" />
+    <div>{movieId}</div>
+    <button type="button">Add</button>
+  </article>
+);
 
 const FavoriteMovies = () => {
   const [moviesIds, setMoviesIds] = useLocalStorage<Record<string, boolean>>('favoriteMovies', {});
