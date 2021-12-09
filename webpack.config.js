@@ -20,6 +20,14 @@ const plugins = [
         from: path.resolve(__dirname, 'src/locales'),
         to: path.resolve(__dirname, 'dist/locales'),
       },
+      {
+        from: path.resolve(__dirname, 'src/favicon'),
+        to: path.resolve(__dirname, 'dist'),
+      },
+      {
+        from: path.resolve(__dirname, 'src/site.webmanifest'),
+        to: path.resolve(__dirname, 'dist'),
+      }
     ],
   }),
   new webpack.ProvidePlugin({

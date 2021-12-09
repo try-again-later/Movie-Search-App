@@ -10,7 +10,7 @@ import ColorThemeSwitch from '@components/ColorThemeSwitch';
 import LanguageType, * as Language from '@ts/Language';
 import useLocalStorage from '@app/hooks/useLocalStorage';
 import useQueryMovies from '@hooks/useQueryMovies';
-import { Route, Routes, BrowserRouter as Router, NavLink } from 'react-router-dom';
+import { Route, Routes, HashRouter as Router, NavLink } from 'react-router-dom';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import ScrollToTopButton from '../ScrollToTopButton';
 import MoviesSearchContext from './MoviesSearchContext';
