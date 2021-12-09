@@ -152,9 +152,9 @@ const MoviesSearchApp = () => {
 
   const movieCards = loadedMovies.map((movie, index, array) =>
     index == array.length - 1 ? (
-      <MovieCard key={movie.id} movie={movie} ref={lastCardMounted} />
+      <MovieCard key={movie.id} movie={movie} ref={lastCardMounted} initialNeedsUpdate />
     ) : (
-      <MovieCard key={movie.id} movie={movie} />
+      <MovieCard key={movie.id} movie={movie} initialNeedsUpdate />
     ),
   );
 

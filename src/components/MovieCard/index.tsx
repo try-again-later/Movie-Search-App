@@ -19,9 +19,13 @@ import FavoriteButton from '../FavoriteButton';
 
 type CardProps = {
   movie: Movie;
+  initialNeedsUpdate?: boolean;
 };
 
-const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie }, ref) => {
+const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = (
+  { movie, initialNeedsUpdate = false },
+  ref,
+) => {
   const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
 
   const context = useContext(MoviesSearchContext);
@@ -53,7 +57,7 @@ const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie 
   );
 
   const justMounted = useJustMounted();
-  const needsUpdatingTitle = useRef(false);
+  const needsUpdatingTitle = useRef(initialNeedsUpdate);
   useEffect(() => {
     if (justMounted) {
       return;
