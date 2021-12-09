@@ -8,9 +8,20 @@
 
 .favorites-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   justify-items: center;
   gap: var(--margin-900);
+
+  @media (max-width: 40rem) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.empty-list-message {
+  font-size: var(--font-size-700);
+  font-style: italic;
+  color: var(--color-neutral-400);
+  padding: 8rem 0;
 }
 
 .favorite-card {
@@ -18,5 +29,41 @@
   border-radius: 0.5em;
   padding: 1em;
   width: 100%;
+  max-width: 40rem;
   background-color: var(--color-neutral-100);
+  display: grid;
+  grid-template:
+    "poster          title          "
+    "poster          favorite-button" / 4rem 1fr;
+  gap: var(--margin-400);
+
+  @media (max-width: 20rem) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .title {
+    grid-area: title;
+  }
+
+  .poster {
+    grid-area: poster;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 0.5em;
+
+    @media (max-width: 20rem) {
+      max-width: 8rem;
+      max-height: 8rem;
+      object-fit: cover;
+      order: -1;
+    }
+  }
+
+  .favorite-button {
+    grid-area: favorite-button;
+    width: 2.5rem;
+    height: 2.5rem;
+    justify-self: flex-end;
+  }
 }

@@ -10,9 +10,9 @@ import ColorThemeSwitch from '@components/ColorThemeSwitch';
 import LanguageType, * as Language from '@ts/Language';
 import useLocalStorage from '@app/hooks/useLocalStorage';
 import useQueryMovies from '@hooks/useQueryMovies';
-import useScroll from '@hooks/useScroll';
 import { Route, Routes, BrowserRouter as Router, NavLink } from 'react-router-dom';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
+import ScrollToTopButton from '../ScrollToTopButton';
 import MoviesSearchContext from './MoviesSearchContext';
 
 import styles from './styles.module.scss';
@@ -196,11 +196,6 @@ const MoviesSearchApp = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   }, [loadNextPage]);
 
-  const { y: scrollPosition } = useScroll();
-  const onScrollToTopClick = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
   return (
     <Router>
       <header className={styles['page-header']}>
@@ -226,21 +221,14 @@ const MoviesSearchApp = () => {
           </nav>
         </div>
       </header>
-      <Routes>
-        <Route path={`${process.env.ROUTER_BASE}/favorites`} element={<FavoriteMovies />} />
-        <Route
-          path={`${process.env.ROUTER_BASE}/`}
-          element={
-            <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
+      <MoviesSearchContext.Provider value={{ darkModeEnabled, language, apiKey: API_KEY }}>
+        <Routes>
+          <Route path={`${process.env.ROUTER_BASE}/favorites`} element={<FavoriteMovies />} />
+          <Route
+            path={`${process.env.ROUTER_BASE}/`}
+            element={
               <main className="container">
-                <button
-                  type="button"
-                  className={`${styles['move-to-top-button']} ${
-                    scrollPosition > 1000 ? styles['move-to-top-button-visible'] : ''
-                  }`}
-                  aria-label="Scroll to top"
-                  onClick={onScrollToTopClick}
-                />
+                <ScrollToTopButton />
                 <div className={styles['search-movies']}>
                   <div className={styles['interface-container']}>
                     <LanguageSelect
@@ -268,10 +256,10 @@ const MoviesSearchApp = () => {
                   </ErrorBoundary>
                 </div>
               </main>
-            </MoviesSearchContext.Provider>
-          }
-        />
-      </Routes>
+            }
+          />
+        </Routes>
+      </MoviesSearchContext.Provider>
     </Router>
   );
 };

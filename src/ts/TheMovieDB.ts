@@ -19,6 +19,7 @@ type MovieDetailsData = {
     name: string;
   }>;
   overview: string;
+  poster_path: string;
   title: string;
 };
 

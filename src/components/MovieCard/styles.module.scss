@@ -172,18 +172,9 @@
         grid-area: favorite-button;
         justify-self: flex-end;
         position: absolute;
-        display: grid;
-        place-items: center;
-        right: -30%;
-        bottom: var(--margin-700);
         width: 4rem;
         height: 4rem;
-        border: none;
-        border-radius: 50%;
-        background-color: var(--color-neutral-900);
         z-index: 2;
-        transition: background-color 0.2s;
-        cursor: pointer;
 
         @media (max-width: breakpoint("medium")) {
           position: static;
@@ -193,53 +184,6 @@
 
         @media (max-width: 22.5rem) {
           margin: 0;
-        }
-      }
-
-      .add-to-favorites-button:hover {
-        background-color: var(--color-neutral-700);
-      }
-
-      .add-to-favorites-icon {
-        width: 70%;
-        height: 70%;
-        fill: var(--color-neutral-200);
-        stroke: var(--color-neutral-200);
-        stroke-width: 1px;
-        animation: remove-from-favorites 0.2s forwards ease-out;
-      }
-
-      .add-to-favorites-button-checked > .add-to-favorites-icon {
-        fill: var(--color-neutral-200);
-        animation: add-to-favorites-appearance 0.4s forwards ease-out;
-      }
-
-      .add-to-favorites-button:hover > .add-to-favorites-icon {
-        fill: var(--color-neutral-100);
-        stroke: var(--color-neutral-100);
-      }
-
-      @keyframes add-to-favorites-appearance {
-        0% {
-          transform: scale(1);
-        }
-
-        60% {
-          transform: scale(1.2);
-        }
-
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      @keyframes remove-from-favorites {
-        from {
-          fill-opacity: 100%;
-        }
-
-        to {
-          fill-opacity: 0%;
         }
       }
     }

@@ -1,0 +1,73 @@
+.move-to-top-button {
+  position: fixed;
+  right: calc(2 * var(--margin-700));
+  bottom: calc(2 * var(--margin-700));
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-neutral-900);
+  transition: background-color 0.2s, visibility 0s;
+  animation: disappearance 0.2s ease-in-out forwards;
+  transition-delay: 0s, 0.3s;
+  visibility: hidden;
+  z-index: 5;
+  opacity: 0%;
+  box-shadow: 0 5px 10px rgba(0 0 0 / 15%);
+
+  @keyframes disappearance {
+    0% {
+      transform: scale(1);
+      opacity: 100%;
+    }
+
+    100% {
+      transform: scale(0.6);
+      opacity: 0%;
+    }
+  }
+}
+
+.move-to-top-button:hover {
+  background-color: var(--color-neutral-700);
+}
+
+body[data-theme="dark"] .move-to-top-button {
+  box-shadow: 1px 4px 4px 2px rgba(0 0 0 / 60%);
+}
+
+.move-to-top-button-visible {
+  visibility: visible;
+  animation: appearance 0.3s ease-in-out forwards;
+  opacity: 100%;
+  transition: background-color 0.2s, visibility 0s;
+  transition-delay: 0s, 0s, 0s;
+
+  @keyframes appearance {
+    0% {
+      transform: scale(0.6);
+      opacity: 0%;
+    }
+
+    75% {
+      transform: scale(1.1);
+      opacity: 100%;
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+.move-to-top-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-neutral-200);
+  mask-image: url("./icons/arrow-up.svg");
+  mask-repeat: no-repeat;
+  mask-size: 4rem;
+  mask-position: center;
+  cursor: pointer;
+}

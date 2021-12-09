@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import Movie from '@ts/Movie';
 import LanguageType from '@ts/Language';
 import * as TheMovieDB from '@ts/TheMovieDB';
+import { posterUrl } from '../ts/TheMovieDB';
 
 const capitalize = (string: string): string =>
   string.charAt(0).toUpperCase().concat(string.slice(1));
@@ -20,6 +21,7 @@ export interface MovieDetails {
   director?: string;
   overview?: string;
   title?: string;
+  posterUrl?: URL;
 }
 
 const useQueryMovieDetails = ({
@@ -51,30 +53,33 @@ const useQueryMovieDetails = ({
       (person) => person.job == 'Director' && person.known_for_department == 'Directing',
     )?.name;
 
+    const posterUrl =
+      movieDetails.poster_path == undefined
+        ? undefined
+        : TheMovieDB.posterUrl(movieDetails.poster_path);
+
     setDetails({
       genres: movieDetails.genres?.map(({ name }) => capitalize(name)) ?? [],
       runtime: movieDetails.runtime,
       director,
       overview: movieDetails.overview,
       title: movieDetails.title,
+      posterUrl,
     });
 
     setLoading(false);
   }, [movie.id, apiKey, language]);
 
-  const fetchData = useCallback(
-    () => {
-      fetchDataAsync().catch((error: unknown) => {
-        if (!(error instanceof Error)) {
-          return;
-        }
-        if (onError) {
-          onError(error);
-        }
-      });
-    },
-    [onError, fetchDataAsync],
-  );
+  const fetchData = useCallback(() => {
+    fetchDataAsync().catch((error: unknown) => {
+      if (!(error instanceof Error)) {
+        return;
+      }
+      if (onError) {
+        onError(error);
+      }
+    });
+  }, [onError, fetchDataAsync]);
 
   // abort any pending requests on unmount
   useEffect(
