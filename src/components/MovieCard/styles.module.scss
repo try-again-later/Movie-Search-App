@@ -91,17 +91,16 @@
     border-radius: var(--margin-400);
     width: 75%;
     transform: scale(1.01);
-    background:
-      linear-gradient(
-        90deg,
-        rgba(255 255 255 / 100%) 0%,
-        rgba(255 255 255 / 100%) 80%,
-        rgba(255 255 255 / 40%) 90%,
-        rgba(255 255 255 / 25%) 92.5%,
-        rgba(255 255 255 / 15%) 95%,
-        rgba(255 255 255 / 5%) 97.5%,
-        rgba(255 255 255 / 0%) 100%
-      );
+    background: linear-gradient(
+      90deg,
+      rgba(255 255 255 / 100%) 0%,
+      rgba(255 255 255 / 100%) 80%,
+      rgba(255 255 255 / 40%) 90%,
+      rgba(255 255 255 / 25%) 92.5%,
+      rgba(255 255 255 / 15%) 95%,
+      rgba(255 255 255 / 5%) 97.5%,
+      rgba(255 255 255 / 0%) 100%
+    );
 
     .poster {
       grid-area: poster;
@@ -177,9 +176,8 @@
         place-items: center;
         right: -30%;
         bottom: var(--margin-700);
-        width: calc(3 * var(--margin-700));
-        height: calc(3 * var(--margin-700));
-        margin-left: var(--margin-200);
+        width: 4rem;
+        height: 4rem;
         border: none;
         border-radius: 50%;
         background-color: var(--color-neutral-900);
@@ -189,8 +187,8 @@
 
         @media (max-width: breakpoint("medium")) {
           position: static;
-          width: calc(3 * var(--margin-400));
-          height: calc(3 * var(--margin-400));
+          width: 2rem;
+          height: 2rem;
         }
 
         @media (max-width: 22.5rem) {
@@ -273,16 +271,15 @@ body[data-theme="dark"] .movie-card {
 
 @media (min-width: breakpoint("medium")) {
   body[data-theme="dark"] .movie-card .content {
-    background:
-      linear-gradient(
-        90deg,
-        rgba(0 0 0 / 100%) 0%,
-        rgba(0 0 0 / 100%) 80%,
-        rgba(0 0 0 / 40%) 90%,
-        rgba(0 0 0 / 25%) 92.5%,
-        rgba(0 0 0 / 15%) 95%,
-        rgba(0 0 0 / 5%) 97.5%,
-        rgba(0 0 0 / 0%) 100%
-      );
+    background: linear-gradient(
+      90deg,
+      rgba(0 0 0 / 100%) 0%,
+      rgba(0 0 0 / 100%) 80%,
+      rgba(0 0 0 / 40%) 90%,
+      rgba(0 0 0 / 25%) 92.5%,
+      rgba(0 0 0 / 15%) 95%,
+      rgba(0 0 0 / 5%) 97.5%,
+      rgba(0 0 0 / 0%) 100%
+    );
   }
 }

@@ -5,9 +5,7 @@ import LoadingAnimation from '@components/Loading';
 
 const App = () => (
   <Suspense fallback={<LoadingAnimation loadingText="Loading translations" />}>
-    <div className="container">
-      <MoviesSearchApp />
-    </div>
+    <MoviesSearchApp />
   </Suspense>
 );
 

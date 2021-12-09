@@ -85,39 +85,6 @@ const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie 
     );
   }, [context.language, isLoading]);
 
-  const loadingAnimationsCount = useRef<number>(Math.floor(Math.random() * 4) + 2);
-  const loadingAnimationsSizes = useRef<number[]>(
-    Array.from({ length: loadingAnimationsCount.current }, () => Math.floor(Math.random() * 2) + 4),
-  );
-  const otherInformation = isLoading ? (
-    <div className={styles['other-information']}>
-      {[...Array(loadingAnimationsCount.current).keys()].map((i) => (
-        <div
-          key={i}
-          className={styles['background-gradient-loading']}
-          style={{
-            width: `${loadingAnimationsSizes.current[i]}rem`,
-          }}
-        />
-      ))}
-    </div>
-  ) : (
-    <div className={styles['other-information']}>
-      {!!movieDetails.runtime && (
-        <div className={styles.length}>
-          {movieDetails.runtime}
-          &nbsp;
-          {t('minutes')}
-        </div>
-      )}
-      {movieDetails.genres.map((genre) => (
-        <div className={styles.genre} key={genre}>
-          {genre}
-        </div>
-      ))}
-    </div>
-  );
-
   const { favorite, change: changeFavorite } = useFavoriteMovie({ movie });
   const favoriteButton = (
     <button
@@ -141,6 +108,40 @@ const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie 
     </button>
   );
 
+  const loadingAnimationsCount = useRef<number>(Math.floor(Math.random() * 4) + 2);
+  const loadingAnimationsSizes = useRef<number[]>(
+    Array.from({ length: loadingAnimationsCount.current }, () => Math.floor(Math.random() * 2) + 4),
+  );
+  const otherInformation = isLoading ? (
+    <div className={styles['other-information']}>
+      {[...Array(loadingAnimationsCount.current).keys()].map((i) => (
+        <div
+          key={i}
+          className={styles['background-gradient-loading']}
+          style={{
+            width: `${loadingAnimationsSizes.current[i]}rem`,
+          }}
+        />
+      ))}
+    </div>
+  ) : (
+    <div className={styles['other-information']}>
+      {favoriteButton}
+      {!!movieDetails.runtime && (
+        <div className={styles.length}>
+          {movieDetails.runtime}
+          &nbsp;
+          {t('minutes')}
+        </div>
+      )}
+      {movieDetails.genres.map((genre) => (
+        <div className={styles.genre} key={genre}>
+          {genre}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className={styles['movie-card']} ref={ref}>
       {!!movie.backdropUrl && (
@@ -160,7 +161,6 @@ const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = ({ movie 
         )}
         <div className={styles.meta}>
           {titleElement}
-          {favoriteButton}
           {director}
           {otherInformation}
         </div>

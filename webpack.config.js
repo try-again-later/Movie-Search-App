@@ -55,7 +55,7 @@ if (process.env.SERVE) {
 
 let publicPath = '/';
 if (process.env.ROUTER_BASE && process.env.ROUTER_BASE.trim().length !== 0) {
-  publicPath = `/${process.env.ROUTER_BASE ?? ''}/`;
+  publicPath = `/${process.env.ROUTER_BASE}/`;
 }
 
 /**

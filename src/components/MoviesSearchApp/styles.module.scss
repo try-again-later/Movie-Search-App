@@ -1,5 +1,66 @@
 @use "abstracts" as *;
 
+.page-header {
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--margin-700);
+  width: 100%;
+  background-color: var(--color-neutral-900);
+  color: var(--color-neutral-200);
+}
+
+.page-header .page-header-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 60rem;
+}
+
+.page-heading {
+  padding: 0.35em 0;
+  margin: 0;
+}
+
+.page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+%nav-link-base {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--margin-400);
+  color: var(--color-neutral-200);
+  transition: background-color 0.2s;
+  font-size: var(--font-size-700);
+  cursor: pointer;
+  margin-top: var(--margin-400);
+  @include regular-font;
+}
+
+.nav-link {
+  @extend %nav-link-base;
+}
+
+.nav-link:hover {
+  background-color: var(--color-neutral-700);
+}
+
+.nav-link-highlighted {
+  @extend %nav-link-base;
+
+  position: relative;
+  color: var(--color-neutral-700);
+  background-color: var(--color-neutral-200);
+}
+
+.nav-link-highlighted:hover {
+  color: var(--color-neutral-700);
+  background-color: var(--color-neutral-200);
+}
+
 .search-movies {
   display: grid;
   justify-items: center;

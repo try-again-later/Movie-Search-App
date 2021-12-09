@@ -40,6 +40,8 @@ module.exports = {
     'function-paren-newline': 'off',
     'implicit-arrow-linebreak': 'off',
     'object-curly-newline': 'off',
+    'react/jsx-curly-newline': 'off',
+    'react/jsx-wrap-multilines': 'off',
 
     // use @typescript-eslint/no-shadow instead
     'no-shadow': 'off',
