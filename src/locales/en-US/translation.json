@@ -1,0 +1,31 @@
+{
+  "title": "Movies search",
+  "searchRoute": "Search",
+  "favoritesRoute": "Favorites",
+  "loading": "Loading",
+  "MovieCard": {
+    "minutes": "min"
+  },
+  "MoviesSearchForm": {
+    "movieTitle": "Movie title",
+    "search": "Search",
+    "searchQueryExample": "e.g. \"Harry Potter\""
+  },
+  "Rating": {
+    "rating": "Rating"
+  },
+  "LanguageSelect": {
+    "chooseYourLanguage": "Choose language"
+  },
+  "ColorThemeSwitch": {
+    "switchToDarkMode": "Switch to dark mode",
+    "switchToLightMode": "Switch to light mode"
+  },
+  "QueryFallback": {
+    "failedToQuery": "Failed to query movies",
+    "tryAgain": "Try again"
+  },
+  "FavoriteMovies": {
+    "nothingHereYet": "Nothing here yet..."
+  }
+}

@@ -1,0 +1,57 @@
+@use "../abstracts" as *;
+
+*,
+*::after,
+*::before {
+  outline-offset: var(--margin-200);
+}
+
+:root {
+  @include screen-width-media-queries($font-sizes, "font-size");
+
+  @each $color-type, $color-weights in $colors {
+    @each $color-weight, $color-value in $color-weights {
+      #{--color-#{$color-type}-#{$color-weight}}: #{$color-value};
+    }
+  }
+
+  @each $margin-weight, $margin-value in $margins {
+    #{--margin-#{$margin-weight}}: #{$margin-value};
+  }
+}
+
+body {
+  @include regular-font;
+
+  background-color: var(--color-neutral-200);
+  color: var(--color-neutral-900);
+  transition: background-color 0.2s;
+}
+
+body[data-theme="dark"] {
+  @each $color-type, $color-weights in $dark-theme-colors {
+    @each $color-weight, $color-value in $color-weights {
+      #{--color-#{$color-type}-#{$color-weight}}: #{$color-value};
+    }
+  }
+}
+
+p {
+  font-size: 1rem;
+}
+
+h1 {
+  @include heading-font;
+
+  font-size: var(--font-size-900);
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  @include heading-font;
+
+  margin: 0;
+  line-height: 1.2;
+}

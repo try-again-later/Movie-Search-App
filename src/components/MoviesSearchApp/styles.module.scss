@@ -1,0 +1,206 @@
+@use "abstracts" as *;
+
+.page-header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: var(--color-neutral-900);
+  color: var(--color-neutral-200);
+}
+
+.page-header .page-header-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--margin-400);
+  width: 100%;
+  max-width: 60rem;
+  box-sizing: content-box;
+  padding: 0 var(--margin-700);
+}
+
+.page-heading {
+  padding: 0.35em 0;
+  margin: 0;
+}
+
+.page-nav {
+  display: flex;
+    justify-content: center;
+  flex-wrap: wrap;
+  margin-left: auto;
+
+  @media (max-width: 40rem) {
+    margin: 0;
+  }
+}
+
+%nav-link-base {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: var(--color-neutral-200);
+  font-size: var(--font-size-700);
+  border: none;
+  cursor: pointer;
+  margin-top: var(--margin-400);
+  border-top-left-radius: 0.75em;
+  border-top-right-radius: 0.75em;
+  @include regular-font;
+}
+
+.nav-link {
+  @extend %nav-link-base;
+}
+
+.nav-link-highlighted {
+  @extend %nav-link-base;
+
+  position: relative;
+  color: var(--color-neutral-700);
+  background-color: var(--color-neutral-200);
+  cursor: auto;
+  pointer-events: none;
+}
+
+.nav-link-highlighted:hover {
+  color: var(--color-neutral-700);
+  background-color: var(--color-neutral-200);
+}
+
+.nav-link::before,
+.nav-link::after {
+  content: "";
+  width: 0.75em;
+  align-self: stretch;
+}
+
+.nav-link-highlighted::before,
+.nav-link-highlighted::after {
+  content: "";
+  width: 0.75em;
+  align-self: stretch;
+  background-color: var(--color-neutral-900);
+}
+
+.nav-link-highlighted::before {
+  border-bottom-right-radius: 0.75em;
+}
+
+.nav-link-highlighted::after {
+  border-bottom-left-radius: 0.75em;
+}
+
+.nav-link-content-wrapper {
+  padding: 0.25em 0.75em;
+  border-top-left-radius: 0.75em;
+  border-top-right-radius: 0.75em;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  transform-style: preserve-3d;
+  transition: background-color 0.2s;
+}
+
+.nav-link-highlighted > .nav-link-content-wrapper {
+  background-color: var(--color-neutral-200);
+}
+
+.nav-link:hover > .nav-link-content-wrapper {
+  background-color: var(--color-neutral-700);
+}
+
+.nav-link-highlighted > .nav-link-content-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-neutral-900);
+  transform: translateZ(-1px);
+}
+
+
+.search-movies {
+  display: grid;
+  justify-items: center;
+}
+
+.interface-container {
+  display: grid;
+  gap: var(--margin-200);
+  max-width: 60rem;
+  margin-bottom: var(--margin-900);
+  width: 100%;
+  grid-template-areas:
+    "choose-language change-color-theme .          .            "
+    "search-bar      search-bar         search-bar submit-button"
+    "label           .                  .          .            ";
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+
+  @media (max-width: breakpoint("medium")) {
+    max-width: unset;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "choose-language    choose-language   "
+      "change-color-theme change-color-theme"
+      "search-bar         search-bar        "
+      "label              submit-button     ";
+  }
+}
+
+.choose-language-select {
+  grid-area: choose-language;
+}
+
+.change-color-theme {
+  grid-area: change-color-theme;
+}
+
+.movies-page {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--margin-700);
+
+  @media (min-width: 52.5rem) and (max-width: 87.5rem) {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 40rem) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.movies-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--margin-700);
+
+  @media (min-width: 52.5rem) and (max-width: 87.5rem) {
+    display: contents;
+  }
+
+  @media (max-width: 40rem) {
+    display: contents;
+  }
+}
+
+.error-message {
+  font-size: var(--font-size-700);
+  margin-bottom: var(--margin-400);
+}
+
+.retry-button {
+  font-size: var(--font-size-400);
+  background-color: var(--color-neutral-900);
+  color: var(--color-neutral-200);
+  border: none;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+  background-color: var(--color-neutral-700);
+}

@@ -1,0 +1,50 @@
+@use "./breakpoints" as *;
+
+@mixin screen-width-media-queries($map, $value-name) {
+  @each $weight, $different-screens-values in $map {
+    @each $screen-size, $value in $different-screens-values {
+      @if $screen-size == "small" {
+        #{--#{$value-name}-#{$weight}}: #{$value};
+      } @else {
+        @media (min-width: breakpoint($screen-size)) {
+          #{--#{$value-name}-#{$weight}}: #{$value};
+        }
+      }
+    }
+  }
+}
+
+@mixin each-of-type($count) {
+  @for $i from 1 through $count {
+    &:nth-of-type(#{$i}) {
+      @content ($i);
+    }
+  }
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+@mixin visible {
+  position: initial;
+  width: initial;
+  height: initial;
+  margin: initial;
+  clip: initial;
+}
+
+@mixin regular-font() {
+  font-family: "Source Sans Pro", Verdana, sans-serif;
+}
+
+@mixin heading-font() {
+  font-family: "PT Sans Narrow", Arial, sans-serif;
+}
