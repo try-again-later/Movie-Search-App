@@ -1,18 +1,20 @@
 name: Deploy to Github Pages
 on: [push]
+permissions:
+  contents: write
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - run: corepack enable
 
       - name: Install and Build
-        run: |
+      - run: |
           npm install
           npm run build
+
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: dist
+          folder: ./dist
