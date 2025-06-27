@@ -1,0 +1,31 @@
+{
+  "title": "Поиск фильмов",
+  "loading": "Загрузка",
+  "searchRoute": "Поиск",
+  "favoritesRoute": "Избранное",
+  "MovieCard": {
+    "minutes": "мин."
+  },
+  "MoviesSearchForm": {
+    "movieTitle": "Название фильма",
+    "search": "Поиск",
+    "searchQueryExample": "Например, \"Гарри Поттер\""
+  },
+  "Rating": {
+    "rating": "Рейтинг"
+  },
+  "LanguageSelect": {
+    "chooseYourLanguage": "Выберите язык"
+  },
+  "ColorThemeSwitch": {
+    "switchToDarkMode": "Переключиться на тёмную тему",
+    "switchToLightMode": "Переключиться на светлую тему"
+  },
+  "QueryFallback": {
+    "failedToQuery": "Ошибка при получении данных",
+    "tryAgain": "Попробовать ещё раз"
+  },
+  "FavoriteMovies": {
+    "nothingHereYet": "Пока что здесь пусто..."
+  }
+}
