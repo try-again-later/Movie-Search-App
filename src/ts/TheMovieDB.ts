@@ -1,5 +1,8 @@
 import LanguageType, * as Language from './Language';
 
+const TMDB_API_BASE_URL = 'https://movie-search.duckdns.org/api';
+const TMBD_IMAGES_CDN_BASE_URL: string = 'https://movie-search.duckdns.org/image';
+
 /* eslint-disable camelcase */
 type MoviesSearchData = {
   id: number;
@@ -123,7 +126,7 @@ export class Context {
       throw Error(`Wrong page number. Expected: integer > 0. Got: ${page}.`);
     }
 
-    const url = new URL('https://api.themoviedb.org/3/search/movie');
+    const url = new URL(`${TMDB_API_BASE_URL}/3/search/movie`);
     url.searchParams.append('api_key', this.apiKey);
     url.searchParams.append('language', Language.toString(this.language));
     url.searchParams.append('query', queryString);
@@ -134,7 +137,7 @@ export class Context {
   }
 
   private movieDetailsUrl(movieId: number): URL {
-    const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
+    const url = new URL(`${TMDB_API_BASE_URL}/3/movie/${movieId}`);
     url.searchParams.append('api_key', this.apiKey);
     url.searchParams.append('language', Language.toString(this.language));
 
@@ -142,7 +145,7 @@ export class Context {
   }
 
   private movieCreditsUrl(movieId: number): URL {
-    const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}/credits`);
+    const url = new URL(`${TMDB_API_BASE_URL}/3/movie/${movieId}/credits`);
     url.searchParams.append('api_key', this.apiKey);
     url.searchParams.append('language', Language.toString(this.language));
 
@@ -151,9 +154,9 @@ export class Context {
 }
 
 export function posterUrl(posterPath: string): URL {
-  return new URL(`https://image.tmdb.org/t/p/original${posterPath}`);
+  return new URL(`${TMBD_IMAGES_CDN_BASE_URL}/t/p/original${posterPath}`);
 }
 
 export function backdropUrl(backdropPath: string): URL {
-  return new URL(`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${backdropPath}`);
+  return new URL(`${TMBD_IMAGES_CDN_BASE_URL}/t/p/w1920_and_h800_multi_faces${backdropPath}`);
 }
