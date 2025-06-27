@@ -4,4 +4,7 @@
 
 $include: ("us", "ru");
 
-@import "flag-icon-css/sass/flag-icons";
+@use "flag-icons/sass/flag-icons" with (
+  $flag-icons-path: "flag-icons/flags",
+  $flag-icons-included-countries: ("ru", "us")
+)

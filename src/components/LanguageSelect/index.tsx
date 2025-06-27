@@ -46,7 +46,7 @@ const LanguageSelect = ({ value, onChange, languages = [], className }: Language
             <span
               className={`${
                 styles['flag-icon-background']
-              } flag-icon-background flag-icon-${Language.toIsoCountryCode(
+              } fi fi-${Language.toIsoCountryCode(
                 Language.fromString(value),
               )}`}
             />

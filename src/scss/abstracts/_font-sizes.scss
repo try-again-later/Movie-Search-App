@@ -1,3 +1,5 @@
+@use "sass:map";
+
 $font-sizes: (
   "200": (
     "small": 0.75rem,
@@ -26,5 +28,5 @@ $font-sizes: (
 );
 
 @function font-size($weight, $screen-size) {
-  @return map-get(map-get($font-sizes, $weight), $screen-size);
+  @return map.get(map.get($font-sizes, $weight), $screen-size);
 }

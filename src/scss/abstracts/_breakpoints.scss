@@ -1,3 +1,5 @@
+@use "sass:map";
+
 $breakpoints: (
   // actually that's not a breakpoint, but rather the minimum screen width at
   // which the page is expected to behave adequately
@@ -8,5 +10,5 @@ $breakpoints: (
 $container-max-width: 110rem;
 
 @function breakpoint($size) {
-  @return map-get($breakpoints, $size);
+  @return map.get($breakpoints, $size);
 }

@@ -4,7 +4,9 @@
   @each $weight, $different-screens-values in $map {
     @each $screen-size, $value in $different-screens-values {
       @if $screen-size == "small" {
-        #{--#{$value-name}-#{$weight}}: #{$value};
+        & {
+          #{--#{$value-name}-#{$weight}}: #{$value};
+        }
       } @else {
         @media (min-width: breakpoint($screen-size)) {
           #{--#{$value-name}-#{$weight}}: #{$value};

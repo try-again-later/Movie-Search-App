@@ -10,7 +10,7 @@ i18n
   .init({
     fallbackLng: ['en-US', 'ru'],
     load: 'currentOnly',
-    debug: true,
+    debug: false,
     interpolation: {
       escapeValue: false,
     },
@@ -23,7 +23,7 @@ i18n
       caches: ['localStorage', 'cookie'],
     },
     backend: {
-      loadPath: `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`,
+      loadPath: 'locales/{{lng}}/{{ns}}.json',
     },
   });
 

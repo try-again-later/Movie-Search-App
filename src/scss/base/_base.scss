@@ -11,12 +11,16 @@
 
   @each $color-type, $color-weights in $colors {
     @each $color-weight, $color-value in $color-weights {
-      #{--color-#{$color-type}-#{$color-weight}}: #{$color-value};
+      & {
+        #{--color-#{$color-type}-#{$color-weight}}: #{$color-value};
+      }
     }
   }
 
   @each $margin-weight, $margin-value in $margins {
-    #{--margin-#{$margin-weight}}: #{$margin-value};
+    & {
+      #{--margin-#{$margin-weight}}: #{$margin-value};
+    }
   }
 }
 

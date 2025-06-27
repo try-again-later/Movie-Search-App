@@ -1,3 +1,5 @@
+@use "sass:map";
+
 $colors: (
   "neutral": (
     "100": white,
@@ -26,5 +28,5 @@ $dark-theme-colors: (
 );
 
 @function color($type, $weight) {
-  @return map-get(map-get($colors, $type), $weight);
+  @return map.get(map.get($colors, $type), $weight);
 }
