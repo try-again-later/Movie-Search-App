@@ -5,7 +5,6 @@ import LanguageType from '@ts/Language';
 import * as TheMovieDB from '@ts/TheMovieDB';
 
 interface QueryMoviesProps {
-  page: number;
   apiKey: string;
   language: LanguageType;
   onError?: (error: Error) => void;
@@ -13,19 +12,19 @@ interface QueryMoviesProps {
 
 const useQueryMovies = ({
   apiKey,
-  page,
   language,
   onError,
-}: QueryMoviesProps): [Movie[], boolean, (queryString: string) => void] => {
+}: QueryMoviesProps): [Movie[], boolean, (queryString: string, page: number) => void] => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [movies, setMovies] = useState<Movie[]>([]);
 
   const abortController = useRef<AbortController | null>(null);
 
   const fetchDataAsync = useCallback(
-    async (queryString: string) => {
-      if (isLoading && abortController.current != null) {
+    async (queryString: string, page: number) => {
+      if (abortController.current != null) {
         abortController.current.abort();
+        abortController.current = null;
       }
 
       if (queryString.trim().length == 0) {
@@ -76,12 +75,12 @@ const useQueryMovies = ({
       setLoading(false);
       setMovies(fetchedMovies);
     },
-    [apiKey, language, page],
+    [apiKey, language],
   );
 
   const fetchData = useCallback(
-    (queryString: string) => {
-      fetchDataAsync(queryString).catch((error: unknown) => {
+    (queryString: string, page: number) => {
+      fetchDataAsync(queryString, page).catch((error: unknown) => {
         if (!(error instanceof Error)) {
           return;
         }

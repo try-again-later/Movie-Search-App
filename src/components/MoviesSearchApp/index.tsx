@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Movie from '@ts/Movie';
@@ -70,57 +70,11 @@ const MoviesSearchApp = () => {
   }, [darkModeEnabled]);
 
   const API_KEY = '2ab87dbd3a5185ee9af24363729e47a9';
-  const [queryString, setQueryString] = useState<string>('');
+  const [queryString, setQueryString] = useState('');
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loadNextPage, setLoadNextPage] = useState(false);
-
-  const [lastCard, setLastCard] = useState<HTMLDivElement | null>(null);
-
-  const observerCallback = useCallback<IntersectionObserverCallback>(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.target == lastCard && entry.isIntersecting) {
-          setLoadNextPage(true);
-        }
-      }
-    },
-    [lastCard],
-  );
-
-  const [observer, setObserver] = useState(() => new IntersectionObserver(observerCallback));
-
-  const lastCardMounted = useCallback((lastCardElement: HTMLDivElement) => {
-    setLastCard((prevCard) => {
-      if (prevCard == lastCardElement) {
-        return prevCard;
-      }
-      if (prevCard != null) {
-        observer.unobserve(prevCard);
-      }
-      return lastCardElement;
-    });
-  }, []);
-
-  useEffect(() => {
-    const prevObserver = observer;
-    setObserver(new IntersectionObserver(observerCallback));
-
-    return () => prevObserver.disconnect();
-  }, [observerCallback]);
-
-  useEffect(() => {
-    if (lastCard == null) {
-      return;
-    }
-
-    observer.observe(lastCard);
-  }, [lastCard, observer]);
-
+  // TMDB sometimes returns duplicate movies, so track which ones are already loaded.
+  const loadedMovieIds = useRef(new Set());
   const [loadedMovies, setLoadedMovies] = useState<Movie[]>([]);
-
-  // For some reason TMDB sometimes returns duplicate movies
-  const [loadedMovieIds, setLoadedMoviesIds] = useState<Set<number>>(new Set());
 
   const onQueryError = useCallback((error: Error) => {
     setHasError(true);
@@ -128,21 +82,22 @@ const MoviesSearchApp = () => {
   }, []);
 
   const [queriedMoviesPage, loadingMovies, fetchMovies] = useQueryMovies({
-    page: currentPage,
-    language,
     apiKey: API_KEY,
+    language,
     onError: onQueryError,
   });
+
+  const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
-    fetchMovies(queryString);
-  }, [currentPage, language, API_KEY, fetchMovies]);
+    fetchMovies(queryString, currentPage);
+  }, [fetchMovies, queryString, currentPage]);
 
   useEffect(() => {
     setLoadedMovies((prevLoadedMovies) => {
       const newLoadedMovies = [...prevLoadedMovies];
       for (const movie of queriedMoviesPage) {
-        if (!loadedMovieIds.has(movie.id)) {
-          loadedMovieIds.add(movie.id);
+        if (!loadedMovieIds.current.has(movie.id)) {
+          loadedMovieIds.current.add(movie.id);
           newLoadedMovies.push(movie);
         }
       }
@@ -150,9 +105,31 @@ const MoviesSearchApp = () => {
     });
   }, [queriedMoviesPage]);
 
+  const lastCardElement = useRef<HTMLDivElement>(null);
+  const lastCardIntersectionObserver = useRef<IntersectionObserver>(null);
+  if (lastCardIntersectionObserver.current == null) {
+    lastCardIntersectionObserver.current = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target == lastCardElement.current && entry.isIntersecting) {
+          setCurrentPage((page) => page + 1);
+          lastCardIntersectionObserver.current?.unobserve(lastCardElement.current);
+        }
+      }
+    });
+  }
+
   const movieCards = loadedMovies.map((movie, index, array) =>
     index == array.length - 1 ? (
-      <MovieCard key={movie.id} movie={movie} ref={lastCardMounted} />
+      <MovieCard
+        key={movie.id}
+        movie={movie}
+        ref={(node) => {
+          if (node != null && node != lastCardElement.current) {
+            lastCardIntersectionObserver.current?.observe(node);
+            lastCardElement.current = node;
+          }
+        }}
+      />
     ) : (
       <MovieCard key={movie.id} movie={movie} />
     ),
@@ -171,30 +148,18 @@ const MoviesSearchApp = () => {
     </>
   );
 
-  const onSearchFormSubmit = useCallback(
-    (newQueryString: string) => {
-      setQueryString(newQueryString);
-      fetchMovies(newQueryString);
-      setLoadedMovies([]);
-      setCurrentPage(1);
-      setLoadedMoviesIds(new Set());
-    },
-    [fetchMovies],
-  );
+  const onSearchFormSubmit = useCallback((newQueryString: string) => {
+    setLoadedMovies([]);
+    loadedMovieIds.current.clear();
+
+    setQueryString(newQueryString);
+    setCurrentPage(1);
+  }, []);
 
   const onTryAgain = useCallback(() => {
     setHasError(false);
     onSearchFormSubmit(queryString);
   }, [queryString, onSearchFormSubmit]);
-
-  useEffect(() => {
-    if (!loadNextPage) {
-      return;
-    }
-
-    setLoadNextPage(false);
-    setCurrentPage((prevPage) => prevPage + 1);
-  }, [loadNextPage]);
 
   return (
     <Router>
