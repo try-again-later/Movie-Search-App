@@ -3,7 +3,6 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import Movie from '@ts/Movie';
 import LanguageType from '@ts/Language';
 import * as TheMovieDB from '@ts/TheMovieDB';
-import { posterUrl } from '../ts/TheMovieDB';
 
 const capitalize = (string: string): string =>
   string.charAt(0).toUpperCase().concat(string.slice(1));
@@ -29,14 +28,15 @@ const useQueryMovieDetails = ({
   language,
   movie,
   onError,
-}: QueryDetailsProps): [MovieDetails, boolean, () => void] => {
+}: QueryDetailsProps): [MovieDetails | null, boolean, () => void] => {
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [details, setDetails] = useState<MovieDetails>({ genres: [] });
+  const [details, setDetails] = useState<MovieDetails | null>(null);
   const abortController = useRef<AbortController | null>(null);
 
   const fetchDataAsync = useCallback(async () => {
-    if (isLoading) {
-      abortController.current?.abort();
+    if (abortController.current != null) {
+      abortController.current.abort();
+      abortController.current = null;
     }
 
     setLoading(true);

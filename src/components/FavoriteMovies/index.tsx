@@ -43,7 +43,7 @@ const FavoriteCard = ({ movieId }: FavoriteCard) => {
         className={styles.poster}
         alt="Poster"
         loading="lazy"
-        src={movieDetails.posterUrl?.toString()}
+        src={movieDetails?.posterUrl?.toString()}
       />
       <FavoriteButton className={styles['favorite-button']} movie={movie} />
     </article>

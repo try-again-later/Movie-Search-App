@@ -1,9 +1,8 @@
 import LanguageType, * as Language from './Language';
 
-const TMDB_API_BASE_URL = 'https://movie-search.duckdns.org/api';
-const TMBD_IMAGES_CDN_BASE_URL: string = 'https://movie-search.duckdns.org/image';
+const TMDB_API_BASE_URL = 'https://movie-search.185-236-23-37.sslip.io/api';
+const TMBD_IMAGES_CDN_BASE_URL = 'https://movie-search.185-236-23-37.sslip.io/image';
 
-/* eslint-disable camelcase */
 type MoviesSearchData = {
   id: number;
   poster_path: string;
@@ -33,7 +32,6 @@ type MovieCreditsData = {
     name: string;
   }>;
 };
-/* eslint-enable camelcase */
 
 type ContextOptions = { apiKey: string; language: LanguageType };
 

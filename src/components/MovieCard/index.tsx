@@ -1,155 +1,137 @@
+import { useContext, useRef, useEffect, useCallback, memo, Ref } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  useContext,
-  useRef,
-  forwardRef,
-  ForwardRefRenderFunction,
-  useState,
-  useEffect,
-} from 'react';
 
 import Movie from '@ts/Movie';
-import Rating from '@components/Rating';
-import useQueryMovieDetails from '@hooks/useQueryMovieDetails';
-import useJustMounted from '@hooks/useJustMounted';
+import cls from '@ts/utils/classNames';
+import useQueryMovieDetails, { MovieDetails } from '@hooks/useQueryMovieDetails';
+
 import MoviesSearchContext from '@components/MoviesSearchApp/MoviesSearchContext';
+import FavoriteButton from '@components/FavoriteButton';
+import Rating from '@components/Rating';
 
 import styles from './styles.module.scss';
-import FavoriteButton from '../FavoriteButton';
 
-type CardProps = {
+type MovieCardOtherInformationProps = {
+  isLoading: boolean;
   movie: Movie;
-  initialNeedsUpdate?: boolean;
+  movieDetails: MovieDetails | null;
 };
 
-const MovieCard: ForwardRefRenderFunction<HTMLDivElement, CardProps> = (
-  { movie, initialNeedsUpdate = false },
-  ref,
-) => {
-  const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
+const MovieCardOtherInformation = memo(
+  ({ isLoading, movie, movieDetails }: MovieCardOtherInformationProps) => {
+    const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
 
+    const loadingAnimationsCount = useRef<number>(Math.floor(Math.random() * 4) + 2);
+    const loadingAnimationsSizes = useRef<number[]>(
+      Array.from(
+        { length: loadingAnimationsCount.current },
+        () => Math.floor(Math.random() * 2) + 4,
+      ),
+    );
+
+    if (isLoading) {
+      return (
+        <div className={styles['other-information']}>
+          {loadingAnimationsSizes.current.map((width, index) => (
+            <div
+              key={index}
+              className={styles['background-gradient-loading']}
+              style={{ width: `${width}rem` }}
+            />
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles['other-information']}>
+        <FavoriteButton movie={movie} className={styles['add-to-favorites-button']} />
+        {movieDetails?.runtime != null && (
+          <div className={styles.length}>
+            {movieDetails.runtime}&nbsp;{t('minutes')}
+          </div>
+        )}
+        {movieDetails?.genres.map((genre) => (
+          <div className={styles.genre} key={genre}>
+            {genre}
+          </div>
+        ))}
+      </div>
+    );
+  },
+);
+MovieCardOtherInformation.displayName = 'MovieCardOtherInformation';
+
+type MovieCardProps = {
+  movie: Movie;
+  initialNeedsUpdate?: boolean;
+  ref?: Ref<HTMLDivElement>;
+};
+
+const MovieCard = ({ movie, ref }: MovieCardProps) => {
   const context = useContext(MoviesSearchContext);
+
   const [movieDetails, isLoading, queryDetails] = useQueryMovieDetails({
     apiKey: context.apiKey,
     language: context.language,
     movie,
   });
+
   useEffect(() => {
     queryDetails();
-  }, [context.apiKey, context.language, movie.id, queryDetails]);
+  }, [context.language, queryDetails]);
 
-  const director = isLoading ? (
-    <div className={`${styles['text-loading-placeholder']} ${styles.director}`} />
-  ) : (
-    <div className={styles.director}>
-      {movie?.releaseDate?.getFullYear()}
-      {!!movie.releaseDate && !!movieDetails?.director && ', '}
-      {movieDetails?.director}
-    </div>
-  );
+  const formatDirector = useCallback(
+    (movieDetails: MovieDetails | null) => {
+      let formattedString = '';
+      formattedString += movie?.releaseDate?.getFullYear() ?? '';
+      if (movie.releaseDate != null && movieDetails?.director != null) {
+        formattedString += ', ';
+      }
+      formattedString += movieDetails?.director ?? '';
 
-  // the first time the card is rendered the title and overview comes from movie prop
-  // in case the language changes, then those values will be fetched with other movie details
-  const [title, setTitle] = useState(movie.title);
-  const [titleElement, setTitleElement] = useState(<h2 className={styles.title}>{movie.title}</h2>);
-  const [overviewElement, setOverviewElement] = useState(
-    <div className={styles.overview}>{movie.overview}</div>,
-  );
-
-  const justMounted = useJustMounted();
-  const needsUpdatingTitle = useRef(initialNeedsUpdate);
-  useEffect(() => {
-    if (justMounted) {
-      return;
-    }
-    needsUpdatingTitle.current = true;
-  }, [context.language]);
-
-  useEffect(() => {
-    if (!needsUpdatingTitle.current) {
-      return;
-    }
-
-    setTitle(movieDetails.title ?? 'Loading');
-    setTitleElement(
-      isLoading ? (
-        // eslint-disable-next-line jsx-a11y/heading-has-content
-        <h2 className={`${styles['text-loading-placeholder']} ${styles.title}`} />
-      ) : (
-        <h2 className={styles.title}>{movieDetails?.title}</h2>
-      ),
-    );
-
-    setOverviewElement(
-      isLoading ? (
-        <div className={`${styles['text-loading-placeholder']} ${styles.overview}`} />
-      ) : (
-        <div className={styles.overview}>{movieDetails.overview}</div>
-      ),
-    );
-  }, [context.language, isLoading]);
-
-  const loadingAnimationsCount = useRef<number>(Math.floor(Math.random() * 4) + 2);
-  const loadingAnimationsSizes = useRef<number[]>(
-    Array.from({ length: loadingAnimationsCount.current }, () => Math.floor(Math.random() * 2) + 4),
-  );
-  const otherInformation = isLoading ? (
-    <div className={styles['other-information']}>
-      {[...Array(loadingAnimationsCount.current).keys()].map((i) => (
-        <div
-          key={i}
-          className={styles['background-gradient-loading']}
-          style={{
-            width: `${loadingAnimationsSizes.current[i]}rem`,
-          }}
-        />
-      ))}
-    </div>
-  ) : (
-    <div className={styles['other-information']}>
-      <FavoriteButton movie={movie} className={styles['add-to-favorites-button']} />
-      {!!movieDetails.runtime && (
-        <div className={styles.length}>
-          {movieDetails.runtime}
-          &nbsp;
-          {t('minutes')}
-        </div>
-      )}
-      {movieDetails.genres.map((genre) => (
-        <div className={styles.genre} key={genre}>
-          {genre}
-        </div>
-      ))}
-    </div>
+      return formattedString;
+    },
+    [movie],
   );
 
   return (
     <div className={styles['movie-card']} ref={ref}>
-      {!!movie.backdropUrl && (
+      {movie.backdropUrl != null && (
         <picture>
-          <source srcSet={movie.backdropUrl?.toString()} media="(min-width: 52.5rem)" />
-          <img className={styles['backdrop-image']} alt="" aria-hidden="true" loading="lazy" />
+          <source srcSet={movie.backdropUrl.toString()} media="(min-width: 52.5rem)" />
+          <img className={styles['backdrop-image']} alt="" loading="lazy" />
         </picture>
       )}
       <div className={styles.content}>
-        {!!movie.posterUrl && (
+        {movie.posterUrl != null && (
           <img
             className={styles.poster}
             src={movie.posterUrl.toString()}
-            alt={title}
+            alt={movie.title}
             loading="lazy"
           />
         )}
         <div className={styles.meta}>
-          {titleElement}
-          {director}
-          {otherInformation}
+          <h2 className={cls(styles.title, isLoading && styles['text-loading-placeholder'])}>
+            {!isLoading && movieDetails?.title}
+          </h2>
+          <div className={cls(styles.director, isLoading && styles['text-loading-placeholder'])}>
+            {!isLoading && formatDirector(movieDetails)}
+          </div>
+          <MovieCardOtherInformation
+            isLoading={isLoading}
+            movie={movie}
+            movieDetails={movieDetails}
+          />
         </div>
-        {!!movie.rating && <Rating rating={movie.rating} />}
-        {overviewElement}
+        {movie.rating != null && <Rating rating={movie.rating} />}
+        <div className={cls(styles.overview, isLoading && styles['text-loading-placeholder'])}>
+          {!isLoading && movieDetails?.overview}
+        </div>
       </div>
     </div>
   );
 };
 
-export default forwardRef<HTMLDivElement, CardProps>(MovieCard);
+export default memo(MovieCard);
