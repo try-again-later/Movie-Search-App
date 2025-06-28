@@ -12,7 +12,7 @@
   justify-items: center;
   gap: var(--margin-900);
 
-  @media (max-width: 40rem) {
+  @media (width <= 40rem) {
     grid-template-columns: 1fr;
   }
 }
@@ -25,7 +25,7 @@
 }
 
 .favorite-card {
-  box-shadow: 0 5px 10px rgba(0 0 0 / 15%);
+  box-shadow: 0 5px 10px rgb(0 0 0 / 15%);
   border-radius: 0.5em;
   padding: 1em;
   width: 100%;
@@ -37,7 +37,7 @@
     "poster          favorite-button" / 4rem 1fr;
   gap: var(--margin-400);
 
-  @media (max-width: 20rem) {
+  @media (width <= 20rem) {
     display: flex;
     flex-wrap: wrap;
   }
@@ -52,7 +52,7 @@
     object-fit: cover;
     border-radius: 0.5em;
 
-    @media (max-width: 20rem) {
+    @media (width <= 20rem) {
       max-width: 8rem;
       max-height: 8rem;
       object-fit: cover;

@@ -1,14 +1,12 @@
 import uniqueId from 'lodash/uniqueId';
-import { useCallback, useRef, ChangeEvent, useState, useEffect, MutableRefObject } from 'react';
+import { useCallback, useRef, ChangeEvent, useState, useEffect, MutableRefObject, JSX } from 'react';
 
 import styles from './styles.module.scss';
 
-/* eslint-disable react/no-unused-prop-types */
 type OptionProps = {
   value: string;
   text: string;
 };
-/* eslint-disable react/no-unused-prop-types */
 
 type OptionContentType = (props: OptionProps) => JSX.Element;
 
@@ -102,7 +100,6 @@ const CustomSelect = ({
             <SelectedContent value={value} text={options.get(value) ?? ''} />
           </button>
           <div className={`${styles.options} ${expanded ? styles.visible : ''}`}>
-            {/* eslint-disable jsx-a11y/click-events-have-key-events */}
             {[...options.entries()].map(([value, text]) => (
               <button
                 type="button"
@@ -114,7 +111,6 @@ const CustomSelect = ({
                 <OptionContent text={text} value={value} />
               </button>
             ))}
-            {/* eslint-enable jsx-a11y/click-events-have-key-events */}
           </div>
         </div>
       </div>

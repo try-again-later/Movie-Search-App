@@ -30,7 +30,7 @@
   flex-wrap: wrap;
   margin-left: auto;
 
-  @media (max-width: 40rem) {
+  @media (width <= 40rem) {
     margin: 0;
   }
 }
@@ -46,6 +46,7 @@
   margin-top: var(--margin-400);
   border-top-left-radius: 0.75em;
   border-top-right-radius: 0.75em;
+
   @include regular-font;
 }
 
@@ -161,11 +162,11 @@
   grid-template-columns: repeat(2, 1fr);
   gap: var(--margin-700);
 
-  @media (min-width: 52.5rem) and (max-width: 87.5rem) {
+  @media (52.5rem <= width <= 87.5rem) {
     grid-template-columns: 1fr;
   }
 
-  @media (max-width: 40rem) {
+  @media (width <= 40rem) {
     grid-template-columns: 1fr;
   }
 }
@@ -176,11 +177,11 @@
   width: 100%;
   gap: var(--margin-700);
 
-  @media (min-width: 52.5rem) and (max-width: 87.5rem) {
+  @media (52.5rem <= width <= 87.5rem) {
     display: contents;
   }
 
-  @media (max-width: 40rem) {
+  @media (width <= 40rem) {
     display: contents;
   }
 }

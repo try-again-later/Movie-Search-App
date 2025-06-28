@@ -43,7 +43,7 @@ const MoviesSearchApp = () => {
   }, [i18n, language]);
 
   const handleLanguageChange = useCallback(
-    (newLanguage) => {
+    (newLanguage: LanguageType) => {
       setLanguage(newLanguage);
     },
     [setLanguage],
@@ -55,7 +55,7 @@ const MoviesSearchApp = () => {
   const [darkModeEnabled, setDarkMode] = useLocalStorage('darkMode', false);
 
   const handleColorThemeChange = useCallback(
-    (darkModeEnabled) => {
+    (darkModeEnabled: boolean) => {
       setDarkMode(darkModeEnabled);
     },
     [setDarkMode],
@@ -90,7 +90,7 @@ const MoviesSearchApp = () => {
 
   const [observer, setObserver] = useState(() => new IntersectionObserver(observerCallback));
 
-  const lastCardMounted = useCallback((lastCardElement) => {
+  const lastCardMounted = useCallback((lastCardElement: HTMLDivElement) => {
     setLastCard((prevCard) => {
       if (prevCard == lastCardElement) {
         return prevCard;
@@ -122,7 +122,7 @@ const MoviesSearchApp = () => {
   // For some reason TMDB sometimes returns duplicate movies
   const [loadedMovieIds, setLoadedMoviesIds] = useState<Set<number>>(new Set());
 
-  const onQueryError = useCallback((error) => {
+  const onQueryError = useCallback((error: Error) => {
     setHasError(true);
     setError(error);
   }, []);
@@ -172,7 +172,7 @@ const MoviesSearchApp = () => {
   );
 
   const onSearchFormSubmit = useCallback(
-    (newQueryString) => {
+    (newQueryString: string) => {
       setQueryString(newQueryString);
       fetchMovies(newQueryString);
       setLoadedMovies([]);
