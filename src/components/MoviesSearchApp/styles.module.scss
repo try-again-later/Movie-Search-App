@@ -48,7 +48,9 @@
   margin-right: 0.75em;
   border-top-left-radius: 0.75em;
   border-top-right-radius: 0.75em;
-  transition: background-color 200ms;
+  transition:
+    color 200ms,
+    background-color 200ms;
   position: relative;
   background-color: var(--color-neutral-900);
 

@@ -32,6 +32,27 @@ const QueryFallback: FC<FallbackProps> = ({ resetErrorBoundary }) => {
   );
 };
 
+class MovieList {
+  public constructor(
+    public readonly movies: Movie[] = [],
+    public readonly movieIds: Set<number> = new Set(),
+  ) {}
+
+  public addMovies(newMovies: Movie[]): MovieList {
+    const withMoviesAdded = [...this.movies];
+    const withMovieIdsAdded = new Set(this.movieIds);
+
+    for (const newMovie of newMovies) {
+      if (!withMovieIdsAdded.has(newMovie.id)) {
+        withMovieIdsAdded.add(newMovie.id);
+        withMoviesAdded.push(newMovie);
+      }
+    }
+
+    return new MovieList(withMoviesAdded, withMovieIdsAdded);
+  }
+}
+
 const MoviesSearchApp = () => {
   const { t, i18n } = useTranslation();
 
@@ -73,9 +94,7 @@ const MoviesSearchApp = () => {
   const API_KEY = '2ab87dbd3a5185ee9af24363729e47a9';
   const [queryString, setQueryString] = useState('');
 
-  // TMDB sometimes returns duplicate movies, so track which ones are already loaded.
-  const loadedMovieIds = useRef(new Set());
-  const [loadedMovies, setLoadedMovies] = useState<Movie[]>([]);
+  const [loadedMovies, setLoadedMovies] = useState(new MovieList());
 
   const onQueryError = useCallback((error: Error) => {
     setHasError(true);
@@ -94,16 +113,7 @@ const MoviesSearchApp = () => {
   }, [fetchMovies, queryString, currentPage]);
 
   useEffect(() => {
-    setLoadedMovies((prevLoadedMovies) => {
-      const newLoadedMovies = [...prevLoadedMovies];
-      for (const movie of queriedMoviesPage) {
-        if (!loadedMovieIds.current.has(movie.id)) {
-          loadedMovieIds.current.add(movie.id);
-          newLoadedMovies.push(movie);
-        }
-      }
-      return newLoadedMovies;
-    });
+    setLoadedMovies((prevLoadedMovies) => prevLoadedMovies.addMovies(queriedMoviesPage));
   }, [queriedMoviesPage]);
 
   const lastCardElement = useRef<HTMLDivElement>(null);
@@ -119,7 +129,7 @@ const MoviesSearchApp = () => {
     });
   }
 
-  const movieCards = loadedMovies.map((movie, index, array) =>
+  const movieCards = loadedMovies.movies.map((movie, index, array) =>
     index == array.length - 1 ? (
       <MovieCard
         key={movie.id}
@@ -150,11 +160,9 @@ const MoviesSearchApp = () => {
   );
 
   const onSearchFormSubmit = useCallback((newQueryString: string) => {
-    setLoadedMovies([]);
-    loadedMovieIds.current.clear();
-
-    setQueryString(newQueryString);
+    setLoadedMovies(new MovieList());
     setCurrentPage(1);
+    setQueryString(newQueryString);
   }, []);
 
   const onTryAgain = useCallback(() => {
