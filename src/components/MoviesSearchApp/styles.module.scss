@@ -35,7 +35,7 @@
   }
 }
 
-%nav-link-base {
+.nav-link {
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -44,52 +44,64 @@
   border: none;
   cursor: pointer;
   margin-top: var(--margin-400);
+  margin-left: 0.75em;
+  margin-right: 0.75em;
   border-top-left-radius: 0.75em;
   border-top-right-radius: 0.75em;
+  transition: background-color 200ms;
+  position: relative;
+  background-color: var(--color-neutral-900);
 
   @include regular-font;
+
+  &:hover {
+    background-color: var(--color-neutral-700);
+  }
 }
 
-.nav-link {
-  @extend %nav-link-base;
+.nav-link::before,
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 1.5em;
+  height: 0.75em;
+  bottom: 0;
+  transition: box-shadow 200ms;
 }
 
-.nav-link-highlighted {
-  @extend %nav-link-base;
+.nav-link::before {
+  border-bottom-right-radius: 0.75em;
+  left: -1.5em;
+  box-shadow: 0.75em 0 var(--color-neutral-900);
+}
 
-  position: relative;
+.nav-link:hover::before {
+  box-shadow: 0.75em 0 var(--color-neutral-700);
+}
+
+.nav-link::after {
+  border-bottom-left-radius: 0.75em;
+  right: -1.5em;
+  box-shadow: -0.75em 0 var(--color-neutral-900);
+}
+
+.nav-link:hover::after {
+  box-shadow: -0.75em 0 var(--color-neutral-700);
+}
+
+.nav-link--selected {
   color: var(--color-neutral-700);
   background-color: var(--color-neutral-200);
   cursor: auto;
   pointer-events: none;
 }
 
-.nav-link-highlighted:hover {
-  color: var(--color-neutral-700);
-  background-color: var(--color-neutral-200);
+.nav-link--selected::before {
+  box-shadow: 0.75em 0 var(--color-neutral-200);
 }
 
-.nav-link::before,
-.nav-link::after {
-  content: "";
-  width: 0.75em;
-  align-self: stretch;
-}
-
-.nav-link-highlighted::before,
-.nav-link-highlighted::after {
-  content: "";
-  width: 0.75em;
-  align-self: stretch;
-  background-color: var(--color-neutral-900);
-}
-
-.nav-link-highlighted::before {
-  border-bottom-right-radius: 0.75em;
-}
-
-.nav-link-highlighted::after {
-  border-bottom-left-radius: 0.75em;
+.nav-link--selected::after {
+  box-shadow: -0.75em 0 var(--color-neutral-200);
 }
 
 .nav-link-content-wrapper {
@@ -101,22 +113,6 @@
   align-items: center;
   transform-style: preserve-3d;
   transition: background-color 0.2s;
-}
-
-.nav-link-highlighted > .nav-link-content-wrapper {
-  background-color: var(--color-neutral-200);
-}
-
-.nav-link:hover > .nav-link-content-wrapper {
-  background-color: var(--color-neutral-700);
-}
-
-.nav-link-highlighted > .nav-link-content-wrapper::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: var(--color-neutral-900);
-  transform: translateZ(-1px);
 }
 
 

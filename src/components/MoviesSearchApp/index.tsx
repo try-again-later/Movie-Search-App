@@ -14,6 +14,7 @@ import { Route, Routes, HashRouter as Router, NavLink } from 'react-router-dom';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import ScrollToTopButton from '../ScrollToTopButton';
 import MoviesSearchContext from './MoviesSearchContext';
+import cls from '@ts/utils/classNames';
 
 import styles from './styles.module.scss';
 import FavoriteMovies from '../FavoriteMovies';
@@ -170,7 +171,7 @@ const MoviesSearchApp = () => {
             <NavLink
               to="/"
               className={(navData) =>
-                !navData.isActive ? styles['nav-link'] : styles['nav-link-highlighted']
+                cls(styles['nav-link'], navData.isActive && styles['nav-link--selected'])
               }
             >
               <div className={styles['nav-link-content-wrapper']}>{t('searchRoute')}</div>
@@ -178,7 +179,7 @@ const MoviesSearchApp = () => {
             <NavLink
               to="/favorites"
               className={(navData) =>
-                !navData.isActive ? styles['nav-link'] : styles['nav-link-highlighted']
+                cls(styles['nav-link'], navData.isActive && styles['nav-link--selected'])
               }
             >
               <div className={styles['nav-link-content-wrapper']}>{t('favoritesRoute')}</div>
