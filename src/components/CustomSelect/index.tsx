@@ -1,5 +1,5 @@
 import uniqueId from 'lodash/uniqueId';
-import { useCallback, useRef, ChangeEvent, useState, useEffect, MutableRefObject, JSX } from 'react';
+import { useRef, ChangeEvent, useState, useEffect, MutableRefObject, JSX } from 'react';
 
 import styles from './styles.module.scss';
 
@@ -36,44 +36,36 @@ const CustomSelect = ({
   const labelId = useRef(uniqueId('custom-select-label-'));
   const wrapperRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
-  const onNativeSelectChange = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      onChange(event.target.value);
-    },
-    [onChange],
-  );
+  const onNativeSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    onChange(event.target.value);
+  };
 
   const [expanded, setExpanded] = useState(false);
-  const onCustomSelectClick = useCallback(() => {
+  const onCustomSelectClick = () => {
     setExpanded((prevExpanded) => !prevExpanded);
-  }, [setExpanded]);
+  };
 
-  const onCustomOptionClick = useCallback(
-    (value: string) => {
-      setExpanded(false);
-      onChange(value);
-    },
-    [onChange, setExpanded],
-  );
+  const onCustomOptionClick = (value: string) => {
+    setExpanded(false);
+    onChange(value);
+  };
 
-  const handleOutsideClick = useCallback(
-    (event: MouseEvent) => {
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
       if (!wrapperRef.current) {
         return;
       }
       if (event.target && !wrapperRef.current.contains(event.target as Node)) {
         setExpanded(false);
       }
-    },
-    [setExpanded, wrapperRef],
-  );
-  useEffect(() => {
+    };
+
     document.addEventListener('click', handleOutsideClick);
 
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, [handleOutsideClick]);
+  }, []);
 
   return (
     <>

@@ -1,6 +1,5 @@
 import Movie from '@ts/Movie';
 import useLocalStorage from '@hooks/useLocalStorage';
-import { useCallback } from 'react';
 
 interface ReturnType {
   favorite: boolean;
@@ -15,7 +14,7 @@ interface PropsType {
 const useFavoriteMovie = ({ movie, listName = 'favoriteMovies' }: PropsType): ReturnType => {
   const [favorites, setFavorites] = useLocalStorage<Record<string, boolean>>(listName, {});
 
-  const change = useCallback(() => {
+  const change = () => {
     setFavorites((prevFavorites) => {
       if (prevFavorites == null) {
         return {
@@ -32,7 +31,7 @@ const useFavoriteMovie = ({ movie, listName = 'favoriteMovies' }: PropsType): Re
         [String(movie.id)]: true,
       };
     });
-  }, [setFavorites, movie.id]);
+  };
 
   return { favorite: favorites[String(movie.id)], change };
 };

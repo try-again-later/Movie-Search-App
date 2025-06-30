@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 type ErrorCallback = (error: Error) => void;
 
@@ -25,21 +25,18 @@ function useLocalStorage<T>(
 ): [T, (value: SetItemType<T>) => void] {
   const [item, setItem] = useState<T>(getFromLocalStorage<T>(key, errorCallback) ?? initialValue);
 
-  const setStoredItem = useCallback(
-    (value: SetItemType<T>) => {
-      try {
-        const prevValue = getFromLocalStorage<T>(key, errorCallback) ?? initialValue;
-        setItem(value instanceof Function ? value(prevValue) : value ?? initialValue);
-      } catch (error) {
-        if (errorCallback != undefined) {
-          errorCallback(error as Error);
-        } else {
-          console.error(error);
-        }
+  const setStoredItem = (value: SetItemType<T>) => {
+    try {
+      const prevValue = getFromLocalStorage<T>(key, errorCallback) ?? initialValue;
+      setItem(value instanceof Function ? value(prevValue) : value ?? initialValue);
+    } catch (error) {
+      if (errorCallback != undefined) {
+        errorCallback(error as Error);
+      } else {
+        console.error(error);
       }
-    },
-    [errorCallback, initialValue, key],
-  );
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(item));

@@ -1,20 +1,20 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 
-const useScroll = (): {x:number, y:number} => {
+const useScroll = (): { x: number; y: number } => {
   const [x, setX] = useState(window.scrollX);
   const [y, setY] = useState(window.scrollY);
 
-  const onScroll = useCallback(() => {
-    setX(window.scrollX);
-    setY(window.scrollY);
-  }, []);
-
   useEffect(() => {
+    const onScroll = () => {
+      setX(window.scrollX);
+      setY(window.scrollY);
+    };
+
     document.addEventListener('scroll', onScroll);
     return () => {
       document.removeEventListener('scroll', onScroll);
     };
-  }, [onScroll]);
+  }, []);
 
   return { x, y };
 };

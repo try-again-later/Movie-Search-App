@@ -79,7 +79,7 @@ const useQueryMovieDetails = ({
         onError(error);
       }
     });
-  }, [onError, fetchDataAsync]);
+  }, [fetchDataAsync]);
 
   // abort any pending requests on unmount
   useEffect(

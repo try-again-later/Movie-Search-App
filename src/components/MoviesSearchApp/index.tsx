@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState, useRef } from 'react';
+import { FC, useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Movie from '@ts/Movie';
@@ -64,24 +64,18 @@ const MoviesSearchApp = () => {
     i18n.changeLanguage(Language.toString(language));
   }, [i18n, language]);
 
-  const handleLanguageChange = useCallback(
-    (newLanguage: LanguageType) => {
-      setLanguage(newLanguage);
-    },
-    [setLanguage],
-  );
+  const handleLanguageChange = (newLanguage: LanguageType) => {
+    setLanguage(newLanguage);
+  };
 
   const [hasError, setHasError] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const [darkModeEnabled, setDarkMode] = useLocalStorage('darkMode', false);
 
-  const handleColorThemeChange = useCallback(
-    (darkModeEnabled: boolean) => {
-      setDarkMode(darkModeEnabled);
-    },
-    [setDarkMode],
-  );
+  const handleColorThemeChange = (darkModeEnabled: boolean) => {
+    setDarkMode(darkModeEnabled);
+  };
 
   useEffect(() => {
     if (darkModeEnabled) {
@@ -96,10 +90,10 @@ const MoviesSearchApp = () => {
 
   const [loadedMovies, setLoadedMovies] = useState(new MovieList());
 
-  const onQueryError = useCallback((error: Error) => {
+  const onQueryError = (error: Error) => {
     setHasError(true);
     setError(error);
-  }, []);
+  };
 
   const [queriedMoviesPage, loadingMovies, fetchMovies] = useQueryMovies({
     apiKey: API_KEY,
@@ -159,16 +153,16 @@ const MoviesSearchApp = () => {
     </>
   );
 
-  const onSearchFormSubmit = useCallback((newQueryString: string) => {
+  const onSearchFormSubmit = (newQueryString: string) => {
     setLoadedMovies(new MovieList());
     setCurrentPage(1);
     setQueryString(newQueryString);
-  }, []);
+  };
 
-  const onTryAgain = useCallback(() => {
+  const onTryAgain = () => {
     setHasError(false);
     onSearchFormSubmit(queryString);
-  }, [queryString, onSearchFormSubmit]);
+  };
 
   return (
     <Router>

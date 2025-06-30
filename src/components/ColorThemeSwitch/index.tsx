@@ -1,5 +1,5 @@
 import { uniqueId } from 'lodash';
-import { useRef, useCallback, ChangeEvent } from 'react';
+import { useRef, ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from './styles.module.scss';
@@ -15,12 +15,9 @@ const ColorThemeSwitch = ({ darkModeEnabled, onThemeChange, className }: ThemeSw
 
   const labelId = useRef(uniqueId('color-theme-switch-'));
 
-  const onThemeChangedEvent = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      onThemeChange(event.target.checked);
-    },
-    [onThemeChange],
-  );
+  const onThemeChangedEvent = (event: ChangeEvent<HTMLInputElement>) => {
+    onThemeChange(event.target.checked);
+  };
 
   return (
     <div className={`${className}`}>

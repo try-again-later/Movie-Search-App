@@ -28,8 +28,6 @@ const useQueryMovies = ({
       }
 
       if (queryString.trim().length == 0) {
-        setMovies([]);
-        setLoading(false);
         return;
       }
 
@@ -89,7 +87,7 @@ const useQueryMovies = ({
         }
       });
     },
-    [onError, fetchDataAsync],
+    [fetchDataAsync],
   );
 
   return [movies, isLoading, fetchData];

@@ -1,4 +1,4 @@
-import { useContext, useRef, useEffect, useCallback, memo, Ref } from 'react';
+import { useContext, useRef, useEffect, Ref } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Movie from '@ts/Movie';
@@ -17,50 +17,48 @@ type MovieCardOtherInformationProps = {
   movieDetails: MovieDetails | null;
 };
 
-const MovieCardOtherInformation = memo(
-  ({ isLoading, movie, movieDetails }: MovieCardOtherInformationProps) => {
-    const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
+const MovieCardOtherInformation = ({
+  isLoading,
+  movie,
+  movieDetails,
+}: MovieCardOtherInformationProps) => {
+  const { t } = useTranslation('translation', { keyPrefix: 'MovieCard' });
 
-    const loadingAnimationsCount = useRef<number>(Math.floor(Math.random() * 4) + 2);
-    const loadingAnimationsSizes = useRef<number[]>(
-      Array.from(
-        { length: loadingAnimationsCount.current },
-        () => Math.floor(Math.random() * 2) + 4,
-      ),
-    );
+  const loadingAnimationsCount = useRef<number>(Math.floor(Math.random() * 4) + 2);
+  const loadingAnimationsSizes = useRef<number[]>(
+    Array.from({ length: loadingAnimationsCount.current }, () => Math.floor(Math.random() * 2) + 4),
+  );
 
-    if (isLoading) {
-      return (
-        <div className={styles['other-information']}>
-          {loadingAnimationsSizes.current.map((width, index) => (
-            <div
-              key={index}
-              className={styles['background-gradient-loading']}
-              style={{ width: `${width}rem` }}
-            />
-          ))}
-        </div>
-      );
-    }
-
+  if (isLoading) {
     return (
       <div className={styles['other-information']}>
-        <FavoriteButton movie={movie} className={styles['add-to-favorites-button']} />
-        {movieDetails?.runtime != null && (
-          <div className={styles.length}>
-            {movieDetails.runtime}&nbsp;{t('minutes')}
-          </div>
-        )}
-        {movieDetails?.genres.map((genre) => (
-          <div className={styles.genre} key={genre}>
-            {genre}
-          </div>
+        {loadingAnimationsSizes.current.map((width, index) => (
+          <div
+            key={index}
+            className={styles['background-gradient-loading']}
+            style={{ width: `${width}rem` }}
+          />
         ))}
       </div>
     );
-  },
-);
-MovieCardOtherInformation.displayName = 'MovieCardOtherInformation';
+  }
+
+  return (
+    <div className={styles['other-information']}>
+      <FavoriteButton movie={movie} className={styles['add-to-favorites-button']} />
+      {movieDetails?.runtime != null && (
+        <div className={styles.length}>
+          {movieDetails.runtime}&nbsp;{t('minutes')}
+        </div>
+      )}
+      {movieDetails?.genres.map((genre) => (
+        <div className={styles.genre} key={genre}>
+          {genre}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 type MovieCardProps = {
   movie: Movie;
@@ -81,19 +79,16 @@ const MovieCard = ({ movie, ref }: MovieCardProps) => {
     queryDetails();
   }, [context.language, queryDetails]);
 
-  const formatDirector = useCallback(
-    (movieDetails: MovieDetails | null) => {
-      let formattedString = '';
-      formattedString += movie?.releaseDate?.getFullYear() ?? '';
-      if (movie.releaseDate != null && movieDetails?.director != null) {
-        formattedString += ', ';
-      }
-      formattedString += movieDetails?.director ?? '';
+  const formatDirector = (movieDetails: MovieDetails | null) => {
+    let formattedString = '';
+    formattedString += movie?.releaseDate?.getFullYear() ?? '';
+    if (movie.releaseDate != null && movieDetails?.director != null) {
+      formattedString += ', ';
+    }
+    formattedString += movieDetails?.director ?? '';
 
-      return formattedString;
-    },
-    [movie],
-  );
+    return formattedString;
+  };
 
   return (
     <div className={styles['movie-card']} ref={ref}>
@@ -134,4 +129,4 @@ const MovieCard = ({ movie, ref }: MovieCardProps) => {
   );
 };
 
-export default memo(MovieCard);
+export default MovieCard;
