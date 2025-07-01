@@ -30,7 +30,6 @@
   }
 
   .options {
-    visibility: hidden;
     position: absolute;
     width: max-content;
     margin-top: var(--margin-100);
@@ -42,8 +41,6 @@
     border: 2px solid var(--color-neutral-300);
     z-index: 20;
     animation: shrink 200ms ease-in-out forwards;
-    transition: visibility 0s;
-    transition-delay: 200ms;
 
     .option {
       @include regular-font;
@@ -70,17 +67,21 @@
   }
 }
 
+// Apply this class until the first click on the custom select button, so that the shrink animation
+// is not played on page load.
+.options.cloak {
+  visibility: hidden;
+}
+
 .options.visible {
-  visibility: visible;
   animation: grow 200ms ease-in-out forwards;
-  transition: visibility 0s;
-  transition-delay: 0s;
 }
 
 @keyframes grow {
   0% {
     opacity: 0;
     transform: scale(0.6);
+    visibility: hidden;
   }
 
   60% {
@@ -93,6 +94,7 @@
 
   100% {
     transform: scale(1);
+    visibility: visible;
   }
 }
 
@@ -112,6 +114,7 @@
   100% {
     opacity: 0;
     transform: scale(0.6);
+    visibility: hidden;
   }
 }
 

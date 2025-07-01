@@ -1,5 +1,6 @@
 import uniqueId from 'lodash/uniqueId';
-import { useRef, ChangeEvent, useState, useEffect, MutableRefObject, JSX } from 'react';
+import { useRef, ChangeEvent, useState, useEffect, JSX } from 'react';
+import cls from '@app/ts/utils/classNames';
 
 import ArrowDown from './icons/arrow-down.svg?react';
 
@@ -35,8 +36,10 @@ const CustomSelect = ({
   OptionContent = DefaultOptionContent,
   SelectedContent = DefaultSelectedContent,
 }: SelectProps) => {
+  const isMounted = useRef(false);
+
   const labelId = useRef(uniqueId('custom-select-label-'));
-  const wrapperRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const onNativeSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     onChange(event.target.value);
@@ -44,6 +47,7 @@ const CustomSelect = ({
 
   const [expanded, setExpanded] = useState(false);
   const onCustomSelectClick = () => {
+    isMounted.current = true;
     setExpanded((prevExpanded) => !prevExpanded);
   };
 
@@ -94,7 +98,13 @@ const CustomSelect = ({
             <SelectedContent value={value} text={options.get(value) ?? ''} />
             <ArrowDown className={styles['selected-option-icon']} />
           </button>
-          <div className={`${styles.options} ${expanded ? styles.visible : ''}`}>
+          <div
+            className={cls(
+              styles.options,
+              expanded && styles.visible,
+              !isMounted.current && styles.cloak,
+            )}
+          >
             {[...options.entries()].map(([value, text]) => (
               <button
                 type="button"
