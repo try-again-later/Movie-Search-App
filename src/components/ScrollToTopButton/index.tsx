@@ -1,5 +1,7 @@
 import useScroll from '@hooks/useScroll';
 
+import ArrowUp from './icons/arrow-up.svg?react';
+
 import styles from './styles.module.scss';
 
 const ScrollToTopButton = () => {
@@ -14,9 +16,11 @@ const ScrollToTopButton = () => {
       className={`${styles['move-to-top-button']} ${
         scrollPosition > 1000 ? styles['move-to-top-button-visible'] : ''
       }`}
-      aria-label="Scroll to top"
+      title="Scroll to top"
       onClick={onScrollToTopClick}
-    />
+    >
+      <ArrowUp />
+    </button>
   );
 };
 

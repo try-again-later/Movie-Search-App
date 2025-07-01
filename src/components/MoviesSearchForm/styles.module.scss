@@ -3,19 +3,6 @@
 .movie-search-form {
   display: contents;
 
-  // display: grid;
-  // gap: var(--margin-200);
-  // grid-template-areas:
-  //   "search-bar search-bar   "
-  //   "label      submit-button";
-
-  @media (min-width: breakpoint("medium")) {
-    // grid-template-areas:
-    //   "search-bar submit-button"
-    //   "label      .            ";
-    // grid-template-columns: 1fr minmax(8em, auto);
-  }
-
   .title-input-label {
     grid-area: label;
     text-transform: uppercase;
@@ -33,6 +20,9 @@
   }
 
   button[type="submit"] {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     grid-area: submit-button;
     align-self: stretch;
     padding: 0.5em 1em;
@@ -49,17 +39,9 @@
       cursor: pointer;
     }
 
-    &::after {
-      content: "";
-      display: inline-block;
+    .submit-button-icon {
       width: 1em;
-      height: 1em;
-      margin-left: 0.5rem;
-      background: var(--color-neutral-200);
-      mask-image: url("./icons/search.svg");
-      mask-position: center;
-      mask-size: contain;
-      vertical-align: top;
+      height: auto;
     }
 
     @media (max-width: breakpoint("medium")) {

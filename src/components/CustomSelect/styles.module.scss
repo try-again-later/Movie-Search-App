@@ -8,28 +8,20 @@
     @include regular-font;
 
     display: flex;
-    grid-template-columns: max-content auto;
+    gap: var(--margin-100);
     padding: 0.25em 0.5em;
     background-color: var(--color-neutral-100);
     border: 2px solid var(--color-neutral-300);
+    color: var(--color-neutral-900);
     border-radius: 0.5em;
     font-size: var(--font-size-500);
     cursor: pointer;
     transition: background-color 0.2s;
 
-    &::after {
-      content: "";
-      display: inline-block;
+    .selected-option-icon {
       align-self: end;
-      width: 1em;
-      height: 0.75em;
-      margin-left: var(--margin-100);
-      background: var(--color-neutral-900);
-      mask-image: url("./icons/arrow-down.svg");
-      mask-position: center;
-      mask-repeat: no-repeat;
-      mask-size: contain;
-      vertical-align: middle;
+      width: 0.875em;
+      height: auto;
     }
 
     &:hover {

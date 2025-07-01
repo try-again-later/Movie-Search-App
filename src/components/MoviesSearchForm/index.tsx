@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
+import SearchIcon from './icons/search.svg?react';
+
 import styles from './styles.module.scss';
 
 export type MoviesSearchHandler = (searchQuery: string) => void;
@@ -35,7 +37,10 @@ const MoviesSearchForm = ({ onSubmit }: FormProps) => {
         className={styles['title-input']}
         placeholder={t('searchQueryExample')}
       />
-      <button type="submit">{t('search')}</button>
+      <button type="submit">
+        {t('search')}
+        <SearchIcon className={styles['submit-button-icon']} />
+      </button>
     </form>
   );
 };

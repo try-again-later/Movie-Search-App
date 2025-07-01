@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg version="1.1" width="100px" height="56px" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg"
+<svg version="1.1" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg"
   shapeRendering="geometricPrecision">
-  <polygon points="10,10 20,10 40,30 60,10 70,10 70,20 40,50 10,20" fill="var(--color-neutral-100)" strokeWidth="8"
+  <polygon points="10,10 20,10 40,30 60,10 70,10 70,20 40,50 10,20" fill="currentColor" strokeWidth="8"
     strokeLinejoin="round" />
 </svg>

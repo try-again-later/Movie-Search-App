@@ -14,6 +14,7 @@
   z-index: 5;
   opacity: 0;
   box-shadow: 0 5px 10px rgb(0 0 0 / 15%);
+  color: var(--color-neutral-200);
 
   @keyframes disappearance {
     0% {
@@ -58,16 +59,4 @@ body[data-theme="dark"] .move-to-top-button {
       transform: scale(1);
     }
   }
-}
-
-.move-to-top-button::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: var(--color-neutral-200);
-  mask-image: url("./icons/arrow-up.svg");
-  mask-repeat: no-repeat;
-  mask-size: 4rem;
-  mask-position: center;
-  cursor: pointer;
 }

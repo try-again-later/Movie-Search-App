@@ -1,6 +1,8 @@
 import uniqueId from 'lodash/uniqueId';
 import { useRef, ChangeEvent, useState, useEffect, MutableRefObject, JSX } from 'react';
 
+import ArrowDown from './icons/arrow-down.svg?react';
+
 import styles from './styles.module.scss';
 
 type OptionProps = {
@@ -90,6 +92,7 @@ const CustomSelect = ({
             onClick={onCustomSelectClick}
           >
             <SelectedContent value={value} text={options.get(value) ?? ''} />
+            <ArrowDown className={styles['selected-option-icon']} />
           </button>
           <div className={`${styles.options} ${expanded ? styles.visible : ''}`}>
             {[...options.entries()].map(([value, text]) => (
