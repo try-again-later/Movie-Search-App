@@ -3,6 +3,7 @@
   "loading": "Загрузка",
   "searchRoute": "Поиск",
   "favoritesRoute": "Избранное",
+  "nothingWasFound": "Ничего не найдено...",
   "MovieCard": {
     "minutes": "мин."
   },
