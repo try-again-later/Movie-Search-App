@@ -78,6 +78,7 @@ const CustomSelect = ({
       <div className={styles['custom-select-wrapper']} ref={wrapperRef}>
         <select
           className={styles['native-select']}
+          name={label}
           aria-labelledby={labelId.current}
           value={value}
           onChange={onNativeSelectChange}

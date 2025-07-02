@@ -25,7 +25,7 @@ const MoviesSearchForm = ({ searchQuery, onChange, onSubmit }: FormProps) => {
         onSubmit(searchQuery);
       }}
     >
-      <label htmlFor="title-query" className={styles['title-input-label']}>
+      <label htmlFor="movie-title-query" className={styles['title-input-label']}>
         {t('movieTitle')}
       </label>
       <input

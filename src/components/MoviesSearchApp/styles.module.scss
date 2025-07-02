@@ -96,13 +96,26 @@
   background-color: var(--color-neutral-200);
   cursor: auto;
   pointer-events: none;
+
+  &:hover {
+    color: var(--color-neutral-700);
+    background-color: var(--color-neutral-200);
+  }
 }
 
 .nav-link--selected::before {
   box-shadow: 0.75em 0 var(--color-neutral-200);
 }
 
+.nav-link--selected:hover::before {
+  box-shadow: 0.75em 0 var(--color-neutral-200);
+}
+
 .nav-link--selected::after {
+  box-shadow: -0.75em 0 var(--color-neutral-200);
+}
+
+.nav-link--selected:hover::after {
   box-shadow: -0.75em 0 var(--color-neutral-200);
 }
 
