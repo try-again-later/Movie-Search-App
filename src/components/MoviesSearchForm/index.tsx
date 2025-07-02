@@ -1,20 +1,20 @@
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
 
 import SearchIcon from './icons/search.svg?react';
 
 import styles from './styles.module.scss';
 
 export type MoviesSearchHandler = (searchQuery: string) => void;
+export type OnMovieSearchQueryChange = (searchQuery: string) => void;
 
 type FormProps = {
+  searchQuery: string;
+  onChange: OnMovieSearchQueryChange;
   onSubmit: MoviesSearchHandler;
 };
 
-const MoviesSearchForm = ({ onSubmit }: FormProps) => {
+const MoviesSearchForm = ({ searchQuery, onChange, onSubmit }: FormProps) => {
   const { t } = useTranslation('translation', { keyPrefix: 'MoviesSearchForm' });
-
-  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <form
@@ -31,7 +31,7 @@ const MoviesSearchForm = ({ onSubmit }: FormProps) => {
       <input
         type="text"
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         name="movie-title-query"
         id="movie-title-query"
         className={styles['title-input']}

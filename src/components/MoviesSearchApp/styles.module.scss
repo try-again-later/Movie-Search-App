@@ -204,3 +204,10 @@
 .retry-button:hover {
   background-color: var(--color-neutral-700);
 }
+
+.empty-list-message {
+  font-size: var(--font-size-700);
+  font-style: italic;
+  color: var(--color-neutral-400);
+  padding: 8rem 0;
+}

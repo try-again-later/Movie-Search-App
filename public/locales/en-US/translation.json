@@ -3,6 +3,7 @@
   "searchRoute": "Search",
   "favoritesRoute": "Favorites",
   "loading": "Loading",
+  "nothingWasFound": "Nothing was found...",
   "MovieCard": {
     "minutes": "min"
   },

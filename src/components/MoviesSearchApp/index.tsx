@@ -104,10 +104,17 @@ const MoviesSearchApp = () => {
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     fetchMovies(queryString, currentPage);
-  }, [fetchMovies, queryString, currentPage]);
+  }, [fetchMovies, currentPage]);
 
+  const nothingWasFound = useRef(false);
   useEffect(() => {
     setLoadedMovies((prevLoadedMovies) => prevLoadedMovies.addMovies(queriedMoviesPage));
+
+    if (queriedMoviesPage.length == 0 && currentPage == 1 && queryString.trim().length > 0) {
+      nothingWasFound.current = true;
+    } else {
+      nothingWasFound.current = false;
+    }
   }, [queriedMoviesPage]);
 
   const lastCardElement = useRef<HTMLDivElement>(null);
@@ -150,6 +157,9 @@ const MoviesSearchApp = () => {
         <div className={styles['movies-column']}>{rightMoviesColumn}</div>
       </div>
       {loadingMovies && <LoadingAnimation loadingText={t('loading')} />}
+      {!loadingMovies && nothingWasFound.current && (
+        <div className={styles['empty-list-message']}>{t('nothingWasFound')}</div>
+      )}
     </>
   );
 
@@ -157,6 +167,7 @@ const MoviesSearchApp = () => {
     setLoadedMovies(new MovieList());
     setCurrentPage(1);
     setQueryString(newQueryString);
+    fetchMovies(newQueryString, 1);
   };
 
   const onTryAgain = () => {
@@ -210,7 +221,11 @@ const MoviesSearchApp = () => {
                       onThemeChange={handleColorThemeChange}
                       className={styles['change-color-theme']}
                     />
-                    <MoviesSearchForm onSubmit={onSearchFormSubmit} />
+                    <MoviesSearchForm
+                      searchQuery={queryString}
+                      onChange={setQueryString}
+                      onSubmit={onSearchFormSubmit}
+                    />
                   </div>
                   <ErrorBoundary FallbackComponent={QueryFallback}>
                     {hasError ? (
